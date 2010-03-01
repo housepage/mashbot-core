@@ -727,3 +727,180 @@ Feb 15, 2010 12:54:02 PM org.apache.catalina.loader.WebappClassLoader clearThrea
 SEVERE: A web application created a ThreadLocal with key of type [org.springframework.core.NamedThreadLocal] (value [XML bean definition resources currently being loaded]) and a value of type [null] (value [null]) but failed to remove it when the web application was stopped. To prevent a memory leak, the ThreadLocal has been forcibly removed.
 Feb 18, 2010 3:28:14 PM org.apache.coyote.http11.Http11Protocol pause
 INFO: Pausing Coyote HTTP/1.1 on http-8080
+Mar 1, 2010 1:44:20 PM org.apache.catalina.core.AprLifecycleListener init
+INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-openjdk/jre/lib/i386/server:/usr/lib/jvm/java-6-openjdk/jre/lib/i386:/usr/lib/jvm/java-6-openjdk/jre/../lib/i386:/usr/java/packages/lib/i386:/usr/lib/jni:/lib:/usr/lib
+Mar 1, 2010 1:44:21 PM org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:44:21 PM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 1714 ms
+Mar 1, 2010 1:44:21 PM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Mar 1, 2010 1:44:21 PM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.24
+Mar 1, 2010 1:44:21 PM org.apache.catalina.startup.HostConfig deployDescriptor
+INFO: Deploying configuration descriptor host-manager.xml
+Mar 1, 2010 1:44:21 PM org.apache.catalina.startup.HostConfig deployDescriptor
+INFO: Deploying configuration descriptor manager.xml
+Mar 1, 2010 1:44:21 PM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive mashbot-core.war
+Mar 1, 2010 1:44:22 PM org.springframework.web.context.ContextLoader initWebApplicationContext
+INFO: Root WebApplicationContext: initialization started
+Mar 1, 2010 1:44:22 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing Root WebApplicationContext: startup date [Mon Mar 01 13:44:22 PST 2010]; root of context hierarchy
+Mar 1, 2010 1:44:22 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from ServletContext resource [/WEB-INF/conf/applicationContext.xml]
+Mar 1, 2010 1:44:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [META-INF/cxf/cxf.xml]
+Mar 1, 2010 1:44:27 PM org.springframework.web.context.ContextLoader initWebApplicationContext
+SEVERE: Context initialization failed
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:526)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:905)
+	at org.apache.catalina.startup.HostConfig.deployWARs(HostConfig.java:740)
+	at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:500)
+	at org.apache.catalina.startup.HostConfig.start(HostConfig.java:1277)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:321)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.core.ContainerBase.start(ContainerBase.java:1053)
+	at org.apache.catalina.core.StandardHost.start(StandardHost.java:722)
+	at org.apache.catalina.core.ContainerBase.start(ContainerBase.java:1045)
+	at org.apache.catalina.core.StandardEngine.start(StandardEngine.java:443)
+	at org.apache.catalina.core.StandardService.start(StandardService.java:516)
+	at org.apache.catalina.core.StandardServer.start(StandardServer.java:710)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:593)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:289)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:414)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 42 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 46 more
+Mar 1, 2010 1:44:27 PM org.apache.catalina.core.StandardContext start
+SEVERE: Error listenerStart
+Mar 1, 2010 1:44:27 PM org.apache.catalina.core.StandardContext start
+SEVERE: Context [/mashbot-core] startup failed due to previous errors
+Mar 1, 2010 1:44:28 PM org.apache.catalina.loader.WebappClassLoader clearThreadLocalMap
+SEVERE: A web application created a ThreadLocal with key of type [org.springframework.core.NamedThreadLocal] (value [XML bean definition resources currently being loaded]) and a value of type [null] (value [null]) but failed to remove it when the web application was stopped. To prevent a memory leak, the ThreadLocal has been forcibly removed.
+Mar 1, 2010 1:44:28 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory ROOT
+Mar 1, 2010 1:44:28 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory springapp
+Mar 1, 2010 1:44:28 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory examples
+Mar 1, 2010 1:44:28 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory docs
+Mar 1, 2010 1:44:28 PM org.apache.coyote.http11.Http11Protocol start
+INFO: Starting Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:44:29 PM org.apache.jk.common.ChannelSocket init
+INFO: JK: ajp13 listening on /0.0.0.0:8009
+Mar 1, 2010 1:44:29 PM org.apache.jk.server.JkMain start
+INFO: Jk running ID=0 time=0/45  config=null
+Mar 1, 2010 1:44:29 PM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 8086 ms
+Mar 1, 2010 1:44:38 PM org.apache.catalina.startup.HostConfig checkResources
+INFO: Reloading context [/mashbot-core]
+Mar 1, 2010 1:44:38 PM org.apache.catalina.core.StandardContext stop
+INFO: Container org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/mashbot-core] has not been started
+Mar 1, 2010 1:44:39 PM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: FrameworkServlet 'mashbot-core': initialization started
+Mar 1, 2010 1:44:39 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing WebApplicationContext for namespace 'mashbot-core-servlet': startup date [Mon Mar 01 13:44:39 PST 2010]; root of context hierarchy
+Mar 1, 2010 1:44:39 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from ServletContext resource [/WEB-INF/mashbot-core-servlet.xml]
+Mar 1, 2010 1:44:39 PM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@d964af: defining beans [/hello.htm]; root of factory hierarchy
+Mar 1, 2010 1:44:39 PM org.springframework.web.servlet.handler.AbstractUrlHandlerMapping registerHandler
+INFO: Mapped URL path [/hello.htm] onto handler [org.mashbot.server.web.HelloController@d337d3]
+Mar 1, 2010 1:44:40 PM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: FrameworkServlet 'mashbot-core': initialization completed in 835 ms
+Mar 1, 2010 1:47:01 PM org.apache.coyote.http11.Http11Protocol pause
+INFO: Pausing Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:47:02 PM org.apache.catalina.core.StandardService stop
+INFO: Stopping service Catalina
+Mar 1, 2010 1:47:02 PM org.springframework.context.support.AbstractApplicationContext doClose
+INFO: Closing WebApplicationContext for namespace 'mashbot-core-servlet': startup date [Mon Mar 01 13:44:39 PST 2010]; root of context hierarchy
+Mar 1, 2010 1:47:02 PM org.springframework.beans.factory.support.DefaultSingletonBeanRegistry destroySingletons
+INFO: Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@d964af: defining beans [/hello.htm]; root of factory hierarchy
+Mar 1, 2010 1:47:02 PM org.apache.coyote.http11.Http11Protocol destroy
+INFO: Stopping Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:47:07 PM org.apache.catalina.core.AprLifecycleListener init
+INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-openjdk/jre/lib/i386/server:/usr/lib/jvm/java-6-openjdk/jre/lib/i386:/usr/lib/jvm/java-6-openjdk/jre/../lib/i386:/usr/java/packages/lib/i386:/usr/lib/jni:/lib:/usr/lib
+Mar 1, 2010 1:47:08 PM org.apache.coyote.http11.Http11Protocol init
+INFO: Initializing Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:47:08 PM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 1049 ms
+Mar 1, 2010 1:47:08 PM org.apache.catalina.core.StandardService start
+INFO: Starting service Catalina
+Mar 1, 2010 1:47:08 PM org.apache.catalina.core.StandardEngine start
+INFO: Starting Servlet Engine: Apache Tomcat/6.0.24
+Mar 1, 2010 1:47:08 PM org.apache.catalina.startup.HostConfig deployDescriptor
+INFO: Deploying configuration descriptor host-manager.xml
+Mar 1, 2010 1:47:08 PM org.apache.catalina.startup.HostConfig deployDescriptor
+INFO: Deploying configuration descriptor manager.xml
+Mar 1, 2010 1:47:08 PM org.apache.catalina.startup.HostConfig deployWAR
+INFO: Deploying web application archive mashbot-core.war
+Mar 1, 2010 1:47:09 PM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: FrameworkServlet 'mashbot-core': initialization started
+Mar 1, 2010 1:47:09 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing WebApplicationContext for namespace 'mashbot-core-servlet': startup date [Mon Mar 01 13:47:09 PST 2010]; root of context hierarchy
+Mar 1, 2010 1:47:09 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from ServletContext resource [/WEB-INF/mashbot-core-servlet.xml]
+Mar 1, 2010 1:47:09 PM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@1584807: defining beans [/hello.htm]; root of factory hierarchy
+Mar 1, 2010 1:47:09 PM org.springframework.web.servlet.handler.AbstractUrlHandlerMapping registerHandler
+INFO: Mapped URL path [/hello.htm] onto handler [org.mashbot.server.web.HelloController@c0a9f9]
+Mar 1, 2010 1:47:10 PM org.springframework.web.servlet.FrameworkServlet initServletBean
+INFO: FrameworkServlet 'mashbot-core': initialization completed in 699 ms
+Mar 1, 2010 1:47:10 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory ROOT
+Mar 1, 2010 1:47:10 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory springapp
+Mar 1, 2010 1:47:10 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory examples
+Mar 1, 2010 1:47:10 PM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory docs
+Mar 1, 2010 1:47:10 PM org.apache.coyote.http11.Http11Protocol start
+INFO: Starting Coyote HTTP/1.1 on http-8123
+Mar 1, 2010 1:47:10 PM org.apache.jk.common.ChannelSocket init
+INFO: JK: ajp13 listening on /0.0.0.0:8009
+Mar 1, 2010 1:47:10 PM org.apache.jk.server.JkMain start
+INFO: Jk running ID=0 time=0/96  config=null
+Mar 1, 2010 1:47:10 PM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 2603 ms

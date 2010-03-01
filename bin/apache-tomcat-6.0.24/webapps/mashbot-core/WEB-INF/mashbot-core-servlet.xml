@@ -7,7 +7,6 @@
 
   <!-- the application context definition for the springapp DispatcherServlet -->
 
-  <bean name="/hello.htm" class="org.mashbot.server.web.HelloController"/>
-
+	<bean name="/hello.htm" class="org.mashbot.server.web.HelloController"/>
 
 </beans>
