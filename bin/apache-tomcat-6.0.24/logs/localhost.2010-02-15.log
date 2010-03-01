@@ -1,0 +1,634 @@
+Feb 15, 2010 11:18:14 AM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+Feb 15, 2010 11:18:14 AM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+Feb 15, 2010 11:53:58 AM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+Feb 15, 2010 11:53:58 AM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+Feb 15, 2010 12:02:30 PM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+Feb 15, 2010 12:02:30 PM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+Feb 15, 2010 12:02:31 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring FrameworkServlet 'mashbot-core'
+Feb 15, 2010 12:02:40 PM org.apache.catalina.core.ApplicationContext log
+INFO: Destroying Spring FrameworkServlet 'mashbot-core'
+Feb 15, 2010 12:02:41 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring FrameworkServlet 'mashbot-core'
+Feb 15, 2010 12:50:48 PM org.apache.catalina.core.ApplicationContext log
+INFO: Destroying Spring FrameworkServlet 'mashbot-core'
+Feb 15, 2010 12:50:48 PM org.apache.catalina.core.ApplicationContext log
+INFO: Set web app root system property: 'webapp.root' = [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/]
+Feb 15, 2010 12:50:48 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing log4j from [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/WEB-INF/conf/log4j.properties]
+Feb 15, 2010 12:50:48 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/PropertyConfigurator
+	at org.springframework.util.Log4jConfigurer.initLogging(Log4jConfigurer.java:72)
+	at org.springframework.web.util.Log4jWebConfigurer.initLogging(Log4jWebConfigurer.java:151)
+	at org.springframework.web.util.Log4jConfigListener.contextInitialized(Log4jConfigListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.core.StandardContext.reload(StandardContext.java:3228)
+	at org.apache.catalina.manager.ManagerServlet.reload(ManagerServlet.java:918)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:360)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.PropertyConfigurator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 23 more
+Feb 15, 2010 12:50:48 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+Feb 15, 2010 12:50:49 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.context.ContextLoaderListener
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.core.StandardContext.reload(StandardContext.java:3228)
+	at org.apache.catalina.manager.ManagerServlet.reload(ManagerServlet.java:918)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:360)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 38 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 42 more
+Feb 15, 2010 12:50:50 PM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext
+Feb 15, 2010 12:50:50 PM org.apache.catalina.core.ApplicationContext log
+INFO: Shutting down log4j
+Feb 15, 2010 12:50:50 PM org.apache.catalina.core.StandardContext listenerStop
+SEVERE: Exception sending context destroyed event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/LogManager
+	at org.springframework.util.Log4jConfigurer.shutdownLogging(Log4jConfigurer.java:116)
+	at org.springframework.web.util.Log4jWebConfigurer.shutdownLogging(Log4jWebConfigurer.java:169)
+	at org.springframework.web.util.Log4jConfigListener.contextDestroyed(Log4jConfigListener.java:49)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4011)
+	at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4615)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4512)
+	at org.apache.catalina.core.StandardContext.reload(StandardContext.java:3228)
+	at org.apache.catalina.manager.ManagerServlet.reload(ManagerServlet.java:918)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:360)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.LogManager
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 24 more
+Feb 15, 2010 12:50:56 PM org.apache.catalina.core.ApplicationContext log
+INFO: Set web app root system property: 'webapp.root' = [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/]
+Feb 15, 2010 12:50:56 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing log4j from [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/WEB-INF/conf/log4j.properties]
+Feb 15, 2010 12:50:56 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/PropertyConfigurator
+	at org.springframework.util.Log4jConfigurer.initLogging(Log4jConfigurer.java:72)
+	at org.springframework.web.util.Log4jWebConfigurer.initLogging(Log4jWebConfigurer.java:151)
+	at org.springframework.web.util.Log4jConfigListener.contextInitialized(Log4jConfigListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1244)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1342)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.PropertyConfigurator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 14 more
+Feb 15, 2010 12:50:56 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+Feb 15, 2010 12:50:56 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.context.ContextLoaderListener
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1244)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1342)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 29 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 33 more
+Feb 15, 2010 12:50:57 PM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext
+Feb 15, 2010 12:50:57 PM org.apache.catalina.core.ApplicationContext log
+INFO: Shutting down log4j
+Feb 15, 2010 12:50:57 PM org.apache.catalina.core.StandardContext listenerStop
+SEVERE: Exception sending context destroyed event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/LogManager
+	at org.springframework.util.Log4jConfigurer.shutdownLogging(Log4jConfigurer.java:116)
+	at org.springframework.web.util.Log4jWebConfigurer.shutdownLogging(Log4jWebConfigurer.java:169)
+	at org.springframework.web.util.Log4jConfigListener.contextDestroyed(Log4jConfigListener.java:49)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4011)
+	at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4615)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4512)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1244)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1342)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.LogManager
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 15 more
+Feb 15, 2010 12:52:16 PM org.apache.catalina.core.ApplicationContext log
+INFO: Set web app root system property: 'webapp.root' = [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/]
+Feb 15, 2010 12:52:16 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing log4j from [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/WEB-INF/conf/log4j.properties]
+Feb 15, 2010 12:52:16 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/PropertyConfigurator
+	at org.springframework.util.Log4jConfigurer.initLogging(Log4jConfigurer.java:72)
+	at org.springframework.web.util.Log4jWebConfigurer.initLogging(Log4jWebConfigurer.java:151)
+	at org.springframework.web.util.Log4jConfigListener.contextInitialized(Log4jConfigListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.PropertyConfigurator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 22 more
+Feb 15, 2010 12:52:16 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+Feb 15, 2010 12:52:17 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.context.ContextLoaderListener
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 37 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 41 more
+Feb 15, 2010 12:52:17 PM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext
+Feb 15, 2010 12:52:17 PM org.apache.catalina.core.ApplicationContext log
+INFO: Shutting down log4j
+Feb 15, 2010 12:52:17 PM org.apache.catalina.core.StandardContext listenerStop
+SEVERE: Exception sending context destroyed event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/LogManager
+	at org.springframework.util.Log4jConfigurer.shutdownLogging(Log4jConfigurer.java:116)
+	at org.springframework.web.util.Log4jWebConfigurer.shutdownLogging(Log4jWebConfigurer.java:169)
+	at org.springframework.web.util.Log4jConfigListener.contextDestroyed(Log4jConfigListener.java:49)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4011)
+	at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4615)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4512)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.LogManager
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 23 more
+Feb 15, 2010 12:53:51 PM org.apache.catalina.core.ApplicationContext log
+INFO: Set web app root system property: 'webapp.root' = [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/]
+Feb 15, 2010 12:53:51 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing log4j from [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/WEB-INF/conf/log4j.properties]
+Feb 15, 2010 12:53:51 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/PropertyConfigurator
+	at org.springframework.util.Log4jConfigurer.initLogging(Log4jConfigurer.java:72)
+	at org.springframework.web.util.Log4jWebConfigurer.initLogging(Log4jWebConfigurer.java:151)
+	at org.springframework.web.util.Log4jConfigListener.contextInitialized(Log4jConfigListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.PropertyConfigurator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 22 more
+Feb 15, 2010 12:53:51 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+Feb 15, 2010 12:53:52 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.context.ContextLoaderListener
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 37 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 41 more
+Feb 15, 2010 12:53:52 PM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext
+Feb 15, 2010 12:53:52 PM org.apache.catalina.core.ApplicationContext log
+INFO: Shutting down log4j
+Feb 15, 2010 12:53:52 PM org.apache.catalina.core.StandardContext listenerStop
+SEVERE: Exception sending context destroyed event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/LogManager
+	at org.springframework.util.Log4jConfigurer.shutdownLogging(Log4jConfigurer.java:116)
+	at org.springframework.web.util.Log4jWebConfigurer.shutdownLogging(Log4jWebConfigurer.java:169)
+	at org.springframework.web.util.Log4jConfigListener.contextDestroyed(Log4jConfigListener.java:49)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4011)
+	at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4615)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4512)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.LogManager
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 23 more
+Feb 15, 2010 12:54:01 PM org.apache.catalina.core.ApplicationContext log
+INFO: Set web app root system property: 'webapp.root' = [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/]
+Feb 15, 2010 12:54:01 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing log4j from [/home/aeg37/classes/seniordesign/mashbot-core/bin/apache-tomcat-6.0.24/webapps/mashbot-core/WEB-INF/conf/log4j.properties]
+Feb 15, 2010 12:54:01 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/PropertyConfigurator
+	at org.springframework.util.Log4jConfigurer.initLogging(Log4jConfigurer.java:72)
+	at org.springframework.web.util.Log4jWebConfigurer.initLogging(Log4jWebConfigurer.java:151)
+	at org.springframework.web.util.Log4jConfigListener.contextInitialized(Log4jConfigListener.java:45)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.PropertyConfigurator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 22 more
+Feb 15, 2010 12:54:01 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring root WebApplicationContext
+Feb 15, 2010 12:54:02 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class org.springframework.web.context.ContextLoaderListener
+org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: Failed to import bean definitions from URL location [classpath:META-INF/cxf/cxf.xml]
+Offending resource: ServletContext resource [/WEB-INF/conf/applicationContext.xml]; nested exception is org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:68)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:85)
+	at org.springframework.beans.factory.parsing.ReaderContext.error(ReaderContext.java:76)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:193)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseDefaultElement(DefaultBeanDefinitionDocumentReader.java:148)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.parseBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:133)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.registerBeanDefinitions(DefaultBeanDefinitionDocumentReader.java:93)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.registerBeanDefinitions(XmlBeanDefinitionReader.java:493)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:390)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:334)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:149)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:124)
+	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:93)
+	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:130)
+	at org.springframework.context.support.AbstractApplicationContext.obtainFreshBeanFactory(AbstractApplicationContext.java:458)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:388)
+	at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:192)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:47)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [META-INF/cxf/cxf.xml]; nested exception is java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:143)
+	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:178)
+	at org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.importBeanDefinitionResource(DefaultBeanDefinitionDocumentReader.java:187)
+	... 37 more
+Caused by: java.io.FileNotFoundException: class path resource [META-INF/cxf/cxf.xml] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:141)
+	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:328)
+	... 41 more
+Feb 15, 2010 12:54:02 PM org.apache.catalina.core.ApplicationContext log
+INFO: Closing Spring root WebApplicationContext
+Feb 15, 2010 12:54:02 PM org.apache.catalina.core.ApplicationContext log
+INFO: Shutting down log4j
+Feb 15, 2010 12:54:02 PM org.apache.catalina.core.StandardContext listenerStop
+SEVERE: Exception sending context destroyed event to listener instance of class org.springframework.web.util.Log4jConfigListener
+java.lang.NoClassDefFoundError: org/apache/log4j/LogManager
+	at org.springframework.util.Log4jConfigurer.shutdownLogging(Log4jConfigurer.java:116)
+	at org.springframework.web.util.Log4jWebConfigurer.shutdownLogging(Log4jWebConfigurer.java:169)
+	at org.springframework.web.util.Log4jConfigListener.contextDestroyed(Log4jConfigListener.java:49)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4011)
+	at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4615)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4512)
+	at org.apache.catalina.manager.ManagerServlet.start(ManagerServlet.java:1251)
+	at org.apache.catalina.manager.ManagerServlet.doGet(ManagerServlet.java:377)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:558)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.LogManager
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1484)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1329)
+	at java.lang.ClassLoader.loadClassInternal(ClassLoader.java:320)
+	... 23 more
