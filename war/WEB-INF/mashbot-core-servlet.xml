@@ -9,5 +9,4 @@
 
   <bean name="/hello.htm" class="org.mashbot.server.web.HelloController"/>
 
-
 </beans>
