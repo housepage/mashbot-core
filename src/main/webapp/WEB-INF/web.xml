@@ -24,6 +24,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
-		<url-pattern>/webservices/*</url-pattern>
+		<url-pattern>/mashbot/*</url-pattern>
 	</servlet-mapping>
 </web-app>
