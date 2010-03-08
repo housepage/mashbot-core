@@ -7,12 +7,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 
-@Path("/v1/")
+@Path("/")
 public class MashbotServiceImpl implements MashbotService {
 	@GET
-	@Path("/echo")
+	@Path("/{operation}/{contentType}")
 	@Produces({"text/html"})
-	public String echo(){
-		return "Hello";
-	} 
+	public String dataRequest(@PathParam("operation") String operation, @PathParam("contentType") String contentType){
+		return operation + " " + contentType;
+	}	
 }

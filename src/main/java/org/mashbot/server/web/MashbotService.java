@@ -1,5 +1,6 @@
 package org.mashbot.server.web;
 
 public interface MashbotService {
-	public String echo();
+	
+	public String dataRequest(String operation, String contentType);
 }
