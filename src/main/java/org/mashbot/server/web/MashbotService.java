@@ -2,5 +2,5 @@ package org.mashbot.server.web;
 
 public interface MashbotService {
 	
-	public String dataRequest(String operation, String contentType);
+	public String dataRequest(String operation, String contentType, String actor);
 }

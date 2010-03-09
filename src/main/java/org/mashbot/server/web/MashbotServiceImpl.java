@@ -12,7 +12,7 @@ public class MashbotServiceImpl implements MashbotService {
 	@GET
 	@Path("/{operation}/{contentType}")
 	@Produces({"text/html"})
-	public String dataRequest(@PathParam("operation") String operation, @PathParam("contentType") String contentType){
-		return operation + " " + contentType;
+	public String dataRequest(@PathParam("operation") String operation, @PathParam("contentType") String contentType,@QueryParam("actor") String actor){
+		return actor + " " + operation + " " + contentType;
 	}	
 }
