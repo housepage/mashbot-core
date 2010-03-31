@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+     http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- Load CXF modules from cxf.jar -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- Enable message logging using the CXF logging feature -->
+	<cxf:bus>
+		<cxf:features>
+			<cxf:logging />
+		</cxf:features>
+	</cxf:bus>
+	
+	<util:list id="HandlerChain" value-type="org.mashbot.server.handlers.ChainableHandler">
+		<bean class="org.mashbot.server.handlers.GreetingHandler"/>
+		<bean class="org.mashbot.server.handlers.TheStoryHandler"/>
+	</util:list>
+
+	<!-- The service bean -->
+	<bean id="mashbotService"
+		class="org.mashbot.server.web.MashbotServiceImpl">
+		<constructor-arg><ref bean="HandlerChain" /></constructor-arg>
+	</bean>
+
+	<!-- Service endpoint -->
+	<!-- See http://incubator.apache.org/cxf/faq.html regarding CXF + Spring AOP -->
+	<jaxrs:server id="jaxrsRestService" address="/rest/">
+		<jaxrs:serviceBeans>
+			<ref bean="mashbotService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:features>
+			<cxf:logging/>
+		</jaxrs:features>
+	</jaxrs:server>
+
+
+
+</beans>
