@@ -12,7 +12,7 @@ public class MObject extends GenericFieldStorage {
 	}
 
 	public enum Field{
-		NULL("null");
+		NULL("null"), USERNAME("username"), PASSWORD("password");
 		Field(String label){
 			this.label = label;
 		}
@@ -21,5 +21,9 @@ public class MObject extends GenericFieldStorage {
 	
 	public String toString(){
 		return "Yum";
+	}
+
+	public void putField(Field username, String servicename, String string) {
+		
 	}
 }

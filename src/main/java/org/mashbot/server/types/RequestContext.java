@@ -7,8 +7,7 @@ public class RequestContext extends GenericFieldStorage {
 	Map<String,Object> context;
 	
 	public enum Field{
-		OPERATION("operation"),
-		CONTENTTYPE("contentType");
+		NULL("null");
 		Field(String label){
 			this.label = label;
 		}
