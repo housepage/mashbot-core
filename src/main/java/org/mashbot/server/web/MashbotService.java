@@ -1,6 +1,8 @@
 package org.mashbot.server.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,10 +36,10 @@ public class MashbotService {
 	
 	@GET
 	@Produces({"application/json"})
-	public MObject pullRequest(@PathParam("contentType") String contentType)
+	public Map<String,String> pullRequest(@PathParam("contentType") String contentType)
 	{
-		MObject m = new MObject();
-		m.putField(MObject.Field.USERNAME, "hello");
+		Map<String,String> m = new HashMap<String,String>();
+		m.put(MObject.Field.USERNAME.toString(), "hello");
 		return m;
 	}	
 	

@@ -76,6 +76,9 @@
 		<jaxrs:features>
 			<cxf:logging/>	
 		</jaxrs:features>
+		<jaxrs:providers>
+			<ref bean="" />
+		</jaxrs:providers>
 	</jaxrs:server>
 	
 </beans>
