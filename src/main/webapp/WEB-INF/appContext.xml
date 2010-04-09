@@ -34,6 +34,37 @@
 		class="org.mashbot.server.web.MashbotServiceImpl">
 		<constructor-arg><ref bean="HandlerChain" /></constructor-arg>
 	</bean>
+	
+	<bean id="pluginManager"
+		class="org.mashbot.server.plugins.PluginManager">
+		<property name="plugins">
+			<map key-type="String" value-type="java.util.Map">
+				<entry key="status">
+					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+						<entry key="push"></entry>
+						<entry key="pull"></entry>
+						<entry key="update"></entry>
+						<entry key="delete"></entry>
+					</map>
+				</entry>
+				<entry key="Blog">
+					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+						
+					</map>
+				</entry>
+				<entry key="Picture">
+					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+						
+					</map>
+				</entry>
+				<entry key="Video">
+					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+						
+					</map>
+				</entry>
+			</map>
+		</property>
+	</bean>
 
 	<!-- Service endpoint -->
 	<!-- See http://incubator.apache.org/cxf/faq.html regarding CXF + Spring AOP -->
