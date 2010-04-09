@@ -11,6 +11,8 @@ import javax.ws.rs.Produces;
 
 import org.mashbot.server.handlers.ChainableHandler;
 import org.mashbot.server.handlers.MashbotHandlerChain;
+import org.mashbot.server.types.Request;
+import org.mashbot.server.types.RequestContext;
 
 @Path("/")
 public class MashbotServiceImpl implements MashbotService {
@@ -24,7 +26,11 @@ public class MashbotServiceImpl implements MashbotService {
 	@Path("/{operation}/{contentType}")
 	@Produces({"text/html"})
 	public String dataRequest(@PathParam("operation") String operation, @PathParam("contentType") String contentType,@QueryParam("actor") String actor){
-		this.handlerChain.enact(null,null,null);
+		Request request = new Request();
+		request.putField(Request.Field.OPERATION, operation);
+		request.putField(Request.Field.CONTENTTYPE, contentType);
+		
+		this.handlerChain.enact(request,null,null);
 		return actor + " " + operation + " " + contentType;
 	}	
 }

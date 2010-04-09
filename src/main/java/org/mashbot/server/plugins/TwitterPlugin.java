@@ -4,10 +4,13 @@ import java.util.List;
 import twitter4j.*;
 
 import org.mashbot.server.types.MObject;
+import org.mashbot.server.types.MObject.Field;
 
 public class TwitterPlugin extends Plugin {
-    public MObject run(String operation, String contentType, MObject content) {
-        if ( operation == "post" && contentType == "status"){
+    private static final String serviceName = "twitter";
+
+	public MObject run(String operation, String contentType, MObject content) {
+        if ( operation == "push" && contentType == "status"){
             postStatus(content);
         }
         return null;
@@ -30,11 +33,11 @@ public class TwitterPlugin extends Plugin {
     }
 
     private void postStatus(MObject object){
-        String twitterID = (String) object.getField("user");
-        String twitterPassword = (String) object.getField("password");
+        String twitterID = (String) object.getField(MObject.Field.USERNAME+"."+serviceName);
+        String twitterPassword = (String) object.getField(MObject.Field.PASSWORD+"."+serviceName);
         String latestStatus = (String)object.getField("status");
 
-        Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
+        Twitter twitter = factory.getInstance(twitterID,twitterPassword);
         Status status;
 		try {
 			status = twitter.updateStatus(latestStatus);
@@ -54,11 +57,21 @@ public class TwitterPlugin extends Plugin {
 	public static void main(String[] args){
 		MObject object = new MObject("");
 		object.putField("status", "Test!");
-		object.putField("user", "MashBot");
-		object.putField("password", "w1sLm2");
+		object.putField(MObject.Field.USERNAME+"."+serviceName, "MashBot");
+		object.putField(MObject.Field.PASSWORD+"."+serviceName, "w1sLm2");
 		TwitterPlugin plugin = new TwitterPlugin();
+		plugin.setFactory(new TwitterFactory());
 		plugin.run("post", "status", object);
-		
+	}
+	
+	TwitterFactory factory;
+
+	public TwitterFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(TwitterFactory factory) {
+		this.factory = factory;
 	}
 }
 	
