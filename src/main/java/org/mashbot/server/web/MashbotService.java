@@ -15,10 +15,18 @@ import javax.ws.rs.Produces;
 import org.mashbot.server.handlers.ChainableHandler;
 import org.mashbot.server.handlers.MashbotHandlerChain;
 import org.mashbot.server.types.MObject;
+import org.mashbot.server.types.Request;
 
 @Path("{contentType}")
 public class MashbotService {
 	private MashbotHandlerChain handlerChain;
+	
+	public enum Operation{
+		PULL, 
+		PUSH, 
+		EDIT,
+		DELETE;
+	}
 
 	public MashbotService(List<ChainableHandler> handlers){
 		this.handlerChain = new MashbotHandlerChain(handlers);
@@ -26,9 +34,11 @@ public class MashbotService {
 	
 	@GET
 	@Produces({"application/json"})
-	public MObject pullRequest(@PathParam("contentType") String contentType){
-		this.handlerChain.enact(null,null,null);
-		return new MObject();
+	public MObject pullRequest(@PathParam("contentType") String contentType)
+	{
+		MObject m = new MObject();
+		m.putField(MObject.Field.USERNAME, "hello");
+		return m;
 	}	
 	
 	@POST
@@ -36,7 +46,7 @@ public class MashbotService {
 	@Produces({"application/json"})
 	public MObject pushRequest(@PathParam("contentType") String contentType, MObject incoming)
 	{
-		return incoming;	
+		return new MObject();
 	}
 	
 	@PUT
@@ -44,7 +54,7 @@ public class MashbotService {
 	@Produces({"application/json"})
 	public MObject editRequest(@PathParam("contentType") String contentType, MObject incoming)
 	{
-		return incoming;	
+		return new MObject();	
 	}
 	
 	@DELETE

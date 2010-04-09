@@ -39,7 +39,7 @@
 		class="org.mashbot.server.plugins.PluginManager">
 		<property name="plugins">
 			<map key-type="String" value-type="java.util.Map">
-				<entry key="status">
+				<!--  <entry key="status">
 					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
 						<entry key="push"></entry>
 						<entry key="pull"></entry>
@@ -61,7 +61,7 @@
 					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
 						
 					</map>
-				</entry>
+				</entry> -->
 			</map>
 		</property>
 	</bean>
@@ -71,13 +71,11 @@
 	<jaxrs:server id="jaxrsRestService" address="/rest/">
 		<jaxrs:serviceBeans>
 			<ref bean="mashbotService" />
-			<ref bean="authenticationService" />
+			<!--  <ref bean="authenticationService" /> -->
 		</jaxrs:serviceBeans>
 		<jaxrs:features>
-			<cxf:logging/>
+			<cxf:logging/>	
 		</jaxrs:features>
 	</jaxrs:server>
-
-
-
+	
 </beans>

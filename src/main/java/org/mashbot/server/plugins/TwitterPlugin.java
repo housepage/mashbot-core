@@ -36,6 +36,7 @@ public class TwitterPlugin extends Plugin {
         String twitterID = (String) object.getField(MObject.Field.USERNAME+"."+serviceName);
         String twitterPassword = (String) object.getField(MObject.Field.PASSWORD+"."+serviceName);
         String latestStatus = (String)object.getField("status");
+        System.out.println(twitterID + twitterPassword);
 
         Twitter twitter = factory.getInstance(twitterID,twitterPassword);
         Status status;
@@ -43,7 +44,6 @@ public class TwitterPlugin extends Plugin {
 			status = twitter.updateStatus(latestStatus);
 			System.out.println("Successfully updated the status to [" + status.getText() + "].");
 		} catch (TwitterException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
@@ -55,13 +55,13 @@ public class TwitterPlugin extends Plugin {
 	}
 	
 	public static void main(String[] args){
-		MObject object = new MObject("");
-		object.putField("status", "Test!");
+		MObject object = new MObject();
+		object.putField("status", "Wonderbar!");
 		object.putField(MObject.Field.USERNAME+"."+serviceName, "MashBot");
 		object.putField(MObject.Field.PASSWORD+"."+serviceName, "w1sLm2");
 		TwitterPlugin plugin = new TwitterPlugin();
 		plugin.setFactory(new TwitterFactory());
-		plugin.run("post", "status", object);
+		plugin.run("push", "status", object);
 	}
 	
 	TwitterFactory factory;
