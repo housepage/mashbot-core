@@ -31,7 +31,7 @@
 
 	<!-- The service bean -->
 	<bean id="mashbotService"
-		class="org.mashbot.server.web.MashbotServiceImpl">
+		class="org.mashbot.server.web.MashbotService">
 		<constructor-arg><ref bean="HandlerChain" /></constructor-arg>
 	</bean>
 
@@ -40,6 +40,7 @@
 	<jaxrs:server id="jaxrsRestService" address="/rest/">
 		<jaxrs:serviceBeans>
 			<ref bean="mashbotService" />
+			<ref bean="authenticationService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:features>
 			<cxf:logging/>

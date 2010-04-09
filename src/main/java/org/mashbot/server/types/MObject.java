@@ -6,11 +6,11 @@ import org.apache.cxf.jaxrs.utils.HttpUtils;
 
 @XmlRootElement
 public class MObject extends GenericFieldStorage {
-	public MObject(String in){
-		super();
-		System.out.println("Here!:" + HttpUtils.pathDecode(in));
-	}
 		
+	public MObject() {
+		super();
+	}
+
 	public enum Field{
 		NULL("null");
 		Field(String label){
