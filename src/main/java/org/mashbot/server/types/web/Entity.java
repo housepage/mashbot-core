@@ -8,11 +8,13 @@ public abstract class Entity {
 
   /* Associations */
   public abstract Assoc[] getAssoc();
+  public abstract boolean hasAssoc(Assoc assoc);
 
   /* Properties */
   public abstract Entity[] getProperties();
+  public abstract Entity getProperty(Ident id);
 
-  /* Primtive */
+  /* Primitive */
   public abstract boolean hasPrimitiveValue();
   public abstract PValue getPrimitiveValue();
 }
