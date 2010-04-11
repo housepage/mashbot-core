@@ -13,6 +13,11 @@
 	      	<id>jboss</id>
 	      	<url>http://repository.jboss.org/maven2</url>
 	   	</repository>
+	   	<repository>
+	   		<id>Google OAuth</id>
+	   		<url>http://oauth.googlecode.com/svn/code/maven</url>
+	   	</repository>
+	   	
 		<repository>
 				<id>com.springsource.repository.bundles.release</id>
 				<name>EBR Spring Release Repository</name>
@@ -48,7 +53,7 @@
 	</repositories>
 	<properties>
 		<jersey.version>1.1.5.1</jersey.version>
-		<cxf.version>2.2.2</cxf.version>
+		<cxf.version>2.2.7</cxf.version>
 		<spring.version>2.5.6</spring.version>
 		<org.springframework.version>3.0.0.RELEASE</org.springframework.version>
 	</properties>
@@ -56,7 +61,7 @@
 		<dependency>
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
-           <version>1.2.GA</version>
+           <version>1.1.GA</version>
            <type>pom</type>
            <scope>import</scope>
        	</dependency>
