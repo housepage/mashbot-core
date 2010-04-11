@@ -1,13 +1,16 @@
 package org.mashbot.server.types;
 
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.mashbot.server.plugins.Plugin;
 
 public class RequestContext extends GenericFieldStorage {
 	Map<String,Object> context;
 	
 	public enum Field{
-		NULL("null");
+		PLUGINS("plugins");
 		Field(String label){
 			this.label = label;
 		}
@@ -17,4 +20,5 @@ public class RequestContext extends GenericFieldStorage {
 	public RequestContext(){
 		super();
 	}
+	
 }

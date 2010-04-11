@@ -5,7 +5,7 @@ import org.mashbot.server.types.Request;
 import org.mashbot.server.types.RequestContext;
 import org.mashbot.server.types.Response;
 
-public class ChainableHandler implements Handler {
+public abstract class ChainableHandler implements Handler {
 	public void enact(Request in,Response out,RequestContext context){
 		this.preRequest(in, out, context);
 		if(next != null){
@@ -14,14 +14,10 @@ public class ChainableHandler implements Handler {
 		this.postRequest(in, out, context);
 	}
 
-	public void postRequest(Request in, Response out, RequestContext context) {
-		throw new NotImplementedException();		
-	}
+	public abstract void preRequest(Request in, Response out, RequestContext context);
 
-	public void preRequest(Request in, Response out, RequestContext context) {
-		throw new NotImplementedException();
-	}
-	
+	public abstract void postRequest(Request in, Response out, RequestContext context);
+
 	public void setNext(ChainableHandler next){
 		this.next = next;
 	}
