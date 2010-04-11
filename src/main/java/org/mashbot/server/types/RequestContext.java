@@ -21,4 +21,11 @@ public class RequestContext extends GenericFieldStorage {
 		super();
 	}
 	
+	public Object getField(Field key){
+		return context.get(key);
+	}
+	
+	public void putField(Field key,Object value){
+		context.put(key.toString(), value);
+	}
 }

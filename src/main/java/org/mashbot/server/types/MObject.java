@@ -3,27 +3,29 @@ package org.mashbot.server.types;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
+import org.mashbot.server.types.Request.Field;
 
-@XmlRootElement
+@XmlRootElement(name="Mashbot",namespace="http://mashbot.heroku.com/mashbot")
 public class MObject extends GenericFieldStorage {
-	public MObject(String in){
-		super();
-		System.out.println("Here!:" + HttpUtils.pathDecode(in));
-	}
 		
+	public MObject() {
+		super();
+	}
+
 	public enum Field{
-		NULL("null"), USERNAME("username"), PASSWORD("password");
+		USERNAME("username"), 
+		PASSWORD("password");
 		Field(String label){
 			this.label = label;
 		}
 		private String label;
 	}
 	
-	public String toString(){
-		return "Yum";
+	public Object getField(Field key){
+		return this.getField(key.toString());
 	}
-
-	public void putField(Field username, String servicename, String string) {
-		
+	
+	public void putField(Field key,Object value){
+		this.putField(key.toString(), value);
 	}
 }

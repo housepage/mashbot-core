@@ -16,6 +16,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
 
 	<!-- Enable message logging using the CXF logging feature -->
 	<cxf:bus>
@@ -24,6 +25,16 @@
 		</cxf:features>
 	</cxf:bus>
 	
+	<bean id="securityInterceptor" class="org.mashbot.server.auth.BasicAuthAuthorizationInterceptor">
+		<property name="users">
+			<map>
+				<entry key="housepage" value="ush0rpag"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="storedCredentials" class="java.util.HashMap" scope="singleton" />
+	
 	<util:list id="HandlerChain" value-type="org.mashbot.server.handlers.ChainableHandler">
 		<bean class="org.mashbot.server.handlers.GreetingHandler"/>
 		<bean class="org.mashbot.server.handlers.TheStoryHandler"/>
@@ -31,15 +42,22 @@
 
 	<!-- The service bean -->
 	<bean id="mashbotService"
-		class="org.mashbot.server.web.MashbotServiceImpl">
+		class="org.mashbot.server.web.MashbotService">
 		<constructor-arg><ref bean="HandlerChain" /></constructor-arg>
 	</bean>
+
+	<bean id="mashbotAuthenticationService"
+		class="org.mashbot.server.web.MashbotAuthenticationService">
+		
+	</bean>
+
+		
 	
 	<bean id="pluginManager"
 		class="org.mashbot.server.plugins.PluginManager">
 		<property name="plugins">
 			<map key-type="String" value-type="java.util.Map">
-				<entry key="status">
+				<!--  <entry key="status">
 					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
 						<entry key="push"></entry>
 						<entry key="pull"></entry>
@@ -61,22 +79,48 @@
 					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
 						
 					</map>
-				</entry>
+				</entry> -->
 			</map>
 		</property>
 	</bean>
+	
+	<!-- <bean id="myPasswordCallback"
+      		class="com.mycompany.webservice.ServerPasswordCallback"/> -->
 
 	<!-- Service endpoint -->
 	<!-- See http://incubator.apache.org/cxf/faq.html regarding CXF + Spring AOP -->
 	<jaxrs:server id="jaxrsRestService" address="/rest/">
 		<jaxrs:serviceBeans>
 			<ref bean="mashbotService" />
+			<!--  <ref bean="authenticationService" /> -->
 		</jaxrs:serviceBeans>
 		<jaxrs:features>
-			<cxf:logging/>
+			<cxf:logging/>	
 		</jaxrs:features>
+		<jaxrs:providers>
+			<ref bean="jaxbProvider"/>
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>		
+		
+		<jaxrs:inInterceptors>
+			<!-- <bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor"/>
+	      	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+	        	<constructor-arg>
+	            	<map>
+	               		<entry key="action" value="UsernameToken"/>
+	               		<entry key="passwordType" value="PasswordDigest"/>
+	               		<entry key="signaturePropFile" value="..."/>
+						<entry key="passwordCallbackRef">
+							<ref bean="myPasswordCallback"/>
+		               	</entry>
+	            </map>
+	         </constructor-arg>
+	      </bean> -->
+			<ref bean="securityInterceptor" />
+		</jaxrs:inInterceptors>
 	</jaxrs:server>
-
-
-
+	
+	<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider" />
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.JSONProvider" />
+	
 </beans>
