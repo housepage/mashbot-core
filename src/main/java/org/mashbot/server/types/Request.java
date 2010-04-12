@@ -3,7 +3,8 @@ package org.mashbot.server.types;
 public class Request extends GenericFieldStorage {
 	public enum Field {
 		OPERATION("operation"),
-		CONTENTTYPE("contentType");
+		CONTENTTYPE("contentType"), 
+		MOBJECT("mobject");
 		Field(String label){
 			this.label = label;
 		}
@@ -20,6 +21,14 @@ public class Request extends GenericFieldStorage {
 	
 	public void putField(Field key,Object value){
 		context.put(key.toString(), value);
+	}
+
+	public MObject getMObject() {
+		return (MObject) getField(Field.MOBJECT);
+	}
+	
+	public void setMObject(MObject incoming) {
+		putField(Field.MOBJECT, incoming);
 	}
 }
 

@@ -10,34 +10,36 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+
+import org.mashbot.server.types.ServiceCredential;
 
 @Path("auth")
 public class MashbotAuthenticationService {
 	@GET
 	@Produces("application/json")
-	public Object listAuthenticationInformation(){
-		return new HashMap<String,String>();
+	public String listAuthenticationInformation(@QueryParam("token") String token){
+		return "";
 	}
 	
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Map<String,String> getAuthenticationToken(){
-		return new HashMap<String,String>();
+	public Map<String,ServiceCredential> getAuthenticationToken(Map<String,ServiceCredential> credentials){
+		return new HashMap<String,ServiceCredential>();
 	}
 	
 	@PUT
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Map<String,String> addAuthenticationInformation(){
-		return new HashMap<String,String>();
+	public Map<String,ServiceCredential> addAuthenticationInformation(@QueryParam("token") String token, Map<String,ServiceCredential> credentials){
+		return new HashMap<String,ServiceCredential>();
 	}
 	
 	@DELETE
 	@Produces("application/json")
-	public Map<String,String> invalidateAuthenticationToken(){
-		return new HashMap<String,String>();
+	public boolean invalidateAuthenticationToken(){
+		return true;
 	}
-	
-	private Map<String,>
 }
