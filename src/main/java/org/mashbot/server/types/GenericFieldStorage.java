@@ -6,10 +6,9 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public abstract class GenericFieldStorage {
 
-	Map<String,Object> context;
+	public Map<String,Object> context;
 	
 	public GenericFieldStorage(){
 		context = new HashMap<String,Object>();

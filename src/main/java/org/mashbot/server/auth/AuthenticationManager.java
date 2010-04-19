@@ -1,41 +1,123 @@
 package org.mashbot.server.auth;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.mashbot.server.types.ServiceCredential;
 import org.mashbot.server.types.UserAuthenticationInformation;
-import org.springframework.transaction.annotation.Transactional;
 
-import sun.misc.Cleaner;
-
+/**
+ * This class is a manager for cached third-party service credentials. 
+ * Upon receiving a set of credentials, it issues a UUID to uniquely
+ * identify that set. Using this id, the credentials may be updated, 
+ * listed, renewed or invalidated at any time up until they expired
+ * at which point they are removed from the system.
+ * 
+ * @author Andrew Gall
+ *
+ */
 public class AuthenticationManager {
+	private OldAuthenticationCleanupThread cleaner;
+	private int cleanupInterval;
+	private Map<UUID,UserAuthenticationInformation> tokenCredentials;
+	private Map<String,List<UUID>> userToUUID;
+	private Lock mapLock;	
+	
+	/**
+	 * Initializes the authentication manager with an empty map and the default
+	 * interval in seconds at which each old key cleanup should occur.  
+	 */
 	public AuthenticationManager(){
-		new AuthenticationManager(new ConcurrentHashMap<UUID, UserAuthenticationInformation>());
+		super();
+		//new AuthenticationManager(120);
+		this.cleanupInterval = 120;
+		this.tokenCredentials = new HashMap<UUID,UserAuthenticationInformation>();
+		this.userToUUID = new HashMap<String,List<UUID>>();
+		this.mapLock = new ReentrantLock();
+		//this.cleaner = new OldAuthenticationCleanupThread(this.cleanupInterval);
 	}
 	
-	public AuthenticationManager(
-			Map<UUID, UserAuthenticationInformation> userCredentials) {
+	/**
+	 * Allows the user to specify the interval at which each old key cleanup should occur.
+	 * @param cleanupInterval - The interval at which cleanup should occur in seconds
+	 */
+	public AuthenticationManager(int cleanupInterval){
 		super();
-		this.tokenCredentials = userCredentials;
+		this.cleanupInterval = cleanupInterval;
+		this.tokenCredentials = new HashMap<UUID,UserAuthenticationInformation>();
+		this.userToUUID = new HashMap<String,List<UUID>>();
 		this.mapLock = new ReentrantLock();
+		//this.cleaner = new OldAuthenticationCleanupThread(this.cleanupInterval);
+	}
+	
+	/**
+	 * A completed specified constructor allowing the user to define all fields of the {@link AuthenticationManager}
+	 * @param cleanupInterval - The interval at which cleanup should occur in seconds
+	 * @param userCredentials - An initial map containing credentials which are each mapped to an UUID
+	 * @param userToUUID - An initial map containing lists of UUID's mapped to user names
+	 */
+	public AuthenticationManager( int cleanupInterval,
+			Map<UUID, UserAuthenticationInformation> tokenCredentials, Map<String,List<UUID>> userToUUID ) {
+		super();
+		this.cleanupInterval = cleanupInterval;
+		this.tokenCredentials = tokenCredentials;
+		this.userToUUID = userToUUID;
+		this.mapLock = new ReentrantLock();
+		//this.cleaner = new OldAuthenticationCleanupThread(this.cleanupInterval);
+	}
+	
+	/**
+	 * A thread class which runs the cleanup method periodically
+	 * @author aeg37
+	 *
+	 */
+	private class OldAuthenticationCleanupThread extends Thread {
+		private int cleanupInterval;
+
+		protected OldAuthenticationCleanupThread(int cleanupInterval){
+			this.cleanupInterval = cleanupInterval;
+		}
+		
+		public void run(){
+			while(true){
+				Date start = new Date();
+				cleanupOldAuthenticationInfo();
+				Date end = new Date();
+				try {
+					Thread.sleep((cleanupInterval*1000)-(end.getTime()-start.getTime()) > 10000 ? 10000 : (cleanupInterval*1000)-(end.getTime()-start.getTime()) );
+				} catch (InterruptedException e) {
+					
+				}
+			}
+		}
+		
+		private Lock timeLock;
 	}
 
+	/**
+	 * Calling this method allows you to provide a user name and a set of credentials
+	 * and be returned a unique identifier which in the future, until expiration of these
+	 * credentials can be used to reference those credentials
+	 * 
+	 * @param username - the user name associated with the credentials
+	 * @param credentials - a map containing credentials keyed into such by service name
+	 * @return a UUID which uniquely identifies the credentials provided 
+	 */
 	public String getAuthenticationToken(String username, Map<String,ServiceCredential> credentials){
 		UUID id = UUID.randomUUID();
 	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,credentials);
-		
+		System.out.println("mapLock: "+this.mapLock);
 	    try{
-	    	mapLock.lock();
+	    	this.mapLock.lock();
 	    	
 			this.tokenCredentials.put(id, userauth);
 			
@@ -48,21 +130,29 @@ public class AuthenticationManager {
 				this.userToUUID.put(username, ids);
 			}
 	    } finally {
-	    	mapLock.unlock();
+	    	this.mapLock.unlock();
 	    }
 		return id.toString();
 	}
 	
-	public Map<String,ServiceCredential> updateAuthenticationCredentials(String token, Map<String,ServiceCredential> credentials){
-		UUID id = UUID.fromString(token);
+	/**
+	 * Allows the credentials associated with a token to be updated and added to. 
+	 * The new credentials passed in are assumed to better and as such any collisions 
+	 * in new and old result in the new overriding the old.
+	 * @param token - A UUID which uniquely identifies a set of credential data
+	 * @param credentials - A map containing credentials keyed into such by service name
+	 * to be added to the existing set of credentials.  
+	 * @return the current set of credentials stored after the update operation
+	 */
+	public Map<String,ServiceCredential> updateAuthenticationCredentials(UUID token, Map<String,ServiceCredential> credentials){
 		
 		Map<String,ServiceCredential> currentCreds = new HashMap<String,ServiceCredential>();
 		
 		try{
 			mapLock.lock();
 			
-			if(!removeIfExpired(id)){
-				UserAuthenticationInformation currentTokenInfo = tokenCredentials.get(id);
+			if(!removeIfExpired(token)){
+				UserAuthenticationInformation currentTokenInfo = tokenCredentials.get(token);
 				currentCreds = currentTokenInfo.getCredentials();
 				
 				for(String service : credentials.keySet()){
@@ -76,66 +166,119 @@ public class AuthenticationManager {
 		return currentCreds;
 	}
 	
-	public boolean invalidateAuthenticationToken(String token){
-		UUID id = UUID.fromString(token);
+	private void removeToken(UUID token) {
+		if(tokenCredentials.containsKey(token)){
+			UserAuthenticationInformation removed = tokenCredentials.remove(token);
+			userToUUID.get(removed.getUserName()).remove(token);
+			if(userToUUID.get(removed.getUserName()).size() == 0){
+				userToUUID.remove(removed.getUserName());
+			}
+		}
+	}
+	
+	/**
+	 * Invalidates the user credential information associated with the token provided
+	 * 
+	 * @param token - A UUID which uniquely identifies a set of credential data
+	 * @return a boolean which represents the presence or absence of the credentials
+	 * to be expired when they are removed
+	 */
+	public boolean invalidateAuthenticationToken(UUID token){
 		try {
-			mapLock.lock();		
-			tokenCredentials.remove(id);
+			this.mapLock.lock();		
+			removeToken(token);
+		} finally {
+			this.mapLock.unlock();
+		}
+		return true;
+	}
+	
+	public boolean invalidateAllUserAuthenticationToken(String username){
+		try {
+			mapLock.lock();
+			if(userToUUID.containsKey(username)){
+				for(UUID token : userToUUID.get(username)){
+					removeToken(token);
+				}
+			}
 		} finally {
 			mapLock.unlock();
 		}
 		return true;
 	}
 	
-	public Map<String,ServiceCredential> listAuthenticationInformation(String token){
-		UUID id = UUID.fromString(token); 
-		if(!removeIfExpired(id)){
-			return tokenCredentials.get(id).getCredentials();
+	/**
+	 * Renews the lease of the user credential information associated with the token provided
+	 * 
+	 * @param token - A UUID which uniquely identifies a set of credential data
+	 * @return the success or failure of the renewal. Will be false if token does
+	 * not exist or has expired.
+	 */
+	public boolean renewAuthenticationTokenLease(UUID token){
+		try {
+			this.mapLock.lock();		
+			tokenCredentials.get(token).renewLease();
+		} finally {
+			this.mapLock.unlock();
+		}
+		return true;
+	}
+	
+	/**
+	 * Lists all user credential information associated with the token provided
+	 * 
+	 * @param token - A UUID which uniquely identifies a set of credential data
+	 * @return a list of all credentials associated with the provided token
+	 */
+	public Map<String,ServiceCredential> listAuthenticationInformation(UUID token){
+		if(!removeIfExpired(token)){
+			return tokenCredentials.get(token).getCredentials();
 		} else {
 			return new HashMap<String,ServiceCredential>();
 		}
 	}
 	
-	private boolean removeIfExpired(UUID id){
-		UserAuthenticationInformation currentTokenInfo = tokenCredentials.get(id);
+	/**
+	 * Removes user authentication if it is expired
+	 * @param token - A UUID which uniquely identifies a set of credential data
+	 * @return whether the user authentication was expired or not
+	 */
+	private boolean removeIfExpired(UUID token){
+		UserAuthenticationInformation currentTokenInfo = tokenCredentials.get(token);
+		System.out.println("keySet:"+tokenCredentials.keySet());
+		System.out.println(currentTokenInfo);
 		Date now = new Date();
-		if(currentTokenInfo.getExpiration().before(now)){
-			tokenCredentials.remove(id);
+		if(currentTokenInfo != null && currentTokenInfo.getExpiration().before(now)){
+			removeToken(token);
 			return true;
 		} 
 		return false;
 	}
 	
+	/**
+	 * Cleans up 10 credentials from the cache
+	 */
 	public void cleanupOldAuthenticationInfo(){
-		cleanupOldAuthenticationInfo(10);
+		cleanupOldAuthenticationInfo(Integer.MAX_VALUE);
 	}
 	
+	/**
+	 * Examines a specified number of random elements from the cache to
+ 	 * determine if they should be expired
+	 * @param elementsToCheck - number of elements to be examined
+	 */
 	public void cleanupOldAuthenticationInfo(int elementsToCheck){
 		try{
-			mapLock.lock();
+			this.mapLock.lock();
 			Date now = new Date();
 			
-			List<UUID> ids;
+			Collection<UUID> ids;
 			
-			if(tokenCredentials.keySet().size() > elementsToCheck){
-				Random rand = new Random(System.currentTimeMillis());
-				ids = new ArrayList(elementsToCheck);
-				for(int i = 0; i < elementsToCheck; i++){
-					ids.add()
-				}
-			}
-			for(UUID id : tokenCredentials.keySet()){
-				if(tokenCredentials.get(id).getExpiration().before(now)){
-					tokenCredentials.remove(id);
-				}
-			}
+			for(Entry<UUID, UserAuthenticationInformation> id: tokenCredentials.entrySet()){
+				removeIfExpired(id.getKey());
+			} 
 		} finally {
-			mapLock.unlock();
+			this.mapLock.unlock();
 		}
 	}
-	
-	
-	Map<UUID,UserAuthenticationInformation> tokenCredentials;
-	Map<String,List<UUID>> userToUUID;
-	Lock mapLock;
 }

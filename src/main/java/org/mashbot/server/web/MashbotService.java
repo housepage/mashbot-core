@@ -17,7 +17,7 @@ import org.mashbot.server.handlers.MashbotHandlerChain;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.Request;
 
-@Path("{contentType}")
+@Path("data/{contentType}")
 public class MashbotService {
 	private MashbotHandlerChain handlerChain;
 	
@@ -46,6 +46,7 @@ public class MashbotService {
 	@Produces({"application/json"})
 	public MObject pushRequest(@PathParam("contentType") String contentType, MObject incoming)
 	{
+		System.out.println("Goodbye");
 		return new MObject();
 	}
 	

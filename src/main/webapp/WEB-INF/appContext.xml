@@ -17,6 +17,8 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
 
 	<!-- Enable message logging using the CXF logging feature -->
 	<cxf:bus>
@@ -46,13 +48,14 @@
 		<constructor-arg><ref bean="HandlerChain" /></constructor-arg>
 	</bean>
 
-	<bean id="mashbotAuthenticationService"
+	<bean id="authenticationService"
 		class="org.mashbot.server.web.MashbotAuthenticationService">
-		
+		<property name="authman"><ref bean="authenticationManager"/></property>
 	</bean>
-
-		
 	
+	<bean id="authenticationManager"
+		class="org.mashbot.server.auth.AuthenticationManager" scope="singleton" />
+		
 	<bean id="pluginManager"
 		class="org.mashbot.server.plugins.PluginManager">
 		<property name="plugins">
@@ -91,8 +94,8 @@
 	<!-- See http://incubator.apache.org/cxf/faq.html regarding CXF + Spring AOP -->
 	<jaxrs:server id="jaxrsRestService" address="/rest/">
 		<jaxrs:serviceBeans>
-			<ref bean="mashbotService" />
-			<!--  <ref bean="authenticationService" /> -->
+			<ref bean="authenticationService" />
+			<!--  <ref bean="mashbotService" /> -->
 		</jaxrs:serviceBeans>
 		<jaxrs:features>
 			<cxf:logging/>	
@@ -100,22 +103,9 @@
 		<jaxrs:providers>
 			<ref bean="jaxbProvider"/>
 			<ref bean="jsonProvider" />
-		</jaxrs:providers>		
+		</jaxrs:providers>
 		
 		<jaxrs:inInterceptors>
-			<!-- <bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor"/>
-	      	<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-	        	<constructor-arg>
-	            	<map>
-	               		<entry key="action" value="UsernameToken"/>
-	               		<entry key="passwordType" value="PasswordDigest"/>
-	               		<entry key="signaturePropFile" value="..."/>
-						<entry key="passwordCallbackRef">
-							<ref bean="myPasswordCallback"/>
-		               	</entry>
-	            </map>
-	         </constructor-arg>
-	      </bean> -->
 			<ref bean="securityInterceptor" />
 		</jaxrs:inInterceptors>
 	</jaxrs:server>
