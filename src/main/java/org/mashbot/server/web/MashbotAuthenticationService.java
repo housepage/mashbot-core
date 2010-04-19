@@ -41,7 +41,7 @@ public class MashbotAuthenticationService {
 	
 	@GET
 	@Produces("application/json")
-	public Map<String, ServiceCredential> listAuthenticationInformation(@QueryParam("token") String token){
+	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
 		System.out.println("TOKEN: "+UUID.fromString(token));
 		return authman.listAuthenticationInformation(UUID.fromString(token));
 	}

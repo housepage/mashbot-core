@@ -230,11 +230,11 @@ public class AuthenticationManager {
 	 * @param token - A UUID which uniquely identifies a set of credential data
 	 * @return a list of all credentials associated with the provided token
 	 */
-	public Map<String,ServiceCredential> listAuthenticationInformation(UUID token){
+	public UserAuthenticationInformation listAuthenticationInformation(UUID token){
 		if(!removeIfExpired(token)){
-			return tokenCredentials.get(token).getCredentials();
+			return tokenCredentials.get(token);
 		} else {
-			return new HashMap<String,ServiceCredential>();
+			return new UserAuthenticationInformation();
 		}
 	}
 	

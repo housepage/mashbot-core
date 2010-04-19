@@ -63,7 +63,7 @@
 	</repositories>
 	<properties>
 		<jersey.version>1.1.5.1</jersey.version>
-		<cxf.version>2.3.0-SNAPSHOT</cxf.version>
+		<cxf.version>2.2.7</cxf.version>
 		<spring.version>2.5.6</spring.version>
 		<org.springframework.version>3.0.0.RELEASE</org.springframework.version>
 	</properties>
