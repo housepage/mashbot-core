@@ -44,8 +44,8 @@ public class RequestContext extends GenericFieldStorage {
 		putField(Field.PLUGINS,plugins);
 	}
 
-	public Map<String,ServiceCredential> getServiceCredentials() {
-		return (Map<String, ServiceCredential>) getField(Field.SERVICECREDENTIALS);
+	public Map<String, List<ServiceCredential>> getServiceCredentials() {
+		return (Map<String, List<ServiceCredential>>) getField(Field.SERVICECREDENTIALS);
 	}
 	
 	public void setServiceCredentials(Map<String,ServiceCredential> creds){
