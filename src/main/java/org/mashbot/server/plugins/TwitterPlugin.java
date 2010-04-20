@@ -6,13 +6,13 @@ import java.util.Map;
 import twitter4j.*;
 
 import org.mashbot.server.types.MObject;
-import org.mashbot.server.types.MObject.Field;
+import org.mashbot.server.types.ServiceCredential;
 
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
 
-	public MObject run(String operation, String contentType, MObject content) {
-        if ( operation == "push" && contentType == "status"){
+	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) {
+        if ( operation.equals("push)") && contentType.equals("status")){
             postStatus(content);
         }
         return null;
