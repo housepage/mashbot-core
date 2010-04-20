@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 
-public class IncompleteInformationException extends Exception{
+public class IncompleteInformationException extends MashbotException{
 	
 	public Map<String, List<String>> requiredFields;
 	

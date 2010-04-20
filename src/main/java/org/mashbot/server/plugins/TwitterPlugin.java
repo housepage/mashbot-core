@@ -12,8 +12,8 @@ public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
 
 	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) {
-        if ( operation.equals("push)") && contentType.equals("status")){
-            postStatus(content);
+        if ( operation.equals("push") && contentType.equals("status")){
+            postStatus(content, credential);
         }
         return null;
     }
@@ -27,20 +27,20 @@ public class TwitterPlugin extends Plugin {
     }
 
     public String getServiceName(){
-        return "Twitter Plugin";
+        return serviceName;
     }
 
     public Map<String, List<String>> getSupported(){
         return null;
     }
 
-    private void postStatus(MObject object){
-        String twitterID = (String) object.getField(MObject.Field.USERNAME+"."+serviceName);
-        String twitterPassword = (String) object.getField(MObject.Field.PASSWORD+"."+serviceName);
+    private void postStatus(MObject object, ServiceCredential credential){
+        String twitterID = (String) credential.getField("username");
+        String twitterPassword = (String) credential.getField("password");
         String latestStatus = (String)object.getField("status");
         System.out.println(twitterID + twitterPassword);
 
-        Twitter twitter = factory.getInstance(twitterID,twitterPassword);
+        Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
         Status status;
 		try {
 			status = twitter.updateStatus(latestStatus);
@@ -58,12 +58,14 @@ public class TwitterPlugin extends Plugin {
 	
 	public static void main(String[] args){
 		MObject object = new MObject();
-		object.putField("status", "Wonderbar!");
-		object.putField(MObject.Field.USERNAME+"."+serviceName, "MashBot");
-		object.putField(MObject.Field.PASSWORD+"."+serviceName, "w1sLm2");
+		object.putField("status", "OMG BETA TONIGHT!");
+		ServiceCredential mashbot = new ServiceCredential();
+		mashbot.putField("username", "MashBot");
+		mashbot.putField("password", "w1sLm2");
+		
 		TwitterPlugin plugin = new TwitterPlugin();
-		plugin.setFactory(new TwitterFactory());
-		plugin.run("push", "status", object);
+		//plugin.setFactory(new TwitterFactory());
+		plugin.run("push", "status", object, mashbot);
 	}
 	
 	TwitterFactory factory;

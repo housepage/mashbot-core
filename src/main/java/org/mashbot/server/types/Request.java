@@ -44,11 +44,15 @@ public class Request extends GenericFieldStorage {
 		putField(Field.MOBJECT, incoming);
 	}
 	
-	public MashbotService.Operation getOperation() {
-		return (MashbotService.Operation) getField(Field.OPERATION);
+	public String getOperation() {
+		return getField(Field.OPERATION).toString();
 	}
 	
 	public void setOperation(Operation operation) {
+		putField(Field.OPERATION, operation.toString());
+	}
+	
+	public void setOperation(String operation) {
 		putField(Field.OPERATION, operation);
 	}
 	
