@@ -1,6 +1,8 @@
 package org.mashbot.server.plugins;
 
 import java.util.List;
+import java.util.Map;
+
 import twitter4j.*;
 
 import org.mashbot.server.types.MObject;
@@ -28,7 +30,7 @@ public class TwitterPlugin extends Plugin {
         return "Twitter Plugin";
     }
 
-    public List<String> getSupported(){
+    public Map<String, List<String>> getSupported(){
         return null;
     }
 

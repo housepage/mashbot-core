@@ -7,7 +7,7 @@ import org.mashbot.server.types.Response;
 public interface Handler{
 	public void enact(Request in,Response out,RequestContext context); 
 	
-	public void preRequest(Request in,Response out,RequestContext context); 
+	public void preRequest(Request in,Response out,RequestContext context) throws Exception; 
 	public void postRequest(Request in,Response out,RequestContext context); 
 
 }

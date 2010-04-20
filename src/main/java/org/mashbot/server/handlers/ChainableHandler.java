@@ -1,6 +1,7 @@
 package org.mashbot.server.handlers;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.mashbot.server.exceptions.IncompleteInformationException;
 import org.mashbot.server.types.Request;
 import org.mashbot.server.types.RequestContext;
 import org.mashbot.server.types.Response;
@@ -14,7 +15,7 @@ public abstract class ChainableHandler implements Handler {
 		this.postRequest(in, out, context);
 	}
 
-	public abstract void preRequest(Request in, Response out, RequestContext context);
+	public abstract void preRequest(Request in, Response out, RequestContext context) throws Exception;
 
 	public abstract void postRequest(Request in, Response out, RequestContext context);
 
