@@ -113,9 +113,12 @@ public class AuthenticationManager {
 	 * @return a UUID which uniquely identifies the credentials provided 
 	 */
 	public String getAuthenticationToken(String username, Map<String,ServiceCredential> credentials){
-		UUID id = UUID.randomUUID();
+		//UUID id = UUID.randomUUID();
+		UUID id = new UUID(1,1);
+		for(Entry<String,ServiceCredential> i : credentials.entrySet()){
+			System.out.println(i.getKey());
+		}
 	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,credentials);
-		System.out.println("mapLock: "+this.mapLock);
 	    try{
 	    	this.mapLock.lock();
 	    	
@@ -132,6 +135,8 @@ public class AuthenticationManager {
 	    } finally {
 	    	this.mapLock.unlock();
 	    }
+	    
+	    System.out.println(this.tokenCredentials.get(id).getCredentials());
 		return id.toString();
 	}
 	
@@ -144,26 +149,30 @@ public class AuthenticationManager {
 	 * to be added to the existing set of credentials.  
 	 * @return the current set of credentials stored after the update operation
 	 */
-	public Map<String,ServiceCredential> updateAuthenticationCredentials(UUID token, Map<String,ServiceCredential> credentials){
+	public UserAuthenticationInformation updateAuthenticationCredentials(UUID token, Map<String,ServiceCredential> credentials){
 		
 		Map<String,ServiceCredential> currentCreds = new HashMap<String,ServiceCredential>();
+		
+		UserAuthenticationInformation currentTokenInfo = null;
 		
 		try{
 			mapLock.lock();
 			
 			if(!removeIfExpired(token)){
-				UserAuthenticationInformation currentTokenInfo = tokenCredentials.get(token);
+				currentTokenInfo = tokenCredentials.get(token);
 				currentCreds = currentTokenInfo.getCredentials();
 				
 				for(String service : credentials.keySet()){
 					currentCreds.put(service, credentials.get(service));
 				}
+			} else {
+				return null;
 			}
 		} finally {
 			mapLock.unlock();
 		}
 		
-		return currentCreds;
+		return currentTokenInfo;
 	}
 	
 	private void removeToken(UUID token) {

@@ -4,7 +4,7 @@ import org.mashbot.server.types.Request.Field;
 
 public class Response extends GenericFieldStorage {
 	public enum Field{
-		NULL("null");
+		MOBJECT("mobject");
 		Field(String label){
 			this.label = label;
 		}
@@ -21,5 +21,13 @@ public class Response extends GenericFieldStorage {
 	
 	public void putField(Field key,Object value){
 		context.put(key.toString(), value);
+	}
+
+	public void setMObject(MObject object) {
+		putField(Field.MOBJECT,object);
+	}
+	
+	public MObject getMObject() {
+		return (MObject) getField(Field.MOBJECT);
 	}
 }

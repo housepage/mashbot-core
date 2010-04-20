@@ -42,7 +42,6 @@ public class MashbotAuthenticationService {
 	@GET
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
-		System.out.println("TOKEN: "+UUID.fromString(token));
 		return authman.listAuthenticationInformation(UUID.fromString(token));
 	}
 	
@@ -51,19 +50,18 @@ public class MashbotAuthenticationService {
 	@Produces("application/json; charset=UTF-8;")
 	/*@XmlJavaTypeAdapter(value=org.mashbot.server.xml.MapXmlAdapter.class,type=java.util.Map.class)*/
 	public String getAuthenticationToken(UserAuthenticationInformation authInfo, @Context HttpHeaders headers){
-		System.out.println("authInfo: "+authInfo+", authMan: "+this.authman);
 		return this.authman.getAuthenticationToken(getUser(headers),authInfo.getCredentials());
 	}
 	
 	@PUT
-	@Consumes("application/json")
-	@Produces("application/json")
-	public Map<String,ServiceCredential> addAuthenticationInformation(@QueryParam("token") String token, Map<String,ServiceCredential> credentials){
-		return authman.updateAuthenticationCredentials(UUID.fromString(token), credentials);
+	@Consumes("application/json; charset=UTF-8;")
+	@Produces("application/json; charset=UTF-8;")
+	public UserAuthenticationInformation addAuthenticationInformation(@QueryParam("token") String token, UserAuthenticationInformation authInfo){
+		return authman.updateAuthenticationCredentials(UUID.fromString(token), authInfo.getCredentials());
 	}
 	
 	@DELETE
-	@Produces("application/json")
+	@Produces("application/json; charset=UTF-8;")
 	public boolean invalidateAuthenticationToken(@QueryParam("token") String token, @Context HttpHeaders headers){
 		if(token.equals("")){
 			return authman.invalidateAllUserAuthenticationToken(getUser(headers));
