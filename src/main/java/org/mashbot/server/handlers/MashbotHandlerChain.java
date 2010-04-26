@@ -3,6 +3,7 @@ package org.mashbot.server.handlers;
 import java.util.List;
 
 import org.mashbot.server.types.RequestContext;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.handlers.ChainableHandler;
 import org.mashbot.server.types.Request;
 import org.mashbot.server.types.Response;
@@ -20,7 +21,7 @@ public class MashbotHandlerChain implements HandlerChain {
 	}
 	
 	public void enact(Request request, Response response,
-			RequestContext context) {
+			RequestContext context) throws MashbotException {
 		first.enact(request, response, context);
 	}
 

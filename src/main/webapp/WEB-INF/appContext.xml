@@ -38,7 +38,6 @@
 	<bean id="storedCredentials" class="java.util.HashMap" scope="singleton" />
 	
 	<util:list id="HandlerChain" value-type="org.mashbot.server.handlers.ChainableHandler">
-		<bean class="org.mashbot.server.handlers.GreetingHandler"/>
 		<bean class="org.mashbot.server.handlers.TheStoryHandler"/>
 	</util:list>
 
@@ -95,7 +94,7 @@
 	<jaxrs:server id="jaxrsRestService" address="/rest/">
 		<jaxrs:serviceBeans>
 			<ref bean="authenticationService" />
-			<!--  <ref bean="mashbotService" /> -->
+			<ref bean="mashbotService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:features>
 			<cxf:logging/>	

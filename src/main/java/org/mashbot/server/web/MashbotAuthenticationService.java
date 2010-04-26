@@ -34,8 +34,6 @@ import org.mashbot.server.types.UserAuthenticationInformation;
 import org.mashbot.server.xml.MapXmlAdapter;
 import org.mashbot.server.xml.XmlMap;
 
-import com.google.gson.Gson;
-
 @Path("auth")
 public class MashbotAuthenticationService {
 	

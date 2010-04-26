@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
 import org.mashbot.server.types.Request.Field;
@@ -21,7 +22,9 @@ public class MObject extends GenericFieldStorage {
 		ON("on"),
 		SERVICESOFF(GenericFieldStorage.join(SERVICES, OFF)),
 		USERNAME("username"), 
-		PASSWORD("password");
+		PASSWORD("password"), 
+		STATUS("status"), 
+		TAGS(GenericFieldStorage.join(STATUS,"tags"));
 		Field(String label){
 			this.label = label;
 		}
