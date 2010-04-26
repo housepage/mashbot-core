@@ -34,9 +34,9 @@
 	
 	<util:list id="HandlerChain" value-type="org.mashbot.server.handlers.ChainableHandler">
 		<bean class="org.mashbot.server.handlers.PluginMatchingHandler" />
-		<!--  <bean class="org.mashbot.server.handlers.AuthenticationMatchingHandler" />
+		<bean class="org.mashbot.server.handlers.AuthenticationMatchingHandler" />
 		<bean class="org.mashbot.server.handlers.RequiredDataVerificationHandler" />
-		<bean class="org.mashbot.server.handlers.PluginCallingHandler" /> -->
+		<bean class="org.mashbot.server.handlers.PluginCallingHandler" />
 	</util:list>
 
 	<!-- The service bean -->

@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.types.ServiceCredential;
 import org.mashbot.server.types.UserAuthenticationInformation;
 
@@ -26,9 +28,10 @@ import org.mashbot.server.types.UserAuthenticationInformation;
  *
  */
 public class AuthenticationManager {
+	private Log log = LogFactory.getLog(getClass());
 	private OldAuthenticationCleanupThread cleaner;
 	private int cleanupInterval;
-	private Map<UUID,UserAuthenticationInformation> tokenCredentials;
+	public Map<UUID,UserAuthenticationInformation> tokenCredentials;
 	private Map<String,List<UUID>> userToUUID;
 	private Lock mapLock;	
 	
@@ -113,15 +116,15 @@ public class AuthenticationManager {
 	 * @return a UUID which uniquely identifies the credentials provided 
 	 */
 	public String getAuthenticationToken(String username, Map<String,ServiceCredential> credentials){
-		//UUID id = UUID.randomUUID();
-		UUID id = new UUID(1,1);
+		UUID id = UUID.randomUUID();
+		//UUID id = new UUID(1,1);
 		for(Entry<String,ServiceCredential> i : credentials.entrySet()){
 			System.out.println(i.getKey());
 		}
 	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,credentials);
 	    try{
 	    	this.mapLock.lock();
-	    	
+	    	log.warn(userauth);
 			this.tokenCredentials.put(id, userauth);
 			
 			if(this.userToUUID.containsKey(username)){
@@ -161,10 +164,12 @@ public class AuthenticationManager {
 			if(!removeIfExpired(token)){
 				currentTokenInfo = tokenCredentials.get(token);
 				currentCreds = currentTokenInfo.getCredentials();
-				
 				for(String service : credentials.keySet()){
 					currentCreds.put(service, credentials.get(service));
 				}
+				currentTokenInfo.setCredentials(currentCreds);
+				tokenCredentials.put(token,currentTokenInfo);
+				log.warn("Current Creds:" + currentCreds);
 			} else {
 				return null;
 			}
@@ -240,11 +245,11 @@ public class AuthenticationManager {
 	 * @return a list of all credentials associated with the provided token
 	 */
 	public UserAuthenticationInformation listAuthenticationInformation(UUID token){
-		if(!removeIfExpired(token)){
+		//if(!removeIfExpired(token)){
 			return tokenCredentials.get(token);
-		} else {
+		/*} else {
 			return new UserAuthenticationInformation();
-		}
+		}*/
 	}
 	
 	/**

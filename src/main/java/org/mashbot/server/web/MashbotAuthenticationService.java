@@ -25,8 +25,6 @@ import org.apache.cxf.common.util.Base64Exception;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.cxf.jaxrs.provider.JSONUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.mashbot.server.auth.AuthenticationManager;
 import org.mashbot.server.types.GenericFieldStorage;
 import org.mashbot.server.types.MashbotReturn;
