@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
@@ -40,7 +41,11 @@ public class MashbotAuthenticationService {
 	@GET
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
-		return authman.listAuthenticationInformation(UUID.fromString(token));
+		try {
+			return authman.listAuthenticationInformation(UUID.fromString(token));
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
+		}
 	}
 	
 	@POST

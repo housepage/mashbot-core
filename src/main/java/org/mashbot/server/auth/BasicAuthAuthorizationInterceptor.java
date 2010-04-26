@@ -6,6 +6,10 @@ import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.binding.soap.interceptor.SoapHeaderInterceptor;
 import org.apache.cxf.configuration.security.AuthorizationPolicy;
 import org.apache.cxf.endpoint.Endpoint;
@@ -28,7 +32,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class BasicAuthAuthorizationInterceptor extends JAXRSInInterceptor {
 
-    //protected Logger log = Logger.getLogger(getClass());
+    protected Log log = LogFactory.getLog(getClass());
     
     /** Map of allowed users to this system with their corresponding passwords. */
     private Map<String,String> users;
@@ -45,21 +49,21 @@ public class BasicAuthAuthorizationInterceptor extends JAXRSInInterceptor {
         // If the policy is not set, the user did not specify credentials
         // A 401 is sent to the client to indicate that authentication is required
         if (policy == null) {
-            /*if (log.isDebugEnabled()) {
+            if(log.isDebugEnabled()) {
                 log.debug("User attempted to log in with no credentials");
-            }*/
+            }
             sendErrorResponse(message, HttpURLConnection.HTTP_UNAUTHORIZED);
             return;
         }
         
-        /*if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Logging in use: " + policy.getUserName());
-        }*/
+        }
         
         // Verify the password
         String realPassword = users.get(policy.getUserName());
         if (realPassword == null || !realPassword.equals(policy.getPassword())) {
-            // log.warn("Invalid username or password for user: " + policy.getUserName());
+            log.warn("Invalid username or password for user: " + policy.getUserName());
             sendErrorResponse(message, HttpURLConnection.HTTP_FORBIDDEN);
         }
         System.out.println(message);
@@ -81,7 +85,7 @@ public class BasicAuthAuthorizationInterceptor extends JAXRSInInterceptor {
             getConduit(message).prepare(outMessage);
             close(outMessage);
         } catch (IOException e) {
-            // log.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
     }
     

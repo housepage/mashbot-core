@@ -17,7 +17,7 @@ public abstract class GenericFieldStorage {
 	public Map<String,Object> context;
 	
 	public GenericFieldStorage(){
-		context = new HashMap<String,Object>();
+		this.context = new HashMap<String,Object>();
 	}
 	
 	public Object getField(String key){

@@ -33,8 +33,9 @@ public class PluginCallingHandler extends ChainableHandler {
 			for(ServiceCredential credential : credentials){
 				plugin.run(operation, contentType, incoming, credential);
 			}
-
 		}
+		
+		System.out.println("Herro");
 	}
 
 }
