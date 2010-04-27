@@ -25,7 +25,9 @@ public class MObject extends GenericFieldStorage {
 		USERNAME("username"), 
 		PASSWORD("password"), 
 		STATUS("status"), 
-		TAGS(GenericFieldStorage.join(STATUS,"tags"));
+		TAGS(GenericFieldStorage.join(STATUS,"tags")), 
+		SUCCESS("success");
+		
 		Field(String label){
 			this.label = label;
 		}

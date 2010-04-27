@@ -75,7 +75,11 @@
 				</entry>
 				<entry key="blog">
 					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
-						
+						<entry key="push">
+							<list value-type="org.mashbot.server.plugins.Plugin">
+								<ref bean="tumblr"/>
+							</list>
+						</entry>
 					</map>
 				</entry>
 				<entry key="picture">
@@ -92,6 +96,7 @@
 
 	
 	<bean name="twitter"  class="org.mashbot.server.plugins.TwitterPlugin" />
+	<bean name="tumblr"  class="org.mashbot.server.plugins.TumblrPlugin" />
 	
 	
 	<!-- <bean id="myPasswordCallback"
