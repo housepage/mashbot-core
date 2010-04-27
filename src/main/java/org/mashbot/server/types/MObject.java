@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
-import org.mashbot.server.types.Request.Field;
+import org.mashbot.server.types.GenericFieldStorage;
 
 @XmlRootElement(name="Mashbot",namespace="http://mashbot.heroku.com/mashbot")
 public class MObject extends GenericFieldStorage {
@@ -47,6 +47,10 @@ public class MObject extends GenericFieldStorage {
 	
 	public void putField(Field key,String service,Object value){
 		this.putField(GenericFieldStorage.join(key.toString(),service), value);
+	}
+	
+	public boolean containsField(Field key){
+		return this.containsField(key.toString());
 	}
 	
 	public List<String> getServices(){
