@@ -48,7 +48,7 @@ public class FlickrPlugin extends Plugin {
 			ServiceCredential credential) throws Exception {
 		Flickr flickr = getFlickr();
 		Auth auth = new Auth();
-		auth.setToken(credential.getField("token"));
+		auth.setToken((String) credential.getField("token"));
 		
 		return null;
 	}
