@@ -124,7 +124,7 @@ public class AuthenticationManager {
 	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,credentials);
 	    try{
 	    	this.mapLock.lock();
-	    	log.warn(userauth);
+	    	log.warn("USER AUTH:"+userauth.getCredentials());
 			this.tokenCredentials.put(id, userauth);
 			
 			if(this.userToUUID.containsKey(username)){
