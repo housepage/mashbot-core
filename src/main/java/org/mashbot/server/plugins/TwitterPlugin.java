@@ -8,6 +8,8 @@ import twitter4j.*;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
 
@@ -35,10 +37,9 @@ public class TwitterPlugin extends Plugin {
     }
 
     private void postStatus(MObject object, ServiceCredential credential){
-        String twitterID = (String) credential.getField("username");
-        String twitterPassword = (String) credential.getField("password");
-        String latestStatus = (String)object.getField("status");
-        System.out.println(twitterID + twitterPassword);
+    	String twitterID = credential.key;
+    	String twitterPassword = credential.secret;
+    	String latestStatus = ((ElementNSImpl) object.getField("STATUS")).getTextContent();
 
         Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
         Status status;
@@ -60,8 +61,8 @@ public class TwitterPlugin extends Plugin {
 		MObject object = new MObject();
 		object.putField("status", "OMG BETA TONIGHT!");
 		ServiceCredential mashbot = new ServiceCredential();
-		mashbot.putField("username", "MashBot");
-		mashbot.putField("password", "w1sLm2");
+		mashbot.key = "MashBot";
+		mashbot.secret = "w1sLm2";
 		
 		TwitterPlugin plugin = new TwitterPlugin();
 		//plugin.setFactory(new TwitterFactory());
