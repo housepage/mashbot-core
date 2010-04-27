@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +14,7 @@ import org.mashbot.server.types.ServiceCredential;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
 
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
@@ -56,14 +58,33 @@ public class TwitterPlugin extends Plugin {
     }
 
     private void postStatus(MObject object, ServiceCredential credential){
-    	String twitterID = credential.key;
-    	String twitterPassword = credential.secret;
-    	String latestStatus = ((ElementNSImpl) object.getField("STATUS")).getTextContent();
+    	String key = credential.key;
+    	String secret = credential.secret;
+    	String latestStatus;
+    	try{
+    		latestStatus = ((ElementNSImpl) object.getField("status")).getTextContent();
+    	} catch (Exception e) {
+    		log.warn(object.getField("status"));
+    		log.warn(object.getFields());
+			latestStatus = "Ummmmmm" + new Random().nextInt(); 
+		}
+    	
+    	log.warn("key:"+key+" secret:"+secret);
+    	Twitter twitter;
+    	TwitterFactory fact = new TwitterFactory();
+    	twitter = fact.getOAuthAuthorizedInstance("wOrsK4bFG0VJNplruzVoNg","E3akoP3oG8iQj1XHP9bArQSwlCKfyedPNaFX4U8vd4",new AccessToken(key,secret));
+    	log.warn("TWITTER:"+twitter+" "+fact);
+    	
+    	/*if(credential.method == "userpass"){
+    		twitter = new TwitterFactory().getInstance(twitterID, twitterPassword);
+    	} else if(credential.method == ""){
+    		
+    	}*/
         
-    	Twitter twitter = new TwitterFactory().getInstance(twitterID, twitterPassword);
     	try {
 			twitter.updateStatus(latestStatus);
 		} catch (TwitterException e) {
+			log.warn(e.getMessage());
 			e.printStackTrace();
 		}
         
@@ -87,6 +108,16 @@ public class TwitterPlugin extends Plugin {
 		TwitterPlugin plugin = new TwitterPlugin();
 		//plugin.setFactory(new TwitterFactory());
 		plugin.run("push", "status", object, mashbot);
+	}
+	
+	private TwitterFactory factory;
+
+	public TwitterFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(TwitterFactory factory) {
+		this.factory = factory;
 	}
 }
 	
