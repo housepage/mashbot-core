@@ -110,8 +110,8 @@ public class TwitterPlugin extends Plugin {
     }
     
     private Twitter getTwitter(ServiceCredential credential){
-    	String twitterID = (String) credential.getField("username");
-        String twitterPassword = (String) credential.getField("password");
+    	String twitterID = credential.key;
+        String twitterPassword = credential.secret;
         System.out.println(twitterID + twitterPassword);
 
         Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
