@@ -40,7 +40,12 @@ public class MashbotAuthenticationService {
 	@GET
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
-		return authman.listAuthenticationInformation(UUID.fromString(token));
+		UserAuthenticationInformation authInfo = new UserAuthenticationInformation();
+		ServiceCredential twitter = new ServiceCredential();
+		twitter.putField("username","yomama");
+		authInfo.addCredential("twitter",twitter);
+		return authInfo;
+		//return authman.listAuthenticationInformation(UUID.fromString(token));
 	}
 	
 	@POST
