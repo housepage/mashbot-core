@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
@@ -16,8 +17,12 @@ public abstract class GenericFieldStorage {
 
 	public Map<String,Object> context;
 	
+	public Set<String> getFields(){
+		return this.context.keySet(); 
+	}
+	
 	public GenericFieldStorage(){
-		context = new HashMap<String,Object>();
+		this.context = new HashMap<String,Object>();
 	}
 	
 	public Object getField(String key){

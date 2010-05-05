@@ -2,6 +2,7 @@ package org.mashbot.server.types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.cxf.jaxrs.utils.HttpUtils;
 import org.mashbot.server.types.Request.Field;
 
-@XmlRootElement(name="Mashbot",namespace="http://mashbot.heroku.com/mashbot")
+@XmlRootElement
 public class MObject extends GenericFieldStorage {
 		
 	public MObject() {
@@ -24,7 +25,9 @@ public class MObject extends GenericFieldStorage {
 		USERNAME("username"), 
 		PASSWORD("password"), 
 		STATUS("status"), 
-		TAGS(GenericFieldStorage.join(STATUS,"tags"));
+		TAGS(GenericFieldStorage.join(STATUS,"tags")), 
+		SUCCESS("success");
+		
 		Field(String label){
 			this.label = label;
 		}

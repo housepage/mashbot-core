@@ -1,5 +1,7 @@
 package org.mashbot.server.handlers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.plugins.Plugin;
 import org.mashbot.server.types.MObject;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 public class PluginCallingHandler extends ChainableHandler {
 
+	private Log log = LogFactory.getLog(getClass());
+	
 	@Override
 	public void postRequest(Request in, Response out, RequestContext context) throws MashbotException {
 		
@@ -29,12 +33,14 @@ public class PluginCallingHandler extends ChainableHandler {
 		List<Plugin> plugins = context.getPlugins();
 		Map<String, List<ServiceCredential>> credentialMap = context.getServiceCredentials();
 		for(Plugin plugin : plugins){
+			log.warn(credentialMap.get(plugin.getServiceName()));
 			List<ServiceCredential> credentials = credentialMap.get(plugin.getServiceName());
 			for(ServiceCredential credential : credentials){
 				plugin.run(operation, contentType, incoming, credential);
 			}
-
 		}
+		
+		System.out.println("Herro");
 	}
 
 }

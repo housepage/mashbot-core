@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
@@ -24,8 +25,6 @@ import org.apache.cxf.common.util.Base64Exception;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.cxf.jaxrs.provider.JSONUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.mashbot.server.auth.AuthenticationManager;
 import org.mashbot.server.types.GenericFieldStorage;
 import org.mashbot.server.types.MashbotReturn;
@@ -40,12 +39,17 @@ public class MashbotAuthenticationService {
 	@GET
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
-		UserAuthenticationInformation authInfo = new UserAuthenticationInformation();
+		/*UserAuthenticationInformation authInfo = new UserAuthenticationInformation();
 		ServiceCredential twitter = new ServiceCredential();
 		twitter.putField("username","yomama");
 		authInfo.addCredential("twitter",twitter);
-		return authInfo;
+		return authInfo; */
 		//return authman.listAuthenticationInformation(UUID.fromString(token));
+		try {
+			return authman.listAuthenticationInformation(UUID.fromString(token));
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
+		}
 	}
 	
 	@POST
