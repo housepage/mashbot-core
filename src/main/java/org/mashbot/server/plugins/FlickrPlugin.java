@@ -14,6 +14,8 @@ import org.mashbot.server.types.ServiceCredential;
 import com.aetrion.flickr.Flickr;
 import com.aetrion.flickr.REST;
 import com.aetrion.flickr.auth.Auth;
+import com.aetrion.flickr.uploader.UploadMetaData;
+import com.aetrion.flickr.uploader.Uploader;
 
 public class FlickrPlugin extends Plugin {
 
@@ -45,10 +47,15 @@ public class FlickrPlugin extends Plugin {
 
 	@Override
 	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws Exception {
+			ServiceCredential credential) {
 		Flickr flickr = getFlickr();
-		Auth auth = new Auth();
-		auth.setToken((String) credential.getField("token"));
+		Auth auth = new com.aetrion.flickr.auth.Auth();
+		flickr
+		auth.setToken((String) credential.key);
+		Uploader a = flickr.getUploader();
+		UploadMetaData b = new UploadMetaData();
+		
+		a.upload(in, metaData)
 		
 		return null;
 	}
