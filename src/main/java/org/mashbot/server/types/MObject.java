@@ -64,7 +64,7 @@ public class MObject {
 	}
 	
 	public void putList(Field key, List<String> value){
-		this.putString(key.toString(), value);
+		this.putList(key.toString(), value);
 	}
 	
 	public void putList(Field key,List<String> value,String service){
