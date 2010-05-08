@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -35,62 +36,38 @@ public class MObject {
 		private String label;
 	}
 	
-	public String getString(String key){
-		return strings.get(key);
+	public List<String> getField(String key){
+		return this.context.get(key);
 	}
 	
-	public void putString(String key,String value){
-		strings.put(key, value);
+	public void putField(String key, List<String> value){
+		this.context.put(key,value); 
 	}
 	
-	public List<String> getList(String key){
-		return lists.get(key);
+	public List<String> getField(Field key){
+		return this.getField(key.toString());
 	}
 	
-	public void putList(String key, List<String> value){
-		lists.put(key,value); 
+	public void putField(Field key, List<String> value){
+		this.putField(key.toString(), value);
 	}
 	
-	public String getString(Field key){
-		return this.getString(key.toString());
+	public void putField(Field key,List<String> value,String service){
+		this.putField(GenericFieldStorage.join(key.toString(),service), value);
 	}
-	
-	public List<String> getList(Field key){
-		return this.getList(key.toString());
-	}
-	
-	public void putString(Field key, String value){
-		this.putString(key.toString(), value);
-	}
-	
-	public void putList(Field key, List<String> value){
-		this.putString(key.toString(), value);
-	}
-	
-	public void putList(Field key,List<String> value,String service){
-		this.putList(GenericFieldStorage.join(key.toString(),service), value);
-	}
-	
-	public void putString(Field key,String value,String service){
-		this.putString(GenericFieldStorage.join(key.toString(),service), value);
-	}
-	
-	public boolean containsField(Field key){
-		return this.containsField(key.toString());
-	}
-	
+
 	public List<String> getServices(){
-		return this.getList(Field.SERVICES.toString());
+		return this.getField(Field.SERVICES.toString());
 	}
 	
 	public List<String> getServicesOff(){
-		return this.getList(Field.SERVICESOFF.toString());
+		return this.getField(Field.SERVICESOFF.toString());
 	}
 	
 	public List<String> getServices(List<String> available){
 		List<String> toCall = new ArrayList<String>();
 		
-		if(this.lists.containsKey(Field.SERVICES)){
+		if(this.context.containsKey(Field.SERVICES)){
 			List<String> specified = this.getServices();
 			for(String service : available){
 				if(specified.contains(service)){
@@ -103,7 +80,7 @@ public class MObject {
 			}
 		}
 		
-		if(this.lists.containsKey(Field.SERVICESOFF)){
+		if(this.context.containsKey(Field.SERVICESOFF)){
 			List<String> specified = this.getServicesOff();
 			for(String service : available){
 				if(specified.contains(service)){
@@ -114,7 +91,7 @@ public class MObject {
 		
 		return toCall;
 	}
-	
-	public Map<String,String> strings;
-	public Map<String,List<String>> lists;
+
+	@XmlElement(name="context")
+	public Map<String,List<String>> context;
 }
