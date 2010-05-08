@@ -83,7 +83,7 @@ public class TwitterPlugin extends Plugin {
     	MObject retObject = new MObject();
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId").get(0));
+    		long statusId = Long.parseLong((String) object.getField("statusId"));
     		Status s = twitter.showStatus(statusId);
     		String status = s.getText();
     		String user = s.getUser().getName();
@@ -101,7 +101,7 @@ public class TwitterPlugin extends Plugin {
     	Twitter twitter = getTwitter(credential);
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId").get(0));
+    		long statusId = Long.parseLong((String) object.getField("statusId"));
     		twitter.destroyStatus(statusId);
     	}
     	catch (TwitterException e){
@@ -110,10 +110,9 @@ public class TwitterPlugin extends Plugin {
     }
     
     private Twitter getTwitter(ServiceCredential credential){
-    	String twitterID = credential.key;
+    		String twitterID = credential.key;
         String twitterPassword = credential.secret;
-        System.out.println(twitterID + twitterPassword);
-
+				
         Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
         return twitter;
     }

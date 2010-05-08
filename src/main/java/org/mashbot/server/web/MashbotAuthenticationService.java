@@ -55,6 +55,7 @@ public class MashbotAuthenticationService {
 			credentials.add(basic);
 			credentials.add(basic);
 			a.addCredential("twitter", credentials);
+			a.addCredential("tumblr", credentials);
 			log.warn(a.getCredentials());
 			return a;
 			/*return authman.listAuthenticationInformation(UUID.fromString(token));*/

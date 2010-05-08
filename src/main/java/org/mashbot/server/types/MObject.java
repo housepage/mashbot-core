@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
-import org.mashbot.server.types.Request.Field;
+import org.mashbot.server.types.GenericFieldStorage;
 
 @XmlRootElement
 public class MObject {
@@ -28,8 +28,8 @@ public class MObject {
 		PASSWORD("password"), 
 		STATUS("status"), 
 		TAGS(GenericFieldStorage.join(STATUS,"tags")), 
-		SUCCESS("success");
-		
+		SUCCESS("success"), 
+		FAILURE("failure");
 		Field(String label){
 			this.label = label;
 		}
@@ -66,6 +66,10 @@ public class MObject {
 		return this.context.keySet();
 	}
 
+	public boolean containsField(Field key){
+		return this.containsField(key.toString());
+	}
+	
 	public List<String> getServices(){
 		return this.getField(Field.SERVICES.toString());
 	}

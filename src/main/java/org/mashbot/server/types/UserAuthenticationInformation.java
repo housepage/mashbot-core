@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -77,7 +78,8 @@ public class UserAuthenticationInformation {
         @XmlAttribute(name = "method",     type = String.class)
     })*/
 	
-    @XmlJavaTypeAdapter(value=ServiceCredentialMapAdapter.class,type=Map.class)
+    /*@XmlJavaTypeAdapter(value=ServiceCredentialMapAdapter.class,type=Map.class)*/
+	@XmlTransient
 	public Map<String, List<ServiceCredential>> getCredentials() {
 		log.warn("HEY:"+this.credentials.get("twitter").get(0).key);
 		return this.credentials;
@@ -112,4 +114,27 @@ public class UserAuthenticationInformation {
 	private void renewLease(int secondsUntilExpiration) {
 		this.setExpiration(new Date(new Date().getTime()+secondsUntilExpiration*1000));
 	}
+	
+	private List<AllServiceCredentials> authInfo;
+
+	public List<AllServiceCredentials> getAuthInfo() {
+		try {
+			this.authInfo = awesome.marshal(this.credentials);
+		} catch (Exception e) {
+			this.authInfo = new ArrayList<AllServiceCredentials>();
+		}
+				
+		return this.authInfo;
+	}
+
+	public void setAuthInfo(List<AllServiceCredentials> authInfo) {
+		this.authInfo = authInfo;
+		try {
+			this.credentials = awesome.unmarshal(authInfo);
+		} catch (Exception e) {
+			this.credentials = new HashMap<String, List<ServiceCredential>>();
+		}
+	}
+	
+	private static ServiceCredentialMapAdapter awesome = new ServiceCredentialMapAdapter();
 }

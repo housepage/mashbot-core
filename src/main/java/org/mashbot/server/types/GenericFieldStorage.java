@@ -45,6 +45,10 @@ public abstract class GenericFieldStorage {
 		context.put(GenericFieldStorage.join(key, service), value);
 	}
 	
+	public boolean containsField(String key){
+		return context.containsKey(key);
+	}
+	
 	public static String join(Object a, Object b){
 		return a.toString() + "." + b.toString();
 	}

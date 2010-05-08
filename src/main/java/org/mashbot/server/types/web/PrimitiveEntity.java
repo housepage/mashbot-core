@@ -9,7 +9,6 @@ public class PrimitiveEntity extends Entity implements MutableEntity {
 
   public Type getType();
 
-  
   protected ArrayList<Assoc> assocs;
 
   public Assoc[] getAssoc() { return assocs.toArray(); }
