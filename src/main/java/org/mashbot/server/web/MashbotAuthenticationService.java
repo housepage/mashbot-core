@@ -1,5 +1,6 @@
 package org.mashbot.server.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 
 import org.apache.abdera.ext.json.JSONUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.common.util.Base64Exception;
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
@@ -32,15 +35,29 @@ import org.mashbot.server.types.ServiceCredential;
 import org.mashbot.server.types.UserAuthenticationInformation;
 import org.mashbot.server.xml.MapXmlAdapter;
 import org.mashbot.server.xml.XmlMap;
+import org.mortbay.jetty.security.Credential;
 
 @Path("auth")
 public class MashbotAuthenticationService {
 	
+	private Log log = LogFactory.getLog(getClass());
+
 	@GET
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
 		try {
-			return authman.listAuthenticationInformation(UUID.fromString(token));
+			UserAuthenticationInformation a = new UserAuthenticationInformation();
+			ArrayList<ServiceCredential> credentials = new ArrayList<ServiceCredential>();
+			ServiceCredential basic = new ServiceCredential();
+			basic.key = "a";
+			basic.secret = "b";
+			basic.method = "userpass";
+			credentials.add(basic);
+			credentials.add(basic);
+			a.addCredential("twitter", credentials);
+			log.warn(a.getCredentials());
+			return a;
+			/*return authman.listAuthenticationInformation(UUID.fromString(token));*/
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}

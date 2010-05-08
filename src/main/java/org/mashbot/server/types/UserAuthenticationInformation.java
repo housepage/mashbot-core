@@ -1,33 +1,52 @@
 package org.mashbot.server.types;
 
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAnyAttribute;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttachmentRef;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.mashbot.server.xml.AllCredentials;
+import org.mashbot.server.xml.AllServiceCredentials;
+import org.mashbot.server.xml.ServiceCredentialMapAdapter;
 
 @XmlRootElement(name="authinfo")
+@XmlSeeAlso(value={AllCredentials.class,AllServiceCredentials.class,HashMap.class,ArrayList.class,ServiceCredential.class})
 public class UserAuthenticationInformation {
 	private String userName;
-	private Map<String,ServiceCredential> credentials;
+	private Map<String, List<ServiceCredential>> credentials;
 	private Date expiration;
 	private int secondsUntilExpiration;
+	private Log log = LogFactory.getLog(getClass());
 	private static final int defaultSecondsUntilExpiration = 1200;
 	
 	
 	public UserAuthenticationInformation() {
 		super();
-		new UserAuthenticationInformation("default", new HashMap<String, ServiceCredential>());
 		this.userName = "";
-		this.credentials = new HashMap<String, ServiceCredential>();
+		this.credentials = new HashMap<String, List<ServiceCredential>>();
 		this.secondsUntilExpiration = defaultSecondsUntilExpiration;
 		this.setExpiration(new Date(new Date().getTime()+this.secondsUntilExpiration*1000));
 	}
 	
 	public UserAuthenticationInformation(String userName,
-			Map<String, ServiceCredential> credentials){
-		new UserAuthenticationInformation(userName,credentials,UserAuthenticationInformation.defaultSecondsUntilExpiration);
+			Map<String, List<ServiceCredential>> credentials){
 		this.userName = userName;
 		this.credentials = credentials;
 		this.secondsUntilExpiration = this.defaultSecondsUntilExpiration;
@@ -35,7 +54,7 @@ public class UserAuthenticationInformation {
 	}
 
 	public UserAuthenticationInformation(String userName,
-			Map<String, ServiceCredential> credentials, int secondsUntilExpiration) {
+			Map<String, List<ServiceCredential>> credentials, int secondsUntilExpiration) {
 		super();
 		this.userName = userName;
 		this.credentials = credentials;
@@ -50,17 +69,32 @@ public class UserAuthenticationInformation {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-	public Map<String, ServiceCredential> getCredentials() {
-		return credentials;
+	
+	/*@XmlElements({
+		@XmlElement(name = "service")
+        @XmlAttribute(name = "key",     type = String.class),
+        @XmlAttribute(name = "secret", type = String.class),
+        @XmlAttribute(name = "method",     type = String.class)
+    })*/
+	
+    @XmlJavaTypeAdapter(value=ServiceCredentialMapAdapter.class,type=Map.class)
+	public Map<String, List<ServiceCredential>> getCredentials() {
+		log.warn("HEY:"+this.credentials.get("twitter").get(0).key);
+		return this.credentials;
 	}
 
-	public void setCredentials(Map<String, ServiceCredential> credentials) {
+	public void setCredentials(Map<String, List<ServiceCredential>> credentials) {
 		this.credentials = credentials;
 	}
 	
-	public void addCredential(String service, ServiceCredential credential){
-		this.credentials.put(service, credential);
+	public void addCredential(String service, List<ServiceCredential> credentials){
+		if(this.credentials.containsKey(service)){
+			for(ServiceCredential i : credentials){
+				this.credentials.get(service).add(i);
+			}
+		} else {
+			this.credentials.put(service, credentials);
+		}
 	}
 
 	public void setExpiration(Date expiration) {

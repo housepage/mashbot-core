@@ -3,6 +3,7 @@ package org.mashbot.server.types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -16,7 +17,6 @@ import org.mashbot.server.types.Request.Field;
 public class MObject {
 		
 	public MObject() {
-		super();
 	}
 
 	public enum Field{
@@ -37,11 +37,17 @@ public class MObject {
 	}
 	
 	public List<String> getField(String key){
-		return this.context.get(key);
+		return this.context.get(key.toLowerCase());
 	}
 	
 	public void putField(String key, List<String> value){
-		this.context.put(key,value); 
+		this.context.put(key.toLowerCase(),value); 
+	}
+	
+	public void putField(String key, String value){
+		List<String> tmp = new ArrayList<String>();
+		tmp.add(value);
+		this.putField(key,tmp);
 	}
 	
 	public List<String> getField(Field key){
@@ -54,6 +60,10 @@ public class MObject {
 	
 	public void putField(Field key,List<String> value,String service){
 		this.putField(GenericFieldStorage.join(key.toString(),service), value);
+	}
+	
+	public Set<String> getFields(){
+		return this.context.keySet();
 	}
 
 	public List<String> getServices(){

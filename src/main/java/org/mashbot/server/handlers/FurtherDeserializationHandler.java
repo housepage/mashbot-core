@@ -28,15 +28,7 @@ public class FurtherDeserializationHandler extends ChainableHandler {
 		log.warn(m.getFields());
 		for(String field : m.getFields()){
 			if(m.getField(field) != null){
-				log.warn("Field: "+field);
-				log.warn("Type:"+m.getField(field).getClass());
-				ElementNSImpl a = (ElementNSImpl) m.getField(field);
-				while(a != null){
-					log.warn("user data:" + a.getUserData());
-					if(((ElementNSImpl)a.getNextSibling()).getUserData() != null){
-						a = (ElementNSImpl) a.getNextSibling();
-					}
-				}
+				log.warn(field+":"+m.getField(field));
 			}
 		}
 	}

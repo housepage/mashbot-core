@@ -99,11 +99,13 @@ public class MashbotService {
 	{
 		//return makeRequest(Operation.PULL,contentType,token);
 		MObject ret = new MObject();
-		ret.putField(MObject.Field.STATUS, "Herro you are awesome");
+		List<String> status = new ArrayList<String>();
+		status.add("Herro you are awesome");
+		ret.putField(MObject.Field.STATUS, status);
 		List<String> tags = new ArrayList<String>();
 		tags.add("#jobs");
 		tags.add("#boom");
-		ret.putField(MObject.Field.STATUS.TAGS,tags.toString());
+		ret.putField(MObject.Field.TAGS,tags);
 		System.out.println("Exiting");
 		System.out.flush();
 		return ret;
@@ -131,7 +133,7 @@ public class MashbotService {
 	@Path("{service}/{id}")
 	public MObject deleteRequest(@PathParam("contentType") String contentType,@PathParam("service") String service,@PathParam("id") String id, @QueryParam("token") String token){
 		MObject delete = new MObject();
-		delete.putField(GenericFieldStorage.join(Request.Field.ID,service), id);
+		//delete.putField(GenericFieldStorage.join(Request.Field.ID,service), id);
 		
 		return makeRequest(Operation.DELETE,contentType,delete);
 	}

@@ -112,16 +112,15 @@ public class AuthenticationManager {
 	 * credentials can be used to reference those credentials
 	 * 
 	 * @param username - the user name associated with the credentials
-	 * @param credentials - a map containing credentials keyed into such by service name
+	 * @param hashMap - a map containing credentials keyed into such by service name
 	 * @return a UUID which uniquely identifies the credentials provided 
 	 */
-	public String getAuthenticationToken(String username, Map<String,ServiceCredential> credentials){
+	public String getAuthenticationToken(String username, Map<String, List<ServiceCredential>> hashMap){
 		UUID id = UUID.randomUUID();
 		//UUID id = new UUID(1,1);
-		for(Entry<String,ServiceCredential> i : credentials.entrySet()){
-			System.out.println(i.getKey());
-		}
-	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,credentials);
+		log.warn("Credentials:"+hashMap);
+		
+	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,hashMap);
 	    try{
 	    	this.mapLock.lock();
 	    	log.warn("USER AUTH:"+userauth.getCredentials());
@@ -132,7 +131,6 @@ public class AuthenticationManager {
 			} else {
 				List<UUID> ids = new ArrayList<UUID>();
 				ids.add(id);
-					
 				this.userToUUID.put(username, ids);
 			}
 	    } finally {
@@ -143,18 +141,26 @@ public class AuthenticationManager {
 		return id.toString();
 	}
 	
+	private static HashMap<String, ArrayList<ServiceCredential>> getHashMapFromMap(Map<String, List<ServiceCredential>> theMap) {
+		HashMap<String, ArrayList<ServiceCredential>> ret = new HashMap<String, ArrayList<ServiceCredential>>();
+		for(Entry<String, List<ServiceCredential>> i : theMap.entrySet()){
+			ret.put(i.getKey(),new ArrayList<ServiceCredential>(i.getValue()));
+		}
+		return ret;
+	}
+
 	/**
 	 * Allows the credentials associated with a token to be updated and added to. 
 	 * The new credentials passed in are assumed to better and as such any collisions 
 	 * in new and old result in the new overriding the old.
 	 * @param token - A UUID which uniquely identifies a set of credential data
-	 * @param credentials - A map containing credentials keyed into such by service name
+	 * @param hashMap - A map containing credentials keyed into such by service name
 	 * to be added to the existing set of credentials.  
 	 * @return the current set of credentials stored after the update operation
 	 */
-	public UserAuthenticationInformation updateAuthenticationCredentials(UUID token, Map<String,ServiceCredential> credentials){
+	public UserAuthenticationInformation updateAuthenticationCredentials(UUID token, Map<String, List<ServiceCredential>> hashMap){
 		
-		Map<String,ServiceCredential> currentCreds = new HashMap<String,ServiceCredential>();
+		Map<String, List<ServiceCredential>> currentCreds = new HashMap<String,List<ServiceCredential>>();
 		
 		UserAuthenticationInformation currentTokenInfo = null;
 		
@@ -164,8 +170,26 @@ public class AuthenticationManager {
 			if(!removeIfExpired(token)){
 				currentTokenInfo = tokenCredentials.get(token);
 				currentCreds = currentTokenInfo.getCredentials();
-				for(String service : credentials.keySet()){
-					currentCreds.put(service, credentials.get(service));
+				boolean replacing;
+				for(Entry<String, List<ServiceCredential>> serviceInfo : hashMap.entrySet()){
+					if(currentCreds.containsKey(serviceInfo.getKey())){
+						for(ServiceCredential newcred : serviceInfo.getValue()){
+							replacing = false;
+							for(ServiceCredential oldcred : currentCreds.get(serviceInfo.getKey())){
+								if(oldcred.key == newcred.key){
+									replacing = true;
+									currentCreds.get(serviceInfo.getKey()).remove(oldcred);
+									currentCreds.get(serviceInfo.getKey()).add(newcred);
+									break;
+								}
+							}
+							if(!replacing){
+								currentCreds.get(serviceInfo.getKey()).add(newcred);
+							}
+						}
+					} else {
+						currentCreds.put(serviceInfo.getKey(), new ArrayList(hashMap.get(serviceInfo.getKey())));
+					}
 				}
 				currentTokenInfo.setCredentials(currentCreds);
 				tokenCredentials.put(token,currentTokenInfo);

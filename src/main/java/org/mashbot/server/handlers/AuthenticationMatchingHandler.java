@@ -46,15 +46,16 @@ public class AuthenticationMatchingHandler extends ChainableHandler {
 		if(userAuth != null) {
 			log.warn(userAuth);
 			log.warn(token);
-			Map<String,ServiceCredential> credentials = userAuth.getCredentials();
-			for(Entry<String,ServiceCredential> i : credentials.entrySet()){
+			
+			Map<String,List<ServiceCredential>> credentials = userAuth.getCredentials();
+			for(Entry<String,List<ServiceCredential>> i : credentials.entrySet()){
 				if(services.contains(i.getKey())){
 					if(credentialMap.containsKey(i.getKey())){
-						credentialMap.get(i.getKey()).add(i.getValue());
+						for(ServiceCredential j : i.getValue()){
+							credentialMap.get(i.getKey()).add(j);
+						}
 					} else {
-						List<ServiceCredential> adding = new ArrayList<ServiceCredential>();
-						adding.add(i.getValue());
-						credentialMap.put(i.getKey(),adding);
+						credentialMap.put(i.getKey(),i.getValue());
 					}
 					log.warn("Adding credentials for: " + i.getKey());
 				}

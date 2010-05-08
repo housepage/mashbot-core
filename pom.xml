@@ -74,11 +74,6 @@
 	</properties>
 	<dependencies>
 		<dependency>
-	      <groupId>net.unto.twitter</groupId>
-	      <artifactId>java-twitter</artifactId>
-	      <version>0.9-SNAPSHOT</version>
-	    </dependency>
-		<dependency>
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-simple</artifactId>
 		  <version>1.5.8</version>
@@ -260,7 +255,7 @@
         <dependency>
           <groupId>org.twitter4j</groupId>
           <artifactId>twitter4j-core</artifactId>
-          <version>[2.1,)</version>
+          <version>2.1.2</version>
         </dependency>
 
 		<dependency>
@@ -359,6 +354,11 @@
 			<version>2.5.1</version>
 			<type>jar</type>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+            <groupId>com.aetrion.flickr</groupId>
+            <artifactId>flickrapi</artifactId>
+            <version>1.1</version>
 		</dependency>
 	</dependencies>
 	<build>
