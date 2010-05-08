@@ -8,11 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
-
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
 public class TumblrPlugin extends Plugin {
 	private static final String serviceName = "tumblr";
@@ -95,10 +92,10 @@ public class TumblrPlugin extends Plugin {
 	    	log.warn(content.getField("BLOG.BODY"));
 	    	log.warn(content.getField("BLOG.TITLE"));
 	    	log.warn(content.getField("BLOG.TAGS"));
-	    	String body = ((ElementNSImpl) content.getField("BLOG.BODY")).getTextContent();
-	    	String postTitle = ((ElementNSImpl) content.getField("BLOG.TITLE")).getTextContent();
-	    	String tags = ((ElementNSImpl) content.getField("BLOG.TAGS")).getTextContent();
-	    	String postId = ((ElementNSImpl) content.getField("BLOG.POSTID")).getTextContent();
+	    	String body = (content.getField("BLOG.BODY")).getTextContent();
+	    	String postTitle = (content.getField("BLOG.TITLE")).getTextContent();
+	    	String tags = (content.getField("BLOG.TAGS")).getTextContent();
+	    	String postId = (content.getField("BLOG.POSTID")).getTextContent();
 			tumblr.edit(email, password, "standard", postTitle, body, tags, new Date().toString(), postId);
 			content.putField(MObject.Field.SUCCESS,getServiceName(),true);
 		} catch (Exception e) {
@@ -122,6 +119,22 @@ public class TumblrPlugin extends Plugin {
 
 	}
 
-	
+	public static void main(String[] args) {
+		ServiceCredential credential = new ServiceCredential();
+		credential.key = "test@mashbot.net";
+		credential.secret = "m45hb07";
+		
+		TumblrPlugin plugin = new TumblrPlugin();
+		MObject content = new MObject();
+		content.putField("BLOG.BODY", "Mashbot is so awesome. I love Mashbot!");
+		content.putField("BLOG.TITLE", "Mashbot Love");
+		content.putField("BLOG.TAGS", "Mashbot Love");
+		try {
+			plugin.run("push", "blog", content, credential);
+		} catch (MashbotException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
