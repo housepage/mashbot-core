@@ -1,5 +1,7 @@
 package org.mashbot.server.types;
 
+import java.util.UUID;
+
 import org.mashbot.server.types.MObject.Field;
 import org.mashbot.server.web.MashbotService;
 import org.mashbot.server.web.MashbotService.Operation;
@@ -9,9 +11,13 @@ public class Request extends GenericFieldStorage {
 		OPERATION("operation"),
 		CONTENTTYPE("contentType"), 
 		MOBJECT("mobject"), 
-		ID("id");
+		ID("id"), 
+		TOKEN("token");
 		Field(String label){
 			this.label = label;
+		}
+		public String toString(){
+			return this.label;
 		}
 		private String label;
 	}
@@ -21,11 +27,11 @@ public class Request extends GenericFieldStorage {
 	}
 	
 	public Object getField(Field key){
-		return context.get(key);
+		return super.getField(key.toString());
 	}
 	
 	public void putField(Field key,Object value){
-		context.put(key.toString(), value);
+		super.putField(key.toString(), value);
 	}
 	
 	public Object getField(Field key, String service){
@@ -62,6 +68,14 @@ public class Request extends GenericFieldStorage {
 	
 	public void setContentType(String incoming) {
 		putField(Field.CONTENTTYPE, incoming);
+	}
+
+	public UUID getToken() {
+		return (UUID) getField(Field.TOKEN);
+	}
+	
+	public void setToken(UUID token){
+		putField(Field.TOKEN,token);
 	}
 }
 

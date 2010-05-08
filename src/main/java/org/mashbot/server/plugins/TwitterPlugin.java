@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import twitter4j.Status;
@@ -14,8 +18,28 @@ import twitter4j.TwitterFactory;
 
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
+
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+
+
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
+    private Log log = LogFactory.getLog(getClass());
+	private Map<String, List<String>> supported;
+	
+	public TwitterPlugin(){
+		this.supported = new HashMap<String,List<String>>();
+		List<String> supportedStatus = new ArrayList<String>();
+		supportedStatus.add("push");
+		supportedStatus.add("pull");
+		supportedStatus.add("edit");
+		supportedStatus.add("delete");
+		this.supported.put("status", supportedStatus);
+	}
 
 	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) {
 		
@@ -57,6 +81,7 @@ public class TwitterPlugin extends Plugin {
     }
 
     public Map<String, List<String>> getSupported(){
+<<<<<<< HEAD
         Map<String, List<String>> supported = new HashMap<String, List<String>>();
         List<String> operations = Arrays.asList(new String[] {"push", "pull", "delete"});
         supported.put("status", operations);
@@ -135,7 +160,7 @@ public class TwitterPlugin extends Plugin {
 		plugin.run("push", "status", object, mashbot);
 	}
 	
-	TwitterFactory factory;
+	private TwitterFactory factory;
 
 	public TwitterFactory getFactory() {
 		return factory;
