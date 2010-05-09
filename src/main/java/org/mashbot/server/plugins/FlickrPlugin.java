@@ -17,12 +17,14 @@ import org.mashbot.server.exceptions.IncompleteInformationException;
 import org.mashbot.server.exceptions.MissingAuthenticationException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.UrlResource;
 import org.xml.sax.SAXException;
 
 import com.aetrion.flickr.Flickr;
 import com.aetrion.flickr.FlickrException;
 import com.aetrion.flickr.REST;
+import com.aetrion.flickr.RequestContext;
 import com.aetrion.flickr.auth.Auth;
 import com.aetrion.flickr.auth.Permission;
 import com.aetrion.flickr.uploader.UploadMetaData;
@@ -31,7 +33,6 @@ import com.aetrion.flickr.uploader.Uploader;
 public class FlickrPlugin extends Plugin {
 	
 	private static final int DEFAULTTRIES = 3;
-	Auth auth;
 	Flickr flickr;
 	Uploader uploader;
 
@@ -63,7 +64,7 @@ public class FlickrPlugin extends Plugin {
 
 	@Override
 	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws IncompleteSecretInformationException, InvalidConfigFileException {
+			ServiceCredential credential) throws IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
 		
 		this.setup(credential,operation);
 		
@@ -71,7 +72,7 @@ public class FlickrPlugin extends Plugin {
 			if(operation == "push"){
 				return this.push(content);
 			} else if(operation == "pull") {
-				return this.push(content);
+				return this.pull(content);
 			} else if(operation == "edit") {
 				return this.edit(content);
 			} else if(operation == "delete") {
@@ -81,6 +82,11 @@ public class FlickrPlugin extends Plugin {
 		return content;
 	}
 	
+	private MObject pull(MObject content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private MObject delete(MObject content) {
 		// TODO Auto-generated method stub
 		return null;
@@ -91,7 +97,7 @@ public class FlickrPlugin extends Plugin {
 		return null;
 	}
 	
-	private MObject push(MObject content){
+	private MObject push(MObject content) throws InvalidFieldException, IncompleteSecretInformationException, InvalidConfigFileException, UndownloadableContentException, InvalidRequestException{
 		return push(content,DEFAULTTRIES);
 	}
 
@@ -119,7 +125,7 @@ public class FlickrPlugin extends Plugin {
 		
 		UploadMetaData metaData = new UploadMetaData();
 		
-		String title = content.getStringField(MObject.Field.URL);
+		String title = content.getStringField(MObject.Field.TITLE);
 		metaData.setTitle(title);
 		
 		if(content.containsField(MObject.Field.CAPTION)){
@@ -139,7 +145,11 @@ public class FlickrPlugin extends Plugin {
 		
 		try {
 			String id = this.uploader.upload(in, metaData);
-			content.putField(MObject.Field.ID, id, getServiceName());
+			RequestContext reqcon = RequestContext.getRequestContext();
+			Auth current = reqcon.getAuth();
+			String username = current.getUser().getUsername();
+			
+			content.putField(MObject.Field.ID, id, getServiceName(),username);
 		} catch (IOException e) {
 			return this.push(content, tries-1);
 		} catch (FlickrException e) {
@@ -147,30 +157,35 @@ public class FlickrPlugin extends Plugin {
 		} catch (SAXException e) {
 			throw new InvalidFieldException(e.getMessage());
 		}
+		
+		return content;
 	}
 
 	private void setup(ServiceCredential credential, String operation) throws IncompleteSecretInformationException, InvalidConfigFileException {
 			this.flickr = getFlickr();
 			
+			Auth auth = new Auth();
+			
 			if(credential.method == "proprietary" && credential.secret.length() > 0){
-				this.auth = new Auth();
-				this.auth.setToken(credential.secret);
-			} else {
-				this.auth.setPermission(Permission.NONE);
-			}
-			
-			if(operation == "push"){
-				this.auth.setPermission(Permission.WRITE);
-			} else if(operation == "pull") {
-				this.auth.setPermission(Permission.READ);
-			} else if(operation == "edit") {
-				this.auth.setPermission(Permission.WRITE);
-			} else if(operation == "delete") {
-				this.auth.setPermission(Permission.DELETE);
-			}
-			
-			this.uploader = this.flickr.getUploader();
+				auth.setToken(credential.secret);
 				
+				if(operation == "push"){
+					auth.setPermission(Permission.WRITE);
+				} else if(operation == "pull") {
+					auth.setPermission(Permission.READ);
+				} else if(operation == "edit") {
+					auth.setPermission(Permission.WRITE);
+				} else if(operation == "delete") {
+					auth.setPermission(Permission.DELETE);
+				}
+				
+			} else {
+				auth.setPermission(Permission.NONE);
+			}
+			
+			
+			RequestContext.getRequestContext().setAuth(auth);			
+			this.uploader = this.flickr.getUploader();
 	}
 
 
@@ -179,9 +194,11 @@ public class FlickrPlugin extends Plugin {
 
 		FileInputStream inFile;
 		try {
-			inFile = new FileInputStream("/src/main/resources/FlickrPlugin.config");
+			
+			inFile = new FileInputStream(new ClassPathResource("src/main/resources/FlickrPlugin.config").getPath());
 			properties.load(inFile);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new InvalidConfigFileException("/src/main/resources/FlickrPlugin.config");
 		}
 		
@@ -200,5 +217,37 @@ public class FlickrPlugin extends Plugin {
 		else{
 			throw new IncompleteSecretInformationException();
 		}	
+	}
+	
+	public static void main(String [] args){
+		FlickrPlugin in = new FlickrPlugin();
+		
+		MObject hooray = new MObject();
+		hooray.putField(MObject.Field.URL, "http://housepage.org/epicfreezer.jpg");
+		hooray.putField(MObject.Field.TITLE,"Epic Freezer");
+		
+		ServiceCredential credential = new ServiceCredential();
+		credential.key = "NoHotDogBuns";
+		credential.secret = "72157623901406783-2eae091bddcbb1e5";
+		credential.method = "proprietary";
+		
+		try {
+			in.run("push", "picture", hooray, credential);
+		} catch (IncompleteSecretInformationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidConfigFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UndownloadableContentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

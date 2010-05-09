@@ -12,8 +12,6 @@ import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
-
 public class TumblrPlugin extends Plugin {
 	private static final String serviceName = "twitter";
     private Log log = LogFactory.getLog(getClass());

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,7 +41,11 @@ public class MObject {
 		URL("url"),
 		CAPTION("caption"), 
 		ALBUM("album"), 
-		ID("id");
+		ID("id"), 
+		TITLE("title");
+		
+		
+		
 		
 		Field(String label){
 			this.label = label;
@@ -111,8 +116,9 @@ public class MObject {
 		this.putField(key, value,GenericFieldStorage.join(service, username));
 	}
 	
-	public Set<String> getFields(){
-		return this.lists.keySet();
+	@XmlTransient
+	public Map<String,List<String>> getFields(){
+		return this.lists;
 	}
 
 	public boolean containsField(Field key){
@@ -189,4 +195,17 @@ public class MObject {
 		return this.getStringField(key.toString());
 	}
 	
+	public void join(MObject b){
+		for(Entry<String,List<String>>  i : b.getFields().entrySet()){
+			if(this.lists.containsKey(i.getKey())){
+				for(String j : i.getValue()){
+					if(!this.lists.get(i.getKey()).contains(j)){
+						this.lists.get(i.getKey()).add(j);
+					}
+				}
+			} else {
+				this.lists.put(i.getKey(), new ArrayList<String>(i.getValue()));
+			}
+		}
+	}
 }
