@@ -1,6 +1,7 @@
 package org.mashbot.server.types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +17,8 @@ import org.mashbot.server.types.GenericFieldStorage;
 public class MObject {
 		
 	public MObject() {
-		super();
+		this.context = new HashMap<String, List<String>>();
+		
 	}
 
 	public enum Field{
@@ -91,7 +93,17 @@ public class MObject {
 		
 		return toCall;
 	}
+	
+	public void putField(String key, String value){
+		List<String> tmp = new ArrayList<String>();
+		tmp.add(value);
+		this.putField(key,tmp);
+}
 
 	@XmlElement(name="context")
 	public Map<String,List<String>> context;
+
+	public boolean containsKey(String field){
+		return this.context.containsKey(field);
+	}
 }

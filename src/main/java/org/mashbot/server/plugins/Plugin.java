@@ -11,7 +11,7 @@ public abstract class Plugin {
 	public abstract MObject run(String operation, String contentType, MObject content, ServiceCredential credential) throws Exception;
 	public boolean hasRequiredInformation(String operation, String contentType, MObject content){
 		for(String field : getRequiredInformation(operation, contentType)){
-			if(!content.containsField(field))
+			if(!content.containsKey(field))
 				return false;			
 		}
 		return true;

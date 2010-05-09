@@ -81,7 +81,6 @@ public class TwitterPlugin extends Plugin {
     }
 
     public Map<String, List<String>> getSupported(){
-<<<<<<< HEAD
         Map<String, List<String>> supported = new HashMap<String, List<String>>();
         List<String> operations = Arrays.asList(new String[] {"push", "pull", "delete"});
         supported.put("status", operations);
@@ -108,7 +107,7 @@ public class TwitterPlugin extends Plugin {
     	MObject retObject = new MObject();
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong(object.getField("statusId").get(0));
     		Status s = twitter.showStatus(statusId);
     		String status = s.getText();
     		String user = s.getUser().getName();
@@ -126,7 +125,7 @@ public class TwitterPlugin extends Plugin {
     	Twitter twitter = getTwitter(credential);
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong(object.getField("statusId").get(0));
     		twitter.destroyStatus(statusId);
     	}
     	catch (TwitterException e){
