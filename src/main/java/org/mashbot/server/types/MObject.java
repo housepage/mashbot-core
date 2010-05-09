@@ -95,7 +95,7 @@ public class MObject {
 	}
 	
   public void putField(Field key, String value){
-		this.putField(key.toString(),tmp);
+		this.putField(key.toString(),value);
 }
 	
 	public void putField(String key, String value){

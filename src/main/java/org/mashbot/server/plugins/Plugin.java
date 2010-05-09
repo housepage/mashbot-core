@@ -5,10 +5,11 @@ import java.util.Map;
 
 
 import org.mashbot.server.types.MObject;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.ServiceCredential;
 
 public abstract class Plugin {
-	public abstract MObject run(String operation, String contentType, MObject content, ServiceCredential credential) throws Exception;
+	public abstract MObject run(String operation, String contentType, MObject content, ServiceCredential credential) throws MashbotException;
 	public boolean hasRequiredInformation(String operation, String contentType, MObject content){
 		for(String field : getRequiredInformation(operation, contentType)){
 			if(!content.containsKey(field))

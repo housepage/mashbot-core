@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 
@@ -45,7 +46,7 @@ public class FlickrPlugin extends Plugin {
 
 	@Override
 	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws Exception {
+			ServiceCredential credential) throws MashbotException {
 		Flickr flickr = getFlickr();
 		Auth auth = new Auth();
 		auth.setToken(credential.secret);
@@ -53,21 +54,27 @@ public class FlickrPlugin extends Plugin {
 		return null;
 	}
 	
-	private Flickr getFlickr() throws IOException, ParserConfigurationException, Exception{
+	private Flickr getFlickr() throws MashbotException{
 		Properties properties = new Properties();
-
-		FileInputStream inFile = new FileInputStream("/src/main/resources/FlickrPlugin.config");
-		properties.load(inFile);
 		
-		if(properties.containsKey("apiKey") && properties.containsKey("secret")){
-			String apiKey = properties.getProperty("apiKey");
-			String secret = properties.getProperty("secret");
+		try{
+
+			FileInputStream inFile = new FileInputStream("/src/main/resources/FlickrPlugin.config");
+			properties.load(inFile);
+		
+			if(properties.containsKey("apiKey") && properties.containsKey("secret")){
+				String apiKey = properties.getProperty("apiKey");
+				String secret = properties.getProperty("secret");
 			
-			Flickr flickr = new Flickr(apiKey, secret, new REST());
-			return flickr;
+				Flickr flickr = new Flickr(apiKey, secret, new REST());
+				return flickr;
+			}
+			else{
+				throw new MashbotException();
+			}
 		}
-		else{
-			throw new Exception();
+		catch (Exception e) {
+			throw new MashbotException();
 		}
 		
 	}

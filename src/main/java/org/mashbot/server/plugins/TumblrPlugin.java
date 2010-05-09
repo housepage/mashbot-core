@@ -1,6 +1,5 @@
 package org.mashbot.server.plugins;
 
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +19,8 @@ import org.mashbot.server.plugins.TumbleJ;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class TumblrPlugin extends Plugin {
@@ -105,7 +104,7 @@ public class TumblrPlugin extends Plugin {
 	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    	DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 	    	Document doc = documentBuilder.parse(new InputSource(new StringReader(post)));
-<<<<<<< HEAD
+
 	    	Node blogPost = doc.getElementsByTagName("post").item(0);
 	    	NodeList nodes = blogPost.getChildNodes();
 	    	for(int i = 0; i < nodes.getLength(); i++){
@@ -185,7 +184,6 @@ public class TumblrPlugin extends Plugin {
 		content.putField("BLOG.TUMBLRNAME", "mashbot");
 		try {
 			plugin.run("pull", "blog", content, credential);
-			System.out.println(content.getField("BLOG.BODY").get(0));
 		} catch (MashbotException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
