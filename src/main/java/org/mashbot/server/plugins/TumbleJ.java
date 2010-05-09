@@ -24,21 +24,19 @@ public class TumbleJ
 	 * The constructor calls the openConnection method to open the connection to Tumblr.com
 	 */
 	
-	public TumbleJ()  throws Exception
+	public TumbleJ() throws Exception
 	{
-		openConnection();
+		
 	}
 
 	/**
 	 * This method opens the connection to the Tumblr Write API URL
 	 */
 	
-	public void openConnection() throws Exception
+	public URLConnection getConnection(URL url) throws Exception
 	{
-		URL url;
 		
-		// URL of tumblr.com
-		url = new URL (TUMBLR_WRITE_URL);
+		URLConnection connection;
 		
 		connection = url.openConnection();
 		
@@ -53,8 +51,8 @@ public class TumbleJ
 		
 		//encode the contents of the form
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
 		
+		return connection;
 	}
 
 	/**
@@ -70,6 +68,8 @@ public class TumbleJ
 	 
 	public void post(String email, String password, String postType, String postTitle, String body, String tags, String date) throws Exception
 	{
+		
+		URLConnection connection = getConnection(new URL(TUMBLR_WRITE_URL));
 		
 		DataOutputStream    printout;
 		
@@ -109,17 +109,96 @@ public class TumbleJ
 		printout.close ();
 		
 		//get the status
-		String status = getStatus();
-		
+		String status = getStatus(connection);
 	}
 
+	
+	/* Author: Vito Salerno */
+	public void edit(String email, String password, String postType, String postTitle, String body, String tags, String date, String postId) throws Exception
+	{
+		
+		URLConnection connection = getConnection(new URL(TUMBLR_WRITE_URL));
+		
+		DataOutputStream    printout;
+		
+		//only regular posts are supported at present
+		postType = "regular";
+		
+		//do a HTTP POST with the parameters
+		printout = new DataOutputStream (connection.getOutputStream ());
 
+		//add content with the parameters
+		StringBuffer content = new StringBuffer();
+		
+		content.append("email=");
+		content.append(URLEncoder.encode (email, ENCODING));
 
+		content.append("&password=");
+		content.append(URLEncoder.encode (password, ENCODING));
+
+		content.append("&type=");
+		content.append(URLEncoder.encode (postType, ENCODING));
+
+		content.append("&title=");
+		content.append(URLEncoder.encode (postTitle, ENCODING));
+
+		content.append("&body=");
+		content.append(URLEncoder.encode (body, ENCODING));
+
+		content.append("&tags=");
+		content.append(URLEncoder.encode (tags, ENCODING));
+
+		content.append("&date=");
+		content.append(URLEncoder.encode (date, ENCODING));
+		content.append("&post-id=");
+		content.append(URLEncoder.encode (postId, ENCODING));
+	
+		//write to the URL stream
+		printout.writeBytes (content.toString());
+		printout.flush ();
+		printout.close ();
+		
+		//get the status
+		String status = getStatus(connection);
+	}
+	
+	/* Author: Vito Salerno */
+	public void delete(String email, String password, String postId) throws Exception{
+		
+		URLConnection connection = getConnection(new URL(TUMBLR_DELETE_URL));
+		
+		DataOutputStream    printout;
+		
+		//do a HTTP POST with the parameters
+		printout = new DataOutputStream (connection.getOutputStream ());
+
+		//add content with the parameters
+		StringBuffer content = new StringBuffer();
+		
+		content.append("email=");
+		content.append(URLEncoder.encode (email, ENCODING));
+
+		content.append("&password=");
+		content.append(URLEncoder.encode (password, ENCODING));
+		
+		content.append("&post-id=");
+		content.append(URLEncoder.encode (postId, ENCODING));
+		
+		//write to the URL stream
+		printout.writeBytes (content.toString());
+		printout.flush ();
+		printout.close ();
+		
+		//get the status
+		String status = getStatus(connection);
+	}
+	
+	
 	/**
 	 * This method gets the status of the write operation
 	 */
 	 
-	private String getStatus() throws Exception
+	private String getStatus(URLConnection connection) throws Exception
 	{
 		BufferedReader     input;
 
@@ -136,6 +215,46 @@ public class TumbleJ
 	
 	}
 		
+	/* Author: Vito Salerno */
+	public String pull(String email, String password, String tumblrName, String id) throws Exception{
+
+		URLConnection connection = getConnection(new URL("http://" + tumblrName + TUMBLR_READ_URL));
+		
+		DataOutputStream    printout;
+		
+		//do a HTTP POST with the parameters
+		printout = new DataOutputStream (connection.getOutputStream ());
+
+		//add content with the parameters
+		StringBuffer content = new StringBuffer();
+		
+		content.append("email=");
+		content.append(URLEncoder.encode (email, ENCODING));
+
+		content.append("&password=");
+		content.append(URLEncoder.encode (password, ENCODING));
+
+		content.append("&id=");
+		content.append(URLEncoder.encode (id, ENCODING));
+	
+		//write to the URL stream
+		printout.writeBytes (content.toString());
+		printout.flush ();
+		printout.close ();
+		
+		//get the status
+		//String status = getStatus(connection);
+		
+		StringBuffer result = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String line;
+		while((line = reader.readLine()) != null){
+			result.append(line);
+		}
+		reader.close();
+		
+		return result.toString();
+	}
 
 	//main method to use the API
 	public static void main(String args[]) throws Exception
@@ -147,9 +266,9 @@ public class TumbleJ
 	
 
 	//connection to Tumblr
-	private URLConnection connection = null;
 	
 	private static final String ENCODING = "UTF-8";
+	private static final String TUMBLR_DELETE_URL = "http://www.tumblr.com/api/delete";
 	private static final String TUMBLR_WRITE_URL = "http://www.tumblr.com/api/write";
-	
+	private static final String TUMBLR_READ_URL = ".tumblr.com/api/read";
 }

@@ -25,6 +25,7 @@ public class MObject {
 		
 	public MObject() {
 		this.lists = new HashMap<String, List<String>>();
+		this.context = new HashMap<String, List<String>>();
 	}
 
 	public enum Field{
@@ -43,10 +44,6 @@ public class MObject {
 		ALBUM("album"), 
 		ID("id"), 
 		TITLE("title");
-		
-		
-		
-		
 		Field(String label){
 			this.label = label;
 		}
@@ -163,6 +160,12 @@ public class MObject {
 		}
 		
 		return toCall;
+	}
+	
+	public void putField(String key, String value){
+		List<String> tmp = new ArrayList<String>();
+		tmp.add(value);
+		this.putField(key,tmp);
 	}
 
 	@XmlTransient
