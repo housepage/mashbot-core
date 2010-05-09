@@ -139,7 +139,7 @@ public class FlickrPlugin extends Plugin {
 		
 		try {
 			String id = this.uploader.upload(in, metaData);
-			content.putField(MObject.Field.ID, id, getServiceName(),this.flickr);
+			content.putField(MObject.Field.ID, id, getServiceName());
 		} catch (IOException e) {
 			return this.push(content, tries-1);
 		} catch (FlickrException e) {
