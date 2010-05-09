@@ -57,14 +57,9 @@
             	<enabled>true</enabled>
             </releases>
             <snapshots>
-            	<enabled>false</enabled>
+            	<enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-	      <id>java-twitter-repository</id>
-	      <url>http://java-twitter.googlecode.com/svn/repository/</url>
-	      <name>java-twitter maven repository</name>
-	    </repository>
 	</repositories>
 	<properties>
 		<jersey.version>1.1.5.1</jersey.version>
@@ -74,23 +69,13 @@
 	</properties>
 	<dependencies>
 		<dependency>
-	      <groupId>net.unto.twitter</groupId>
-	      <artifactId>java-twitter</artifactId>
-	      <version>0.9-SNAPSHOT</version>
-	    </dependency>
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-simple</artifactId>
-		  <version>1.5.8</version>
-		</dependency>
-		<!-- <dependency>
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
            <version>1.1.GA</version>
            <type>pom</type>
            <scope>import</scope>
        	</dependency>
-		<dependency>
+		<!-- <dependency>
 		    <groupId>com.sun.jersey</groupId>
 		    <artifactId>jersey-server</artifactId>
 		    <version>${jersey.version}</version>
@@ -368,7 +353,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
     <!-- gdata stuff -->
     <dependency>
       <groupId>com.google.gdata</groupId>
@@ -587,7 +571,10 @@
     </dependency>
 
 
+<<<<<<< HEAD:pom.xml
 
+=======
+>>>>>>> develop:pom.xml
 	</dependencies>
 	<build>
 		<plugins>

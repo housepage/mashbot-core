@@ -94,6 +94,10 @@ public class MObject {
 		return toCall;
 	}
 	
+  public void putField(Field key, String value){
+		this.putField(key.toString(),tmp);
+}
+	
 	public void putField(String key, String value){
 		List<String> tmp = new ArrayList<String>();
 		tmp.add(value);
