@@ -23,6 +23,7 @@ import org.mortbay.log.Log;
 public class MObject {
 		
 	public MObject() {
+
 		this.lists = new HashMap<String, List<String>>();
 	}
 
@@ -158,6 +159,16 @@ public class MObject {
 		
 		return toCall;
 	}
+	
+  public void putField(Field key, String value){
+		this.putField(key.toString(),value);
+}
+	
+	public void putField(String key, String value){
+		List<String> tmp = new ArrayList<String>();
+		tmp.add(value);
+		this.putField(key,tmp);
+}
 
 	@XmlTransient
 	public Map<String,List<String>> lists;
@@ -189,4 +200,14 @@ public class MObject {
 		return this.getStringField(key.toString());
 	}
 	
+	public boolean containsKey(String field){
+		return this.context.containsKey(field);
+	}
+	
+	public void appendField(String key, String value){
+		if (this.context.containsKey(key)){
+			context.get(key).add(value);
+		}
+	}
+
 }

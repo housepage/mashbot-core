@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.mashbot.server.exceptions.IncompleteInformationException;
 import org.mashbot.server.exceptions.MissingAuthenticationException;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.springframework.core.io.UrlResource;
@@ -63,9 +64,13 @@ public class FlickrPlugin extends Plugin {
 
 	@Override
 	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws IncompleteSecretInformationException, InvalidConfigFileException {
+		ServiceCredential credential) throws IncompleteSecretInformationException, InvalidConfigFileException {
 		
 		this.setup(credential,operation);
+
+		Flickr flickr = getFlickr();
+		Auth auth = new Auth();
+		auth.setToken(credential.secret);
 		
 		if(contentType == "picture"){
 			if(operation == "push"){
@@ -91,6 +96,7 @@ public class FlickrPlugin extends Plugin {
 		return null;
 	}
 	
+
 	private MObject push(MObject content){
 		return push(content,DEFAULTTRIES);
 	}
@@ -175,7 +181,10 @@ public class FlickrPlugin extends Plugin {
 
 
 	private Flickr getFlickr() throws IncompleteSecretInformationException, InvalidConfigFileException {
+
 		Properties properties = new Properties();
+		
+		try{
 
 		FileInputStream inFile;
 		try {
@@ -185,10 +194,11 @@ public class FlickrPlugin extends Plugin {
 			throw new InvalidConfigFileException("/src/main/resources/FlickrPlugin.config");
 		}
 		
-		if(properties.containsKey("apiKey") && properties.containsKey("secret")){
-			String apiKey = properties.getProperty("apiKey");
-			String secret = properties.getProperty("secret");
+			if(properties.containsKey("apiKey") && properties.containsKey("secret")){
+				String apiKey = properties.getProperty("apiKey");
+				String secret = properties.getProperty("secret");
 			
+
 			Flickr flickr;
 			try {
 				flickr = new Flickr(apiKey, secret, new REST());
