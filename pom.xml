@@ -57,14 +57,9 @@
             	<enabled>true</enabled>
             </releases>
             <snapshots>
-            	<enabled>false</enabled>
+            	<enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-	      <id>java-twitter-repository</id>
-	      <url>http://java-twitter.googlecode.com/svn/repository/</url>
-	      <name>java-twitter maven repository</name>
-	    </repository>
 	</repositories>
 	<properties>
 		<jersey.version>1.1.5.1</jersey.version>
@@ -74,23 +69,13 @@
 	</properties>
 	<dependencies>
 		<dependency>
-	      <groupId>net.unto.twitter</groupId>
-	      <artifactId>java-twitter</artifactId>
-	      <version>0.9-SNAPSHOT</version>
-	    </dependency>
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-simple</artifactId>
-		  <version>1.5.8</version>
-		</dependency>
-		<!-- <dependency>
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
            <version>1.1.GA</version>
            <type>pom</type>
            <scope>import</scope>
        	</dependency>
-		<dependency>
+		<!-- <dependency>
 		    <groupId>com.sun.jersey</groupId>
 		    <artifactId>jersey-server</artifactId>
 		    <version>${jersey.version}</version>
@@ -262,6 +247,12 @@
           <artifactId>twitter4j-core</artifactId>
           <version>[2.1,)</version>
         </dependency>
+        
+        <dependency>
+  			<groupId>com.aetrion.flickr</groupId>
+  			<artifactId>flickrapi</artifactId>
+  			<version>1.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -353,13 +344,225 @@
 			<classifier>sources</classifier>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock-junit4</artifactId>
-			<version>2.5.1</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
+
+    <!-- gdata stuff -->
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-analytics</artifactId> 
+      <version>2.1</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-analytics-meta</artifactId> 
+      <version>2.1</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-appsforyourdomain</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-appsforyourdomain-meta</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-base</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-blogger</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-blogger-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-books</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-books-meta</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-calendar</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-calendar-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-client</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-client-meta</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-codesearch</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-codesearch-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-contacts</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-contacts-meta</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-core</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-docs</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-docs-meta</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-finance</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-finance-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-gtt</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-gtt-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-health</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-health-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-maps</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-maps-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-media</artifactId> 
+      <version>1.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-photos</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-photos-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-projecthosting</artifactId> 
+      <version>2.1</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-projecthosting-meta</artifactId> 
+      <version>2.1</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-sidewiki</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-sidewiki-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-sites</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-sites-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-spreadsheet</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-spreadsheet-meta</artifactId> 
+      <version>3.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-webmastertools</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-webmastertools-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-youtube</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>gdata-youtube-meta</artifactId> 
+      <version>2.0</version> 
+    </dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
