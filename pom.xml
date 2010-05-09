@@ -571,11 +571,24 @@
     </dependency>
 
 
-  </dependencies> <build> <plugins> <plugin>
-  <artifactId>maven-compiler-plugin</artifactId> <configuration>
-    <source>1.5</source> <target>1.5</target> </configuration>
-  </plugin> <plugin> <groupId>org.mortbay.jetty</groupId>
-  <artifactId>maven-jetty-plugin</artifactId> <version>6.1.8</version>
+<<<<<<< HEAD:pom.xml
+
+=======
+>>>>>>> develop:pom.xml
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.8</version>
 				<configuration>
 					<contextPath>mashbot</contextPath>
 				</configuration>
