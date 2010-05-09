@@ -27,7 +27,7 @@ import org.mashbot.server.xml.AllCredentials;
 import org.mashbot.server.xml.AllServiceCredentials;
 import org.mashbot.server.xml.ServiceCredentialMapAdapter;
 
-@XmlRootElement(name="authinfo")
+@XmlRootElement(name="userauth")
 @XmlSeeAlso(value={AllCredentials.class,AllServiceCredentials.class,HashMap.class,ArrayList.class,ServiceCredential.class})
 public class UserAuthenticationInformation {
 	private String userName;
@@ -72,7 +72,7 @@ public class UserAuthenticationInformation {
 	}
 	
 	/*@XmlElements({
-		@XmlElement(name = "service")
+		@XmlElement(name = "name")
         @XmlAttribute(name = "key",     type = String.class),
         @XmlAttribute(name = "secret", type = String.class),
         @XmlAttribute(name = "method",     type = String.class)
@@ -117,13 +117,14 @@ public class UserAuthenticationInformation {
 	
 	private List<AllServiceCredentials> authInfo;
 
+	@XmlElement(name="credentials")
 	public List<AllServiceCredentials> getAuthInfo() {
 		try {
 			this.authInfo = awesome.marshal(this.credentials);
 		} catch (Exception e) {
 			this.authInfo = new ArrayList<AllServiceCredentials>();
 		}
-				
+		
 		return this.authInfo;
 	}
 

@@ -46,7 +46,7 @@ public class MashbotAuthenticationService {
 	@Produces("application/json")
 	public UserAuthenticationInformation listAuthenticationInformation(@QueryParam("token") String token){
 		try {
-			UserAuthenticationInformation a = new UserAuthenticationInformation();
+			/*UserAuthenticationInformation a = new UserAuthenticationInformation();
 			ArrayList<ServiceCredential> credentials = new ArrayList<ServiceCredential>();
 			ServiceCredential basic = new ServiceCredential();
 			basic.key = "a";
@@ -57,8 +57,8 @@ public class MashbotAuthenticationService {
 			a.addCredential("twitter", credentials);
 			a.addCredential("tumblr", credentials);
 			log.warn(a.getCredentials());
-			return a;
-			/*return authman.listAuthenticationInformation(UUID.fromString(token));*/
+			return a;*/
+			return authman.listAuthenticationInformation(UUID.fromString(token));
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}

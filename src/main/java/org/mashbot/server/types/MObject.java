@@ -1,6 +1,7 @@
 package org.mashbot.server.types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,15 +9,21 @@ import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
 import org.mashbot.server.types.GenericFieldStorage;
+import org.mashbot.server.xml.AllServiceCredentials;
+import org.mashbot.server.xml.PropertyMapAdapter;
+import org.mashbot.server.xml.ServiceCredentialMapAdapter;
+import org.mortbay.log.Log;
 
 @XmlRootElement
 public class MObject {
 		
 	public MObject() {
+		this.lists = new HashMap<String, List<String>>();
 	}
 
 	public enum Field{
@@ -29,7 +36,12 @@ public class MObject {
 		STATUS("status"), 
 		TAGS(GenericFieldStorage.join(STATUS,"tags")), 
 		SUCCESS("success"), 
-		FAILURE("failure");
+		FAILURE("failure"), 
+		URL("url"),
+		CAPTION("caption"), 
+		ALBUM("album"), 
+		ID("id");
+		
 		Field(String label){
 			this.label = label;
 		}
@@ -37,11 +49,24 @@ public class MObject {
 	}
 	
 	public List<String> getField(String key){
-		return this.context.get(key.toLowerCase());
+		if(this.lists.containsKey(key)){
+			return this.lists.get(key.toLowerCase());
+		} else {
+			return new ArrayList<String>();
+		}
+	}
+	
+	public String getStringField(String key){
+		List<String> res = this.getField(key);
+		if(res.size() == 0){
+			return "";
+		} else {
+			return res.get(0);
+		}
 	}
 	
 	public void putField(String key, List<String> value){
-		this.context.put(key.toLowerCase(),value); 
+		this.lists.put(key.toLowerCase(),value); 
 	}
 	
 	public void putField(String key, String value){
@@ -54,6 +79,26 @@ public class MObject {
 		return this.getField(key.toString());
 	}
 	
+	public List<String> getField(Field key, String service){
+		return this.getField(GenericFieldStorage.join(key.toString(),service));
+	}
+	
+	public List<String> getField(Field key, String service, String username){
+		return this.getField(key, GenericFieldStorage.join(service,username));
+	}
+	
+	public void putField(Field key, String value){
+		this.putField(key.toString(), value);
+	}
+	
+	public void putField(Field key,String value,String service){
+		this.putField(GenericFieldStorage.join(key.toString(),service), value);
+	}
+	
+	public void putField(Field key,String value,String service, String username){
+		this.putField(key, value,GenericFieldStorage.join(service, username));
+	}
+	
 	public void putField(Field key, List<String> value){
 		this.putField(key.toString(), value);
 	}
@@ -62,12 +107,20 @@ public class MObject {
 		this.putField(GenericFieldStorage.join(key.toString(),service), value);
 	}
 	
+	public void putField(Field key,List<String> value,String service, String username){
+		this.putField(key, value,GenericFieldStorage.join(service, username));
+	}
+	
 	public Set<String> getFields(){
-		return this.context.keySet();
+		return this.lists.keySet();
 	}
 
 	public boolean containsField(Field key){
 		return this.containsField(key.toString());
+	}
+	
+	public boolean containsField(String key){
+		return this.lists.containsKey(key);
 	}
 	
 	public List<String> getServices(){
@@ -81,7 +134,7 @@ public class MObject {
 	public List<String> getServices(List<String> available){
 		List<String> toCall = new ArrayList<String>();
 		
-		if(this.context.containsKey(Field.SERVICES)){
+		if(this.lists.containsKey(Field.SERVICES)){
 			List<String> specified = this.getServices();
 			for(String service : available){
 				if(specified.contains(service)){
@@ -94,7 +147,7 @@ public class MObject {
 			}
 		}
 		
-		if(this.context.containsKey(Field.SERVICESOFF)){
+		if(this.lists.containsKey(Field.SERVICESOFF)){
 			List<String> specified = this.getServicesOff();
 			for(String service : available){
 				if(specified.contains(service)){
@@ -106,6 +159,34 @@ public class MObject {
 		return toCall;
 	}
 
-	@XmlElement(name="context")
-	public Map<String,List<String>> context;
+	@XmlTransient
+	public Map<String,List<String>> lists;
+	
+	private List<Property> context;
+
+	public List<Property> getContext() {
+		try {
+			this.context = awesome.marshal(this.lists);
+		} catch (Exception e) {
+			this.context = new ArrayList<Property>();
+		}
+				
+		return this.context;
+	}
+
+	public void setContext(List<Property> authInfo) {
+		this.context = context;
+		try {
+			this.lists = awesome.unmarshal(context);
+		} catch (Exception e) {
+			this.lists = new HashMap<String, List<String>>();
+		}
+	}
+	
+	private static PropertyMapAdapter awesome = new PropertyMapAdapter();
+
+	public String getStringField(Field key) {
+		return this.getStringField(key.toString());
+	}
+	
 }

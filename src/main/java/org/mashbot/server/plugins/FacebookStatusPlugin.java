@@ -9,7 +9,6 @@ import org.mashbot.server.types.ServiceCredential;
 
 import com.google.code.facebookapi.FacebookException;
 import com.google.code.facebookapi.FacebookJsonRestClient;
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
 public class FacebookStatusPlugin extends Plugin {
 
@@ -43,7 +42,7 @@ public class FacebookStatusPlugin extends Plugin {
 			ServiceCredential credential) throws MashbotException {
 		String twitterID = credential.key;
     	String twitterPassword = credential.secret;
-    	String latestStatus = ((ElementNSImpl) content.getField("STATUS")).getTextContent();
+    	String latestStatus = content.getStringField("STATUS");
 		FacebookJsonRestClient client = new FacebookJsonRestClient(twitterID,twitterPassword);
 		try {
 			client.users_setStatus(latestStatus);

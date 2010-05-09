@@ -25,10 +25,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 	
 	public void testGetMessage() {
 		//lookup client
-	    ClassPathXmlApplicationContext context 
+	    ClassPathXmlApplicationContext lists 
         = new ClassPathXmlApplicationContext(new String[] {"spring-test.xml"});
 
-	    ContactUsService client = (ContactUsService)context.getBean("contactUsServiceClient");
+	    ContactUsService client = (ContactUsService)lists.getBean("contactUsServiceClient");
 	    List<Message> messages = client.getMessages();
 	    assertEquals(2, messages.size());
 	    assertEquals("Willie", messages.get(0).getFirstName());

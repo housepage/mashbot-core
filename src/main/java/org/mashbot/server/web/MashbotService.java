@@ -27,8 +27,6 @@ import org.mashbot.server.types.Response;
 import org.mashbot.server.types.RequestContext;
 import org.apache.commons.logging.Log;
 
-import com.sun.corba.se.spi.ior.MakeImmutable;
-
 
 @Path("{contentType}")
 public class MashbotService {
@@ -130,10 +128,10 @@ public class MashbotService {
 	
 	@DELETE
 	@Produces({"application/json"})
-	@Path("{service}/{id}")
-	public MObject deleteRequest(@PathParam("contentType") String contentType,@PathParam("service") String service,@PathParam("id") String id, @QueryParam("token") String token){
+	@Path("{name}/{id}")
+	public MObject deleteRequest(@PathParam("contentType") String contentType,@PathParam("name") String service,@PathParam("id") String id, @QueryParam("token") String token){
 		MObject delete = new MObject();
-		//delete.putField(GenericFieldStorage.join(Request.Field.ID,service), id);
+		//delete.putField(GenericFieldStorage.join(Request.Field.ID,name), id);
 		
 		return makeRequest(Operation.DELETE,contentType,delete);
 	}

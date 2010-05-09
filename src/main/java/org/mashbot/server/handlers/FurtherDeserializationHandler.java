@@ -8,8 +8,6 @@ import org.mashbot.server.types.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
-
 public class FurtherDeserializationHandler extends ChainableHandler {
 
 	Log log = LogFactory.getLog(getClass());

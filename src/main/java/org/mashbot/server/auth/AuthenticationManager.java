@@ -18,7 +18,7 @@ import org.mashbot.server.types.ServiceCredential;
 import org.mashbot.server.types.UserAuthenticationInformation;
 
 /**
- * This class is a manager for cached third-party service credentials. 
+ * This class is a manager for cached third-party name credentials. 
  * Upon receiving a set of credentials, it issues a UUID to uniquely
  * identify that set. Using this id, the credentials may be updated, 
  * listed, renewed or invalidated at any time up until they expired
@@ -112,7 +112,7 @@ public class AuthenticationManager {
 	 * credentials can be used to reference those credentials
 	 * 
 	 * @param username - the user name associated with the credentials
-	 * @param hashMap - a map containing credentials keyed into such by service name
+	 * @param hashMap - a map containing credentials keyed into such by name name
 	 * @return a UUID which uniquely identifies the credentials provided 
 	 */
 	public String getAuthenticationToken(String username, Map<String, List<ServiceCredential>> hashMap){
@@ -124,6 +124,7 @@ public class AuthenticationManager {
 	    try{
 	    	this.mapLock.lock();
 	    	log.warn("USER AUTH:"+userauth.getCredentials());
+	    	log.warn(userauth.getCredentials().get("twitter").get(0).key);
 			this.tokenCredentials.put(id, userauth);
 			
 			if(this.userToUUID.containsKey(username)){
@@ -154,7 +155,7 @@ public class AuthenticationManager {
 	 * The new credentials passed in are assumed to better and as such any collisions 
 	 * in new and old result in the new overriding the old.
 	 * @param token - A UUID which uniquely identifies a set of credential data
-	 * @param hashMap - A map containing credentials keyed into such by service name
+	 * @param hashMap - A map containing credentials keyed into such by name name
 	 * to be added to the existing set of credentials.  
 	 * @return the current set of credentials stored after the update operation
 	 */

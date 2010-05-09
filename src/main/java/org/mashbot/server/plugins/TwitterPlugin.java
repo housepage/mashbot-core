@@ -12,8 +12,6 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
-
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
 
@@ -64,7 +62,7 @@ public class TwitterPlugin extends Plugin {
     }
 
     private void postStatus(MObject object, ServiceCredential credential){
-    	String latestStatus = ((ElementNSImpl) object.getField("STATUS")).getTextContent();
+    	String latestStatus = object.getStringField("STATUS");
 
       Twitter twitter = getTwitter(credential);
     	
@@ -83,7 +81,7 @@ public class TwitterPlugin extends Plugin {
     	MObject retObject = new MObject();
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong((String) object.getStringField("statusId"));
     		Status s = twitter.showStatus(statusId);
     		String status = s.getText();
     		String user = s.getUser().getName();
@@ -101,7 +99,7 @@ public class TwitterPlugin extends Plugin {
     	Twitter twitter = getTwitter(credential);
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong((String) object.getStringField("statusId"));
     		twitter.destroyStatus(statusId);
     	}
     	catch (TwitterException e){

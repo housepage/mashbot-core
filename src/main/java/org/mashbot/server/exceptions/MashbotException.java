@@ -1,5 +1,7 @@
 package org.mashbot.server.exceptions;
 
+import com.aetrion.flickr.FlickrException;
+
 public class MashbotException extends Exception {
 
 	/**
@@ -13,5 +15,9 @@ public class MashbotException extends Exception {
 	
 	public MashbotException(String errorString){
 		super(errorString);
+	}
+
+	public MashbotException(FlickrException e) {
+		super(e);
 	}
 }
