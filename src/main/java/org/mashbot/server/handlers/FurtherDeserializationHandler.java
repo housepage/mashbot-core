@@ -24,7 +24,7 @@ public class FurtherDeserializationHandler extends ChainableHandler {
 	@Override
 	public void preRequest(Request in, Response out, RequestContext context)
 			throws MashbotException {
-		MObject m = in.getMObject();
+		/*MObject m = in.getMObject();
 		log.warn(m.getFields());
 		for(String field : m.getFields()){
 			if(m.getField(field) != null){
@@ -38,7 +38,7 @@ public class FurtherDeserializationHandler extends ChainableHandler {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 }
