@@ -113,15 +113,20 @@ public class TumblrPlugin extends Plugin {
 	    		Node node = nodes.item(i);
 	    		String nodeName = node.getNodeName();
 	    		if (nodeName.equals("regular-title")){
-	    			content.putField("BLOG.TITLE", node.getNodeValue());
+	    			content.putField("BLOG.TITLE", node.getTextContent());
 	    		}
 	    		if (nodeName.equals("regular-body")){
-	    			content.putField("BLOG.BODY", node.getNodeValue());
+	    			content.putField("BLOG.BODY", node.getTextContent());
+	    		}
+	    		if (nodeName.equals("tag")){
+	    			if(!content.containsKey("BLOG.TAGS")){
+	    				content.putField("BLOG.TAGS", node.getTextContent());
+	    			}
+	    			else{
+	    				content.appendField("BLOG.TAGS", node.getTextContent());
+	    			}
 	    		}
 	    	}
-	    	
-	    	
-	    	
 	    	
 			content.putField(MObject.Field.SUCCESS,new ArrayList<String>(Arrays.asList(new String[] {"true"})), getServiceName());
 			content.putField("BLOG.BODY", post);

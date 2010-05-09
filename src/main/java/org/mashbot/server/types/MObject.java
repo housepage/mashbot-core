@@ -106,4 +106,10 @@ public class MObject {
 	public boolean containsKey(String field){
 		return this.context.containsKey(field);
 	}
+	
+	public void appendField(String key, String value){
+		if (this.context.containsKey(key)){
+			context.get(key).add(value);
+		}
+	}
 }
