@@ -21,9 +21,7 @@ import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class TumblrPlugin extends Plugin {
@@ -107,6 +105,7 @@ public class TumblrPlugin extends Plugin {
 	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    	DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 	    	Document doc = documentBuilder.parse(new InputSource(new StringReader(post)));
+<<<<<<< HEAD
 	    	Node blogPost = doc.getElementsByTagName("post").item(0);
 	    	NodeList nodes = blogPost.getChildNodes();
 	    	for(int i = 0; i < nodes.getLength(); i++){
