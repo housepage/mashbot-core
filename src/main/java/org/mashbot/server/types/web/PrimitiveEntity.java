@@ -1,12 +1,15 @@
 package org.mashbot.server.types.web;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+/* @XmlRootElement(name="primitiveEntity")
 public class PrimitiveEntity extends Entity implements MutableEntity {
-  /* Type */
+  
   protected Type type; 
 
   public Type getType();
 
-  /* Associations */
+  
   protected ArrayList<Assoc> assocs;
 
   public Assoc[] getAssoc() { return assocs.toArray(); }
@@ -22,7 +25,6 @@ public class PrimitiveEntity extends Entity implements MutableEntity {
       assocs.remove(index);
   }
 
-  /* Properties */
   protected ArrayList<Entity> properties;
 
   protected int findIndex(Ident id)
@@ -33,7 +35,7 @@ public class PrimitiveEntity extends Entity implements MutableEntity {
     {
       if(properties.get(i).getIdent().equals(id))
       {
-        return i
+        return i;
       }
     }
 
@@ -66,12 +68,12 @@ public class PrimitiveEntity extends Entity implements MutableEntity {
       properties.remove(index);
   }
 
-  /* Primitive */
+  
   protected PValue primitive = null;
 
-  public boolean hasPrimitiveValue() { return primitive != null }
+  public boolean hasPrimitiveValue() { return primitive != null; }
   public PValue getPrimitiveValue() { return primitive; }
   public void setPrimitiveValue(PValue value) { primitive = value; }
-  public void removePrimitiveValue() { primitve = null; }
+  public void removePrimitiveValue() { primitive = null; }
 
-}
+} */

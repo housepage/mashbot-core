@@ -49,13 +49,8 @@ public class FlickrPlugin extends Plugin {
 	public MObject run(String operation, String contentType, MObject content,
 			ServiceCredential credential) {
 		Flickr flickr = getFlickr();
-		Auth auth = new com.aetrion.flickr.auth.Auth();
-		flickr
-		auth.setToken((String) credential.key);
-		Uploader a = flickr.getUploader();
-		UploadMetaData b = new UploadMetaData();
-		
-		a.upload(in, metaData)
+		Auth auth = new Auth();
+		auth.setToken(credential.secret);
 		
 		return null;
 	}

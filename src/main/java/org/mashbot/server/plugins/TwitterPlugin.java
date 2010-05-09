@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import twitter4j.Status;
@@ -14,8 +18,28 @@ import twitter4j.TwitterFactory;
 
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
+
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+
+
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
+    private Log log = LogFactory.getLog(getClass());
+	private Map<String, List<String>> supported;
+	
+	public TwitterPlugin(){
+		this.supported = new HashMap<String,List<String>>();
+		List<String> supportedStatus = new ArrayList<String>();
+		supportedStatus.add("push");
+		supportedStatus.add("pull");
+		supportedStatus.add("edit");
+		supportedStatus.add("delete");
+		this.supported.put("status", supportedStatus);
+	}
 
 	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) {
 		
@@ -83,7 +107,7 @@ public class TwitterPlugin extends Plugin {
     	MObject retObject = new MObject();
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong(object.getField("statusId").get(0));
     		Status s = twitter.showStatus(statusId);
     		String status = s.getText();
     		String user = s.getUser().getName();
@@ -101,7 +125,7 @@ public class TwitterPlugin extends Plugin {
     	Twitter twitter = getTwitter(credential);
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getField("statusId"));
+    		long statusId = Long.parseLong(object.getField("statusId").get(0));
     		twitter.destroyStatus(statusId);
     	}
     	catch (TwitterException e){
@@ -110,8 +134,8 @@ public class TwitterPlugin extends Plugin {
     }
     
     private Twitter getTwitter(ServiceCredential credential){
-    	String twitterID = (String) credential.getField("username");
-        String twitterPassword = (String) credential.getField("password");
+    	String twitterID = credential.key;
+        String twitterPassword = credential.secret;
         System.out.println(twitterID + twitterPassword);
 
         Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
@@ -135,7 +159,7 @@ public class TwitterPlugin extends Plugin {
 		plugin.run("push", "status", object, mashbot);
 	}
 	
-	TwitterFactory factory;
+	private TwitterFactory factory;
 
 	public TwitterFactory getFactory() {
 		return factory;
