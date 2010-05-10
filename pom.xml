@@ -69,12 +69,12 @@
 	</properties>
 	<dependencies>
 		<dependency>
-
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-simple</artifactId>
 		  <version>1.5.8</version>
 		</dependency>
 		<!-- <dependency>
+
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
            <version>1.1.GA</version>
@@ -251,7 +251,6 @@
         <dependency>
           <groupId>org.twitter4j</groupId>
           <artifactId>twitter4j-core</artifactId>
-
           <version>2.1.2</version>
 
         </dependency>
