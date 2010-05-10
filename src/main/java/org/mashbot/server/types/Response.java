@@ -1,5 +1,7 @@
 package org.mashbot.server.types;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.types.Request.Field;
 
 public class Response extends GenericFieldStorage {
@@ -10,17 +12,19 @@ public class Response extends GenericFieldStorage {
 		}
 		private String label;
 	}
+
+	private Log log = LogFactory.getLog(getClass());
 	
 	public Response(){
 		super();
 	}
 	
 	public Object getField(Field key){
-		return context.get(key);
+		return this.getField(key.toString().toLowerCase());
 	}
 	
 	public void putField(Field key,Object value){
-		context.put(key.toString(), value);
+		this.putField(key.toString().toLowerCase(), value);
 	}
 
 	public void setMObject(MObject object) {
@@ -28,6 +32,7 @@ public class Response extends GenericFieldStorage {
 	}
 	
 	public MObject getMObject() {
+		log.warn(getField(Field.MOBJECT));
 		return (MObject) getField(Field.MOBJECT);
 	}
 }

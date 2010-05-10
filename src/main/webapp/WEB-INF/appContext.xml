@@ -6,11 +6,13 @@
 	xmlns:cxf="http://cxf.apache.org/core"
 	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
      http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
      http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
-     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<!-- Load CXF modules from cxf.jar -->
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
@@ -76,23 +78,31 @@
 				</entry>
 				<entry key="blog">
 					<map key-type="java.lang.String" value-type="java.util.List">
-
+	
 					</map>
 				</entry>
-				<entry key="picture">
-					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
-						
+				<entry key="photo">
+					<map key-type="java.lang.String" value-type="org.mashbot.server.plugins.Plugin">
+						<entry key="push">
+							<list value-type="org.mashbot.server.Plugin">
+								<ref bean="flickr" />
+								<ref bean="picasa" />
+							</list>
+						</entry>
 					</map>
 				</entry>
 				<entry key="video">
-					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+					<map key-type="java.lang.String" value-type="org.mashbot.server.plugins.Plugin">
 						
 					</map>
 				</entry>
 			</util:map>
 
 	
-	<bean name="twitter"  class="org.mashbot.server.plugins.TwitterPlugin" />
+	<bean name="twitter"  class="org.mashbot.server.plugins.TwitterPlugin" scope="prototype" />
+	<bean name="flickr"  class="org.mashbot.server.plugins.FlickrPlugin" scope="prototype" />
+	<bean name="picasa"  class="org.mashbot.server.plugins.PicasaPlugin" scope="prototype" />
+	
 	<!-- <bean name="twitter-factory" class="twitter4j.TwitterFactory">
 		<property name=""></property>
 	</bean> --> 
@@ -126,6 +136,7 @@
 	<util:list id="jsonKeys">
     	<value>credentials</value>
   	</util:list>
+  	
   
   	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.JSONProvider">
     <!-- <property name="namespaceMap" ref="jsonNamespaceMap"/> 

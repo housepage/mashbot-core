@@ -114,7 +114,6 @@ public class MashbotService {
 	@Produces({"application/json"})
 	public MObject pushRequest(@PathParam("contentType") String contentType, @QueryParam("token") String token, MObject incoming)
 	{
-		System.out.println("token:"+token+" "+UUID.fromString(token));
 		return makeRequest(Operation.PUSH,contentType,incoming,token);
 	}
 	

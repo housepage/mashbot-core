@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,17 +14,19 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
+import org.mashbot.server.exceptions.InvalidFieldException;
 import org.mashbot.server.types.GenericFieldStorage;
 import org.mashbot.server.xml.AllServiceCredentials;
 import org.mashbot.server.xml.PropertyMapAdapter;
 import org.mashbot.server.xml.ServiceCredentialMapAdapter;
-import org.mortbay.log.Log;
+import org.apache.commons.logging.*;;
 
 @XmlRootElement
 public class MObject {
+	
+	private Log log = LogFactory.getLog(getClass());
 		
 	public MObject() {
-
 		this.lists = new HashMap<String, List<String>>();
 	}
 
@@ -41,7 +44,15 @@ public class MObject {
 		URL("url"),
 		CAPTION("caption"), 
 		ALBUM("album"), 
-		ID("id");
+		ID("id"), 
+		TITLE("title"),
+		QUERY("query"),
+		QUERYTYPE("querytype"), 
+		TRUE("true"),
+		FALSE("false"), 
+		ALBUMDESC(GenericFieldStorage.join(ALBUM,"desc"));
+		
+		
 		
 		Field(String label){
 			this.label = label;
@@ -49,8 +60,32 @@ public class MObject {
 		private String label;
 	}
 	
+	@XmlTransient
+	public List<MashbotQuery> getQueries() throws InvalidFieldException {
+		List<MashbotQuery> ret = new ArrayList<MashbotQuery>();
+		List<String> queryTypes = this.getField(Field.QUERYTYPE);
+		List<String> queries = this.getField(Field.QUERY);
+		if(queryTypes.size() != queries.size()){
+			if(queryTypes.size() < queries.size()){
+				throw new InvalidFieldException(Field.QUERYTYPE);
+			} else {
+				throw new InvalidFieldException(Field.QUERY);
+			}
+		}
+		
+		for(int i = 0; i < queryTypes.size(); i++){
+			MashbotQuery cur = new MashbotQuery();
+			cur.id = i;
+			cur.queryType = new String(queryTypes.get(i));
+			cur.query = new String(queries.get(i));
+			ret.add(cur);
+		}
+		
+		return ret;
+	}
+	
 	public List<String> getField(String key){
-		if(this.lists.containsKey(key)){
+		if(this.lists.containsKey(key.toLowerCase())){
 			return this.lists.get(key.toLowerCase());
 		} else {
 			return new ArrayList<String>();
@@ -64,6 +99,10 @@ public class MObject {
 		} else {
 			return res.get(0);
 		}
+	}
+	
+	public String getStringField(Field key, String serviceName){
+		return this.getStringField(GenericFieldStorage.join(key.toString(), serviceName));
 	}
 	
 	public void putField(String key, List<String> value){
@@ -88,7 +127,7 @@ public class MObject {
 		return this.getField(key, GenericFieldStorage.join(service,username));
 	}
 	
-	public void putField(Field key, String value){
+	public void putField(Field key,String value){
 		this.putField(key.toString(), value);
 	}
 	
@@ -98,6 +137,14 @@ public class MObject {
 	
 	public void putField(Field key,String value,String service, String username){
 		this.putField(key, value,GenericFieldStorage.join(service, username));
+	}
+	
+	public void putField(Field key,String value,String service, String username, int id){
+		this.putField(key, value,service,GenericFieldStorage.join(username, Integer.toString(id)));
+	}
+	
+	public void putField(Field key,String value,String service, String username, long id){
+		this.putField(key, value,service,GenericFieldStorage.join(username, Long.toString(id)));
 	}
 	
 	public void putField(Field key, List<String> value){
@@ -112,8 +159,14 @@ public class MObject {
 		this.putField(key, value,GenericFieldStorage.join(service, username));
 	}
 	
-	public Set<String> getFields(){
-		return this.lists.keySet();
+	public void putField(Field key,List<String> value,String service, String username, int id){
+		this.putField(key, value,GenericFieldStorage.join(username, Integer.toString(id)));
+	}
+
+	
+	@XmlTransient
+	public Map<String,List<String>> getFields(){
+		return this.lists;
 	}
 
 	public boolean containsField(Field key){
@@ -159,16 +212,6 @@ public class MObject {
 		
 		return toCall;
 	}
-	
-  public void putField(Field key, String value){
-		this.putField(key.toString(),value);
-}
-	
-	public void putField(String key, String value){
-		List<String> tmp = new ArrayList<String>();
-		tmp.add(value);
-		this.putField(key,tmp);
-}
 
 	@XmlTransient
 	public Map<String,List<String>> lists;
@@ -200,14 +243,27 @@ public class MObject {
 		return this.getStringField(key.toString());
 	}
 	
-	public boolean containsKey(String field){
-		return this.context.containsKey(field);
-	}
-	
-	public void appendField(String key, String value){
-		if (this.context.containsKey(key)){
-			context.get(key).add(value);
+	public void join(MObject b){
+		for(Entry<String,List<String>>  i : b.getFields().entrySet()){
+			if(this.lists.containsKey(i.getKey())){
+				for(String j : i.getValue()){
+					if(!this.lists.get(i.getKey()).contains(j)){
+						this.lists.get(i.getKey()).add(j);
+					}
+				}
+			} else {
+				this.lists.put(i.getKey(), new ArrayList<String>(i.getValue()));
+			}
 		}
 	}
 
+	public boolean containsKey(String field){
+		return this.lists.containsKey(field);
+	}
+	
+	public void appendField(String key, String value){
+		if (this.lists.containsKey(key)){
+			this.lists.get(key).add(value);
+		}
+	}
 }

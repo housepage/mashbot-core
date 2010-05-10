@@ -33,8 +33,10 @@ public class RequiredDataVerificationHandler extends ChainableHandler {
 			}
 		}
 		
-		if(!requiredFields.isEmpty())
+		/*if(!requiredFields.isEmpty()){
 			throw new IncompleteInformationException(requiredFields);
+		}*/
+			
 		
 	}
 	
