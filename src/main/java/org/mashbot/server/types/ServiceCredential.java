@@ -6,13 +6,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement
-<<<<<<< HEAD
 public class ServiceCredential  {
 	
 	@XmlElement
-=======
-public class ServiceCredential {
->>>>>>> gall-plugins
 	public String key;
 	
 	@XmlElement

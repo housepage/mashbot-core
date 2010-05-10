@@ -9,8 +9,12 @@ import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mashbot.server.exceptions.InvalidFieldException;
 import org.mashbot.server.types.MObject;
+import org.mashbot.server.types.MashbotQuery;
 import org.mashbot.server.types.ServiceCredential;
+
+import twitter4j.Query;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -19,7 +23,7 @@ import twitter4j.TwitterFactory;
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
 
-	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) {
+	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) throws InvalidFieldException {
 		
 		MObject returnValue = content;
 		
@@ -80,13 +84,18 @@ public class TwitterPlugin extends Plugin {
 			}     
     }
     
-    private MObject pullStatus(MObject object, ServiceCredential credential){
+    private MObject pullStatus(MObject object, ServiceCredential credential) throws InvalidFieldException {
     	Twitter twitter = getTwitter(credential); 
     	MObject retObject = new MObject();
+
+    	for(MashbotQuery i : object.getQueries()){
+    		
+    	}
     	
     	try {
-    		long statusId = Long.parseLong((String) object.getStringField("statusId"));
+    		long statusId = Long.parseLong((String) object.getStringField(MObject.Field.ID));
     		Status s = twitter.showStatus(statusId);
+    		
     		String status = s.getText();
     		String user = s.getUser().getName();
     		retObject.putField("status", status);
@@ -133,7 +142,12 @@ public class TwitterPlugin extends Plugin {
 		
 		TwitterPlugin plugin = new TwitterPlugin();
 		//plugin.setFactory(new TwitterFactory());
-		plugin.run("push", "status", object, mashbot);
+		try {
+			plugin.run("push", "status", object, mashbot);
+		} catch (InvalidFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	TwitterFactory factory;

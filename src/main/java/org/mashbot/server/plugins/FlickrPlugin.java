@@ -4,17 +4,30 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.exceptions.IncompleteInformationException;
+import org.mashbot.server.exceptions.IncompleteSecretInformationException;
+import org.mashbot.server.exceptions.InvalidConfigFileException;
+import org.mashbot.server.exceptions.InvalidFieldException;
+import org.mashbot.server.exceptions.InvalidRequestException;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.exceptions.MissingAuthenticationException;
+import org.mashbot.server.exceptions.UndownloadableContentException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.springframework.core.io.ClassPathResource;
@@ -35,24 +48,34 @@ public class FlickrPlugin extends Plugin {
 	private static final int DEFAULTTRIES = 3;
 	Flickr flickr;
 	Uploader uploader;
+	private static String serviceName = "flickr";
+	private Map<String,List<String>> supported ;
+	private static Log log = LogFactory.getLog(FlickrPlugin.class);
+	
+	public FlickrPlugin(){
+		this.supported = new HashMap<String,List<String>>();
+		List<String> pictures = new ArrayList<String>();
+		pictures.add("push");
+		pictures.add("pull");
+		pictures.add("edit");
+		pictures.add("delete");
+		this.supported.put("picture", pictures);
+	}
 
 	@Override
 	public List<String> getRequiredInformation(String operation,
 			String contentType) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getServiceName() {
-		// TODO Auto-generated method stub
-		return null;
+		return serviceName ; 
 	}
 
 	@Override
 	public Map<String, List<String>> getSupported() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.supported;
 	}
 
 	@Override
@@ -64,18 +87,21 @@ public class FlickrPlugin extends Plugin {
 
 	@Override
 	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
+			ServiceCredential credential) throws MashbotException, IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
 		
 		this.setup(credential,operation);
 		
-		if(contentType == "picture"){
-			if(operation == "push"){
+		log.warn(operation + " " + contentType + " " + content);
+		
+		if(contentType.equals("picture")){
+			if(operation.equals("push")){
+				log.warn("Hooray!");
 				return this.push(content);
-			} else if(operation == "pull") {
+			} else if(operation.equals("pull")) {
 				return this.pull(content);
-			} else if(operation == "edit") {
+			} else if(operation.equals("edit")) {
 				return this.edit(content);
-			} else if(operation == "delete") {
+			} else if(operation.equals("delete")) {
 				return this.delete(content);
 			}
 		}
@@ -96,20 +122,12 @@ public class FlickrPlugin extends Plugin {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	private MObject push(MObject content) throws InvalidFieldException, IncompleteSecretInformationException, InvalidConfigFileException, UndownloadableContentException, InvalidRequestException{
-		return push(content,DEFAULTTRIES);
-	}
 
-	private MObject push(MObject content, int tries) throws InvalidFieldException, IncompleteSecretInformationException, InvalidConfigFileException, UndownloadableContentException, InvalidRequestException {
-		
-		if(tries <= 0){
-			return content;
-		}
-		
+	private MObject push(MObject content) throws MashbotException {
+		log.warn("Hello");
 		Flickr flickr = getFlickr();
-		
 		String picture = content.getStringField(MObject.Field.URL);
+		log.warn(picture);
 		URL url;
 		try {
 			url = new URL(picture);
@@ -118,8 +136,14 @@ public class FlickrPlugin extends Plugin {
 		}
 		InputStream in;
 		try {
-			in = url.openStream();
+			log.warn("Before: "+url+" "+picture);
+			URLConnection connection = url.openConnection();
+			connection.setConnectTimeout(0);
+			connection.setReadTimeout(0);
+			in = connection.getInputStream();
+			
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new UndownloadableContentException(); 
 		}
 		
@@ -143,15 +167,19 @@ public class FlickrPlugin extends Plugin {
 			metaData.setDescription(caption);
 		}
 		
+		log.warn("Hello again");
+		
 		try {
+			log.warn(RequestContext.getRequestContext().getAuth().getToken());
+			
 			String id = this.uploader.upload(in, metaData);
 			RequestContext reqcon = RequestContext.getRequestContext();
 			Auth current = reqcon.getAuth();
-			String username = current.getUser().getUsername();
 			
-			content.putField(MObject.Field.ID, id, getServiceName(),username);
+			
+			content.putField(MObject.Field.ID, id, getServiceName());
 		} catch (IOException e) {
-			return this.push(content, tries-1);
+			throw new MashbotException();
 		} catch (FlickrException e) {
 			throw new InvalidRequestException(e);
 		} catch (SAXException e) {
@@ -184,7 +212,7 @@ public class FlickrPlugin extends Plugin {
 			}
 			
 			
-			RequestContext.getRequestContext().setAuth(auth);			
+			RequestContext.getRequestContext().setAuth(auth);
 			this.uploader = this.flickr.getUploader();
 	}
 
@@ -223,16 +251,17 @@ public class FlickrPlugin extends Plugin {
 		FlickrPlugin in = new FlickrPlugin();
 		
 		MObject hooray = new MObject();
-		hooray.putField(MObject.Field.URL, "http://housepage.org/epicfreezer.jpg");
+		hooray.putField(MObject.Field.URL, "http://3.bp.blogspot.com/_JEfe6AelcdQ/R37vGY0tBSI/AAAAAAAAAYE/oru4LgbUpGM/s320/_41186601_hooray-pa5.jpg");
 		hooray.putField(MObject.Field.TITLE,"Epic Freezer");
 		
 		ServiceCredential credential = new ServiceCredential();
 		credential.key = "NoHotDogBuns";
-		credential.secret = "72157623901406783-2eae091bddcbb1e5";
+		credential.secret = "72157623902418777-4836d51734ef7593";
 		credential.method = "proprietary";
 		
 		try {
-			in.run("push", "picture", hooray, credential);
+			MObject herro = in.run("push", "picture", hooray, credential);
+			log.warn(herro);
 		} catch (IncompleteSecretInformationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -246,6 +275,9 @@ public class FlickrPlugin extends Plugin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MashbotException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

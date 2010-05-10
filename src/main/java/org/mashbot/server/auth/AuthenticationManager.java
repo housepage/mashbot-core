@@ -124,7 +124,6 @@ public class AuthenticationManager {
 	    try{
 	    	this.mapLock.lock();
 	    	log.warn("USER AUTH:"+userauth.getCredentials());
-	    	log.warn(userauth.getCredentials().get("twitter").get(0).key);
 			this.tokenCredentials.put(id, userauth);
 			
 			if(this.userToUUID.containsKey(username)){
