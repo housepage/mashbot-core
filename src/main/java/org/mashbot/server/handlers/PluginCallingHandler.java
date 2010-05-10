@@ -42,7 +42,9 @@ public class PluginCallingHandler extends ChainableHandler {
 			}
 		}
 		
-		System.out.println("Herro");
+		out.setMObject(incoming);
+		log.warn(incoming);
+		log.warn(out.getMObject());
 	}
 
 }

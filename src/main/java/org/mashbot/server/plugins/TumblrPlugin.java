@@ -13,7 +13,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mashbot.server.exceptions.IncompleteSecretInformationException;
+import org.mashbot.server.exceptions.InvalidConfigFileException;
+import org.mashbot.server.exceptions.InvalidFieldException;
+import org.mashbot.server.exceptions.InvalidRequestException;
 import org.mashbot.server.exceptions.MashbotException;
+import org.mashbot.server.exceptions.MissingAuthenticationException;
+import org.mashbot.server.exceptions.UndownloadableContentException;
 import org.mashbot.server.plugins.Plugin;
 import org.mashbot.server.plugins.TumbleJ;
 import org.mashbot.server.types.MObject;
@@ -35,7 +41,7 @@ public class TumblrPlugin extends Plugin {
 		supportedStatus.add("pull");
 		supportedStatus.add("edit");
 		supportedStatus.add("delete");
-		this.supported.put("blog", supportedStatus);
+		this.supported.put("post", supportedStatus);
 	}
 
     public List<String> getRequiredInformation(String operation, String contentType){
@@ -77,9 +83,6 @@ public class TumblrPlugin extends Plugin {
 			TumbleJ tumblr = new TumbleJ();
 			String email = credential.key;
 	    	String password = credential.secret;
-	    	log.warn(content.getField("BLOG.BODY"));
-	    	log.warn(content.getField("BLOG.TITLE"));
-	    	log.warn(content.getField("BLOG.TAGS"));
 	    	String body = content.getField("BLOG.BODY").get(0);
 	    	String postTitle = content.getField("BLOG.TITLE").get(0);
 	    	String tags = content.getField("BLOG.TAGS").get(0);
@@ -189,5 +192,49 @@ public class TumblrPlugin extends Plugin {
 			e.printStackTrace();
 		}
 	}
+
+	/*@Override
+	protected MObject delete(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected MObject edit(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected MObject pull(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected MObject push(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void setup(ServiceCredential credential, String operation)
+			throws IncompleteSecretInformationException,
+			InvalidConfigFileException, MissingAuthenticationException {
+		// TODO Auto-generated method stub
+		
+	}*/
 
 }

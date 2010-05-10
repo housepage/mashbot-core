@@ -199,10 +199,7 @@ public class TwitterPlugin extends Plugin {
 			status = twitter.updateStatus(latestStatus);
 			content.putField(MObject.Field.SUCCESS,MObject.Field.FALSE.toString(), serviceName,status.getUser().getName(),status.getId());
 		} catch (TwitterException e) {
-			
-			int index = 0;
-			for(index = 0; content.containsField(GenericFieldStorage.join3(MObject.Field.SUCCESS,serviceName,Integer.toString(index))); index++);
-			content.putField(MObject.Field.ID,MObject.Field.FALSE.toString(),Integer.toString(index));
+			content.putField(MObject.Field.ID,MObject.Field.FALSE.toString());
 		}
 		
 		return content;

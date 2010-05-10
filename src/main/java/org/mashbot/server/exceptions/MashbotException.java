@@ -17,7 +17,7 @@ public class MashbotException extends Exception {
 		super(errorString);
 	}
 
-	public MashbotException(FlickrException e) {
+	public MashbotException(Exception e) {
 		super(e);
 	}
 }

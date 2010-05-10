@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 public class ServiceCredential  {
 	
-	@XmlElement
+	@XmlElement(required=true)
 	public String key;
 	
-	@XmlElement
+	@XmlElement(required=true)
 	public String secret;
 	
-	@XmlElement
+	@XmlElement(required=true)
 	public String method;
 }
