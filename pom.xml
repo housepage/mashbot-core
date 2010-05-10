@@ -8,6 +8,11 @@
 	<version>0.1</version>
 	<name>mashbot</name>
 	<repositories>
+		<repository>
+		  <id>google-maven-repository</id>
+		  <name>Google Maven Repository</name>
+		  <url>http://google-maven-repository.googlecode.com/svn/repository/</url>
+		</repository>
 		<!-- for jaxb-impl -->
 		<repository>
 	      <id>gson</id>
@@ -69,14 +74,11 @@
 	</properties>
 	<dependencies>
 		<dependency>
-<<<<<<< HEAD
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-simple</artifactId>
 		  <version>1.5.8</version>
 		</dependency>
 		<!-- <dependency>
-=======
->>>>>>> gall-plugins
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
            <version>1.1.GA</version>
@@ -253,11 +255,7 @@
         <dependency>
           <groupId>org.twitter4j</groupId>
           <artifactId>twitter4j-core</artifactId>
-<<<<<<< HEAD
           <version>2.1.2</version>
-=======
-          <version>[2.1,)</version>
->>>>>>> gall-plugins
         </dependency>
         
         <dependency>
@@ -357,8 +355,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-<<<<<<< HEAD
-=======
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
@@ -366,8 +362,6 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-
->>>>>>> gall-plugins
     <!-- gdata stuff -->
     <dependency>
       <groupId>com.google.gdata</groupId>
@@ -584,8 +578,16 @@
       <artifactId>gdata-youtube-meta</artifactId> 
       <version>2.0</version> 
     </dependency>
-
-
+    <dependency>
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib</artifactId>
+	    <version>2.2</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.collections</groupId>
+		<artifactId>google-collections</artifactId>	
+		<version>1.0</version>
+	</dependency>
 	</dependencies>
 	<build>
 		<plugins>
