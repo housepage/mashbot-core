@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.mashbot.server.exceptions.InvalidRequestException;
 import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.exceptions.MissingAuthenticationException;
 import org.mashbot.server.exceptions.UndownloadableContentException;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.springframework.core.io.ClassPathResource;
@@ -49,101 +51,69 @@ public class FlickrPlugin extends Plugin {
 	Flickr flickr;
 	Uploader uploader;
 	private static String serviceName = "flickr";
-	private Map<String,List<String>> supported ;
 	private static Log log = LogFactory.getLog(FlickrPlugin.class);
 	
-	public FlickrPlugin(){
-		this.supported = new HashMap<String,List<String>>();
-		List<String> pictures = new ArrayList<String>();
-		pictures.add("push");
-		pictures.add("pull");
-		pictures.add("edit");
-		pictures.add("delete");
-		this.supported.put("picture", pictures);
-	}
+	private static final Map<String, List<String>> supported;
+	private static final List<String> required;
+    static {
+        Map<String, List<String>> aSupported = new HashMap<String,List<String>>();
+        List<String> photos = new ArrayList<String>();
+		photos.add("push");
+		photos.add("pull");
+		photos.add("edit");
+		photos.add("delete");
+		aSupported.put("photo", Collections.unmodifiableList(photos));
+        supported = Collections.unmodifiableMap(aSupported);
+        
+        List<String> aRequired = new ArrayList<String>();
+        aRequired.add(MObject.Field.URL.toString());
+        aRequired.add(MObject.Field.TITLE.toString());
+        required = Collections.unmodifiableList(aRequired);
+    }
 
 	@Override
 	public List<String> getRequiredInformation(String operation,
 			String contentType) {
-		return null;
-	}
-
-	@Override
-	public String getServiceName() {
-		return serviceName ; 
+		return FlickrPlugin.required;
 	}
 
 	@Override
 	public Map<String, List<String>> getSupported() {
-		return this.supported;
-	}
-
-	@Override
-	public boolean hasRequiredInformation(String operation, String contentType,
-			MObject content) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws MashbotException, IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
-		
-		this.setup(credential,operation);
-		
-		log.warn(operation + " " + contentType + " " + content);
-		
-		if(contentType.equals("picture")){
-			if(operation.equals("push")){
-				log.warn("Hooray!");
-				return this.push(content);
-			} else if(operation.equals("pull")) {
-				return this.pull(content);
-			} else if(operation.equals("edit")) {
-				return this.edit(content);
-			} else if(operation.equals("delete")) {
-				return this.delete(content);
-			}
-		}
-		return content;
+		return FlickrPlugin.supported;
 	}
 	
-	private MObject pull(MObject content) {
+	@Override
+	protected MObject pull(String contentType, MObject content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private MObject delete(MObject content) {
+	protected MObject delete(String contentType, MObject content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private MObject edit(MObject content) {
+	protected MObject edit(String contentType, MObject content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private MObject push(MObject content) throws MashbotException {
-		log.warn("Hello");
+	protected MObject push(String contentType, MObject content) throws MashbotException, IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
 		Flickr flickr = getFlickr();
-		String picture = content.getStringField(MObject.Field.URL);
-		log.warn(picture);
+		String photo = content.getStringField(MObject.Field.URL);
 		URL url;
 		try {
-			url = new URL(picture);
+			url = new URL(photo);
 		} catch (MalformedURLException e) {
 			throw new InvalidFieldException(MObject.Field.URL);
 		}
 		InputStream in;
 		try {
-			log.warn("Before: "+url+" "+picture);
 			URLConnection connection = url.openConnection();
 			connection.setConnectTimeout(0);
 			connection.setReadTimeout(0);
 			in = connection.getInputStream();
-			
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new UndownloadableContentException(); 
 		}
 		
@@ -167,16 +137,10 @@ public class FlickrPlugin extends Plugin {
 			metaData.setDescription(caption);
 		}
 		
-		log.warn("Hello again");
-		
 		try {
-			log.warn(RequestContext.getRequestContext().getAuth().getToken());
-			
 			String id = this.uploader.upload(in, metaData);
 			RequestContext reqcon = RequestContext.getRequestContext();
 			Auth current = reqcon.getAuth();
-			
-			
 			content.putField(MObject.Field.ID, id, getServiceName());
 		} catch (IOException e) {
 			throw new MashbotException();
@@ -184,12 +148,13 @@ public class FlickrPlugin extends Plugin {
 			throw new InvalidRequestException(e);
 		} catch (SAXException e) {
 			throw new InvalidFieldException(e.getMessage());
+		} finally {
+			content.putField(MObject.Field.ALBUM, "herro");
+			return content;
 		}
-		
-		return content;
 	}
 
-	private void setup(ServiceCredential credential, String operation) throws IncompleteSecretInformationException, InvalidConfigFileException {
+	protected void setup(ServiceCredential credential, String operation) throws IncompleteSecretInformationException, InvalidConfigFileException {
 			this.flickr = getFlickr();
 			
 			Auth auth = new Auth();
@@ -218,6 +183,7 @@ public class FlickrPlugin extends Plugin {
 
 
 	private Flickr getFlickr() throws IncompleteSecretInformationException, InvalidConfigFileException {
+
 		Properties properties = new Properties();
 
 		FileInputStream inFile;
@@ -230,10 +196,11 @@ public class FlickrPlugin extends Plugin {
 			throw new InvalidConfigFileException("/src/main/resources/FlickrPlugin.config");
 		}
 		
-		if(properties.containsKey("apiKey") && properties.containsKey("secret")){
-			String apiKey = properties.getProperty("apiKey");
-			String secret = properties.getProperty("secret");
+			if(properties.containsKey("apiKey") && properties.containsKey("secret")){
+				String apiKey = properties.getProperty("apiKey");
+				String secret = properties.getProperty("secret");
 			
+
 			Flickr flickr;
 			try {
 				flickr = new Flickr(apiKey, secret, new REST());
@@ -244,7 +211,7 @@ public class FlickrPlugin extends Plugin {
 		}
 		else{
 			throw new IncompleteSecretInformationException();
-		}	
+		}
 	}
 	
 	public static void main(String [] args){
@@ -260,7 +227,7 @@ public class FlickrPlugin extends Plugin {
 		credential.method = "proprietary";
 		
 		try {
-			MObject herro = in.run("push", "picture", hooray, credential);
+			MObject herro = in.run("push", "photo", hooray, credential);
 			log.warn(herro);
 		} catch (IncompleteSecretInformationException e) {
 			// TODO Auto-generated catch block
@@ -281,5 +248,10 @@ public class FlickrPlugin extends Plugin {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getServiceName() {
+		return FlickrPlugin.serviceName;
 	}
 }

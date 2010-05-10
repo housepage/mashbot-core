@@ -2,6 +2,7 @@ package org.mashbot.server.plugins;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,15 @@ import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mashbot.server.exceptions.IncompleteSecretInformationException;
+import org.mashbot.server.exceptions.InvalidConfigFileException;
 import org.mashbot.server.exceptions.InvalidFieldException;
+import org.mashbot.server.exceptions.InvalidRequestException;
+import org.mashbot.server.exceptions.MashbotException;
+import org.mashbot.server.exceptions.MissingAuthenticationException;
+import org.mashbot.server.exceptions.UndownloadableContentException;
+
+import org.mashbot.server.types.GenericFieldStorage;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.MashbotQuery;
 import org.mashbot.server.types.ServiceCredential;
@@ -19,26 +28,22 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
 
 public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
-
-	public MObject run(String operation, String contentType, MObject content, ServiceCredential credential) throws InvalidFieldException {
-		
-		MObject returnValue = content;
-		
-		if(contentType.equals("status")){
-				if ( operation.equals("push")){
-					postStatus(content, credential);
-				}
-				if ( operation.equals("pull")){
-					returnValue = pullStatus(content, credential);
-				}
-				if ( operation.equals("delete")){
-					deleteStatus(content, credential);
-				}
-		}
-		return returnValue;
+    private static final Map<String, List<String>> supported;
+    private Twitter twitter;
+    
+    static {
+        Map<String, List<String>> aSupported = new HashMap<String,List<String>>();
+        List<String> photos = new ArrayList<String>();
+		photos.add("push");
+		photos.add("pull");
+		photos.add("edit");
+		photos.add("delete");
+		aSupported.put("status", Collections.unmodifiableList(photos));
+        supported = Collections.unmodifiableMap(aSupported);
     }
 
     public List<String> getRequiredInformation(String operation, String contentType){
@@ -46,13 +51,13 @@ public class TwitterPlugin extends Plugin {
     	
     	if(contentType.equals("status")){
     		if (operation.equals("push")){
-    			requiredInformation.add("status");
+    			requiredInformation.add(MObject.Field.STATUS.toString());
     		}
     		if (operation.equals("pull")){
-    			requiredInformation.add("statusId");
+    			requiredInformation.add(MObject.Field.ID.toString());
     		}
     		if (operation.equals("delete")){
-    			requiredInformation.add("statusId");
+    			requiredInformation.add(MObject.Field.ID.toString());
     		}
     	}
     	return requiredInformation;
@@ -71,61 +76,28 @@ public class TwitterPlugin extends Plugin {
 
     private void postStatus(MObject object, ServiceCredential credential){
     	String latestStatus = object.getStringField("STATUS");
-
-      Twitter twitter = getTwitter(credential);
     	
-      Status status;
+    	Status status;
 
-			try {
-				status = twitter.updateStatus(latestStatus);
-				System.out.println("Successfully updated the status to [" + status.getText() + "].");
-			} catch (TwitterException e) {
-				e.printStackTrace();
-			}     
+		try {
+			status = twitter.updateStatus(latestStatus);
+			System.out.println("Successfully updated the status to [" + status.getText() + "].");
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}     
     }
     
-    private MObject pullStatus(MObject object, ServiceCredential credential) throws InvalidFieldException {
-    	Twitter twitter = getTwitter(credential); 
-    	MObject retObject = new MObject();
-
-    	for(MashbotQuery i : object.getQueries()){
-    		
+    private Twitter getTwitter(ServiceCredential credential) throws MissingAuthenticationException{
+    	
+    	if(credential.method.equals("userpass")){
+    		return new TwitterFactory().getInstance(credential.key, credential.secret);
+    	} else if(credential.method.equals("oauth")) {
+    		AccessToken access = new AccessToken(credential.key,credential.secret);
+    		return new TwitterFactory().getOAuthAuthorizedInstance("wOrsK4bFG0VJNplruzVoNg","E3akoP3oG8iQj1XHP9bArQSwlCKfyedPNaFX4U8vd4", access);
+    	} else {
+    		throw new MissingAuthenticationException();
     	}
     	
-    	try {
-    		long statusId = Long.parseLong((String) object.getStringField(MObject.Field.ID));
-    		Status s = twitter.showStatus(statusId);
-    		
-    		String status = s.getText();
-    		String user = s.getUser().getName();
-    		retObject.putField("status", status);
-    		retObject.putField("user", user);
-    	}
-    	catch (TwitterException e) {
-    		e.printStackTrace();
-    	}
-    	
-    	return retObject;
-    }
-    
-    private void deleteStatus(MObject object, ServiceCredential credential){
-    	Twitter twitter = getTwitter(credential);
-    	
-    	try {
-    		long statusId = Long.parseLong((String) object.getStringField("statusId"));
-    		twitter.destroyStatus(statusId);
-    	}
-    	catch (TwitterException e){
-    		e.printStackTrace();
-    	}
-    }
-    
-    private Twitter getTwitter(ServiceCredential credential){
-    		String twitterID = credential.key;
-        String twitterPassword = credential.secret;
-				
-        Twitter twitter = new TwitterFactory().getInstance(twitterID,twitterPassword);
-        return twitter;
     }
     
 	public enum Property{
@@ -147,17 +119,10 @@ public class TwitterPlugin extends Plugin {
 		} catch (InvalidFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (MashbotException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-	
-	TwitterFactory factory;
-
-	public TwitterFactory getFactory() {
-		return factory;
-	}
-
-	public void setFactory(TwitterFactory factory) {
-		this.factory = factory;
 	}
 
 	@Override
@@ -166,6 +131,91 @@ public class TwitterPlugin extends Plugin {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	@Override
+	protected MObject delete(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		
+		long statusId = Long.parseLong((String) content.getStringField(MObject.Field.ID,serviceName));
+		
+		try {
+    		Status result = twitter.destroyStatus(statusId);
+    		content.putField(MObject.Field.SUCCESS,MObject.Field.TRUE.toString(), serviceName,result.getUser().getName(), statusId);
+    	}
+    	catch (TwitterException e){
+    		content.putField(MObject.Field.SUCCESS,MObject.Field.FALSE.toString(), serviceName,"unknown", statusId);
+    	}
+    	
+    	return content;
+	}
+
+	@Override
+	protected MObject edit(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected MObject pull(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+
+    	for(MashbotQuery i : content.getQueries()){
+    		
+    	}
+    	
+    	try {
+    		long statusId = Long.parseLong((String) content.getStringField(MObject.Field.ID));
+    		Status status = this.twitter.showStatus(statusId);
+    		
+    		String statusText = status.getText();
+    		String user = status.getUser().getName();
+    		content.putField(MObject.Field.STATUS, statusText, serviceName, user);
+    		content.putField("user", user);
+    	}
+    	catch (TwitterException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return content;
+	}
+
+	@Override
+	protected MObject push(String contentType, MObject content)
+			throws MashbotException, IncompleteSecretInformationException,
+			InvalidConfigFileException, InvalidFieldException,
+			UndownloadableContentException, InvalidRequestException {
+		String latestStatus = content.getStringField(MObject.Field.STATUS);
+    	
+    	Status status;
+
+		try {
+			status = twitter.updateStatus(latestStatus);
+			content.putField(MObject.Field.SUCCESS,MObject.Field.FALSE.toString(), serviceName,status.getUser().getName(),status.getId());
+		} catch (TwitterException e) {
+			
+			int index = 0;
+			for(index = 0; content.containsField(GenericFieldStorage.join3(MObject.Field.SUCCESS,serviceName,Integer.toString(index))); index++);
+			content.putField(MObject.Field.ID,MObject.Field.FALSE.toString(),Integer.toString(index));
+		}
+		
+		return content;
+	}
+
+	@Override
+	protected void setup(ServiceCredential credential, String operation)
+			throws IncompleteSecretInformationException,
+			InvalidConfigFileException, MissingAuthenticationException {
+		this.twitter = getTwitter(credential);
+		
+	}
+	
 }
 	
 

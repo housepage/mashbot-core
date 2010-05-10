@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.MObject;
+import org.mashbot.server.exceptions.MashbotException;
 import org.mashbot.server.types.ServiceCredential;
 
 public abstract class Plugin {

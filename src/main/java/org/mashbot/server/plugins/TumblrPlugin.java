@@ -1,6 +1,5 @@
 package org.mashbot.server.plugins;
 
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +19,8 @@ import org.mashbot.server.plugins.TumbleJ;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class TumblrPlugin extends Plugin {
@@ -105,10 +104,27 @@ public class TumblrPlugin extends Plugin {
 	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    	DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 	    	Document doc = documentBuilder.parse(new InputSource(new StringReader(post)));
-	    	Node blog = doc.getElementsByTagName("post").item(0);
-	    	NamedNodeMap blog.getAttributes();
-	    	
-	    	
+
+	    	Node blogPost = doc.getElementsByTagName("post").item(0);
+	    	NodeList nodes = blogPost.getChildNodes();
+	    	for(int i = 0; i < nodes.getLength(); i++){
+	    		Node node = nodes.item(i);
+	    		String nodeName = node.getNodeName();
+	    		if (nodeName.equals("regular-title")){
+	    			content.putField("BLOG.TITLE", node.getTextContent());
+	    		}
+	    		if (nodeName.equals("regular-body")){
+	    			content.putField("BLOG.BODY", node.getTextContent());
+	    		}
+	    		if (nodeName.equals("tag")){
+	    			if(!content.containsKey("BLOG.TAGS")){
+	    				content.putField("BLOG.TAGS", node.getTextContent());
+	    			}
+	    			else{
+	    				content.appendField("BLOG.TAGS", node.getTextContent());
+	    			}
+	    		}
+	    	}
 	    	
 			content.putField(MObject.Field.SUCCESS,new ArrayList<String>(Arrays.asList(new String[] {"true"})), getServiceName());
 			content.putField("BLOG.BODY", post);
@@ -168,7 +184,6 @@ public class TumblrPlugin extends Plugin {
 		content.putField("BLOG.TUMBLRNAME", "mashbot");
 		try {
 			plugin.run("pull", "blog", content, credential);
-			System.out.println(content.getField("BLOG.BODY").get(0));
 		} catch (MashbotException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

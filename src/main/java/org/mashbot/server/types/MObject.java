@@ -47,7 +47,12 @@ public class MObject {
 		ID("id"), 
 		TITLE("title"),
 		QUERY("query"),
-		QUERYTYPE("querytype");
+		QUERYTYPE("querytype"), 
+		TRUE("true"),
+		FALSE("false"), 
+		ALBUMDESC(GenericFieldStorage.join(ALBUM,"desc"));
+		
+		
 		
 		Field(String label){
 			this.label = label;
@@ -96,6 +101,10 @@ public class MObject {
 		}
 	}
 	
+	public String getStringField(Field key, String serviceName){
+		return this.getStringField(GenericFieldStorage.join(key.toString(), serviceName));
+	}
+	
 	public void putField(String key, List<String> value){
 		this.lists.put(key.toLowerCase(),value); 
 	}
@@ -131,7 +140,11 @@ public class MObject {
 	}
 	
 	public void putField(Field key,String value,String service, String username, int id){
-		this.putField(key, value,GenericFieldStorage.join(username, Integer.toString(id)));
+		this.putField(key, value,service,GenericFieldStorage.join(username, Integer.toString(id)));
+	}
+	
+	public void putField(Field key,String value,String service, String username, long id){
+		this.putField(key, value,service,GenericFieldStorage.join(username, Long.toString(id)));
 	}
 	
 	public void putField(Field key, List<String> value){
@@ -244,7 +257,13 @@ public class MObject {
 		}
 	}
 
-	public boolean containsKey(String field) {
+	public boolean containsKey(String field){
 		return this.lists.containsKey(field);
+	}
+	
+	public void appendField(String key, String value){
+		if (this.lists.containsKey(key)){
+			this.lists.get(key).add(value);
+		}
 	}
 }
