@@ -81,7 +81,6 @@ public class UserAuthenticationInformation {
     /*@XmlJavaTypeAdapter(value=ServiceCredentialMapAdapter.class,type=Map.class)*/
 	@XmlTransient
 	public Map<String, List<ServiceCredential>> getCredentials() {
-		log.warn("HEY:"+this.credentials.get("twitter").get(0).key);
 		return this.credentials;
 	}
 

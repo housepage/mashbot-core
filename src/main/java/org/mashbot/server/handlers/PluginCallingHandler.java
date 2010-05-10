@@ -3,6 +3,7 @@ package org.mashbot.server.handlers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mashbot.server.exceptions.MashbotException;
+import org.mashbot.server.handlers.ChainableHandler;
 import org.mashbot.server.plugins.Plugin;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.Request;
@@ -35,6 +36,7 @@ public class PluginCallingHandler extends ChainableHandler {
 		for(Plugin plugin : plugins){
 			log.warn(credentialMap.get(plugin.getServiceName()));
 			List<ServiceCredential> credentials = credentialMap.get(plugin.getServiceName());
+			log.warn("Credential Map:"+credentialMap);
 			for(ServiceCredential credential : credentials){
 				plugin.run(operation, contentType, incoming, credential);
 			}

@@ -76,16 +76,20 @@
 				</entry>
 				<entry key="blog">
 					<map key-type="java.lang.String" value-type="java.util.List">
-
+	
 					</map>
 				</entry>
 				<entry key="picture">
-					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
-						
+					<map key-type="java.lang.String" value-type="org.mashbot.server.plugins.Plugin">
+						<entry key="push">
+							<list value-type="org.mashbot.server.Plugin">
+								<ref bean="flickr" />
+							</list>
+						</entry>
 					</map>
 				</entry>
 				<entry key="video">
-					<map key-type="String" value-type="org.mashbot.server.plugins.Plugin">
+					<map key-type="java.lang.String" value-type="org.mashbot.server.plugins.Plugin">
 						
 					</map>
 				</entry>
@@ -93,6 +97,7 @@
 
 	
 	<bean name="twitter"  class="org.mashbot.server.plugins.TwitterPlugin" />
+	<bean name="flickr"  class="org.mashbot.server.plugins.FlickrPlugin" />
 	<!-- <bean name="twitter-factory" class="twitter4j.TwitterFactory">
 		<property name=""></property>
 	</bean> --> 
