@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.io.IOException;
 
 import java.net.URL;
+import java.net.MalformedURLException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,7 +137,19 @@ public class BloggerPlugin extends Plugin
       throw new MissingAuthenticationException();
     }
 
-    String blogId = getBlogId(blogger);
+    String blogId;
+    try
+    {
+      blogId = getBlogId(blogger);
+    }
+    catch(IOException e)
+    {
+      throw new MissingAuthenticationException();
+    }
+    catch(ServiceException e)
+    {
+      throw new MissingAuthenticationException();
+    }
     feedUri = FEED_URI_BASE + "/" + blogId;
   }
 	
@@ -167,10 +180,27 @@ public class BloggerPlugin extends Plugin
     Entry entry = new Entry();
     entry.setTitle(new PlainTextConstruct(title));
     entry.setContent(new PlainTextConstruct(body)); 
-    
-    URL postUrl = new URL(feedUri + POSTS_FEED_URI_SUFFIX);
 
-    blogger.insert(postUrl, entry);
+    try
+    {
+      URL postUrl = new URL(feedUri + POSTS_FEED_URI_SUFFIX);
+      blogger.insert(postUrl, entry);
+    }
+    catch(MalformedURLException e)
+    {
+      /* be confused */
+    }
+    catch(ServiceException e)
+    {
+      throw new MashbotException();
+    }
+    catch(IOException e)
+    {
+      log.error("IO exception");
+      content.putField(MObject.Field.SUCCESS,
+          new ArrayList<String>(Arrays.asList(new String[] {"false"})), 
+            getServiceName());
+    }
 
     content.putField(MObject.Field.SUCCESS,
         new ArrayList<String>(Arrays.asList(new String[] {"true"})), 
