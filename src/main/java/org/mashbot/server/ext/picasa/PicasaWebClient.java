@@ -220,8 +220,8 @@ public class PicasaWebClient {
    */
   public <T extends GphotoFeed> T getFeed(String feedHref,
       Class<T> feedClass) throws IOException, ServiceException {
-    System.out.println("Get Feed URL: " + feedHref);
-    return service.getFeed(new URL(feedHref), feedClass);
+	    System.out.println("Get Feed URL: " + feedHref);
+	    return service.getFeed(new URL(feedHref), feedClass);
     }
 
   /**

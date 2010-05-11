@@ -50,7 +50,7 @@ import com.google.gdata.util.ServiceException;
 
 public class PicasaPlugin extends Plugin {
 	
-	private static String serviceName = "picasaService";
+	private static String serviceName = "picasa";
 	private static Log log = LogFactory.getLog(FlickrPlugin.class);
 	private static final Map<String, List<String>> supported;
 	private static final List<String> required;
@@ -146,11 +146,17 @@ public class PicasaPlugin extends Plugin {
 				albumdesc = "";
 			}
 			
+			//this.picasaService.
 			album = this.picasaClient.fetchOrCreateAlbum(albumtitle, albumdesc);
+			
 			
 		} catch (IOException e) {
 			throw new InvalidRequestException(e);
 		} catch (ServiceException e) {
+			log.warn(e.getDebugInfo());
+			log.warn(e.getExtendedHelp());
+			log.warn(e.getMessage());
+			log.warn(e.getInternalReason());
 			throw new InvalidRequestException(e);
 		} 
 		
@@ -181,6 +187,7 @@ public class PicasaPlugin extends Plugin {
 		photo.setContent(data);
 		
 		photo.setTitle(new PlainTextConstruct(title));
+		log.warn("HOLY FUCK ITS A TITLE:" + title);
 		
 		if(content.containsField(MObject.Field.CAPTION)){
 			String caption = content.getStringField(MObject.Field.CAPTION);
@@ -188,7 +195,7 @@ public class PicasaPlugin extends Plugin {
 		}
 		
 		try {
-			this.picasaClient.insert(album,photo);
+			photo = this.picasaClient.insert(album,photo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,8 +231,10 @@ public class PicasaPlugin extends Plugin {
 			InvalidConfigFileException, MissingAuthenticationException {
 		 this.picasaService = new PicasawebService("Mashbot-Mashbot-1.0");
 		 
-		 if(credential.method == "oauth"){
+		 if(credential.method.equals("oauth")){
 			 OAuthParameters params = new OAuthParameters();
+			 log.warn("token:"+credential.key);
+			 log.warn("tokenSecret:"+credential.secret);
 			 params.setOAuthToken(credential.key);
 			 params.setOAuthTokenSecret(credential.secret);
 			 params.setOAuthConsumerKey("www.mashbot.net");
@@ -236,7 +245,8 @@ public class PicasaPlugin extends Plugin {
 			} catch (OAuthException e) {
 				throw new MissingAuthenticationException();
 			}
-		 } else if(credential.method == "userpass") {
+			log.warn("Auth Token:" + this.picasaService.getAuthTokenFactory().getAuthToken());
+		 } else if(credential.method.equals("userpass")) {
 			 try {
 				this.picasaService.setUserCredentials(credential.key, credential.secret);
 			} catch (AuthenticationException e) {

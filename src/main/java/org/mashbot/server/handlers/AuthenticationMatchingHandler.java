@@ -37,6 +37,8 @@ public class AuthenticationMatchingHandler extends ChainableHandler {
 			services.add(i.getServiceName());
 		}
 		
+		log.warn("services:"+services);
+		
 		Map<String, List<ServiceCredential>> credentialMap = new HashMap<String,List<ServiceCredential>>();
 		
 		UUID token = in.getToken();
@@ -44,7 +46,7 @@ public class AuthenticationMatchingHandler extends ChainableHandler {
 		AuthenticationManager authMan = context.getAuthenticationManager();
 		UserAuthenticationInformation userAuth = authMan.listAuthenticationInformation(token);
 		if(userAuth != null) {
-			log.warn(userAuth);
+			log.warn(userAuth.getAuthInfo());
 			log.warn(token);
 			
 			Map<String,List<ServiceCredential>> credentials = userAuth.getCredentials();

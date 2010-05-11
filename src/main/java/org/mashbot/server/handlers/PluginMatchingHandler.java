@@ -36,6 +36,9 @@ public class PluginMatchingHandler extends ChainableHandler {
 		List<Plugin> allplugins = manager.getPlugins(operation, contentType);
 		List<Plugin> calledplugins = new ArrayList<Plugin>();
 		List<String> requested = current.getServices(manager.getSupportedServices(operation, contentType));
+		for(String i : requested ){
+			log.warn(i);
+		}
 		log.warn(requested);
 		for(Plugin i : allplugins){
 			log.warn(i.getServiceName());

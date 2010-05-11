@@ -19,7 +19,9 @@ import org.mashbot.server.types.GenericFieldStorage;
 import org.mashbot.server.xml.AllServiceCredentials;
 import org.mashbot.server.xml.PropertyMapAdapter;
 import org.mashbot.server.xml.ServiceCredentialMapAdapter;
-import org.apache.commons.logging.*;;
+import org.apache.commons.logging.*;
+
+import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
 
 @XmlRootElement
 public class MObject {
@@ -50,7 +52,9 @@ public class MObject {
 		QUERYTYPE("querytype"), 
 		TRUE("true"),
 		FALSE("false"), 
-		ALBUMDESC(GenericFieldStorage.join(ALBUM,"desc"));
+		ALBUMDESC(GenericFieldStorage.join(ALBUM,"desc")), 
+		BODY("body");
+		
 		
 		
 		
@@ -174,7 +178,7 @@ public class MObject {
 	}
 	
 	public boolean containsField(String key){
-		return this.lists.containsKey(key);
+		return this.lists.containsKey(key.toLowerCase());
 	}
 	
 	public List<String> getServices(){
@@ -262,8 +266,12 @@ public class MObject {
 	}
 	
 	public void appendField(String key, String value){
-		if (this.lists.containsKey(key)){
-			this.lists.get(key).add(value);
+		if (this.lists.containsKey(key.toLowerCase())){
+			this.lists.get(key.toLowerCase()).add(value);
 		}
+	}
+
+	public void appendField(Field key, String value) {
+		this.appendField(key.toString(), value);	
 	}
 }
