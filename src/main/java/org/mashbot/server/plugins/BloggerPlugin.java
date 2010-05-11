@@ -34,7 +34,14 @@ import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
 import com.google.gdata.client.authn.oauth.OAuthSigner;
 import com.google.gdata.client.authn.oauth.OAuthException;
 
+import org.mashbot.server.exceptions.IncompleteSecretInformationException;
+import org.mashbot.server.exceptions.InvalidConfigFileException;
+import org.mashbot.server.exceptions.InvalidFieldException;
+import org.mashbot.server.exceptions.InvalidRequestException;
 import org.mashbot.server.exceptions.MashbotException;
+import org.mashbot.server.exceptions.MissingAuthenticationException;
+import org.mashbot.server.exceptions.UndownloadableContentException;
+
 import org.mashbot.server.plugins.Plugin;
 import org.mashbot.server.types.MObject;
 import org.mashbot.server.types.ServiceCredential;
@@ -53,6 +60,7 @@ public class BloggerPlugin extends Plugin
 
   private Map<String, List<String>> supported;
 
+
   
   private static final String METAFEED_URL = 
       "http://www.blogger.com/feeds/default/blogs";
@@ -61,7 +69,8 @@ public class BloggerPlugin extends Plugin
   private static final String POSTS_FEED_URI_SUFFIX = "/posts/default";
   private static final String COMMENTS_FEED_URI_SUFFIX = "/comments/default";
 
-  private static String feedUri;
+  private String feedUri;
+  private BloggerService blogger; 
 
 	public BloggerPlugin(){
 		this.supported = new HashMap<String,List<String>>();
@@ -99,9 +108,9 @@ public class BloggerPlugin extends Plugin
     throw new IOException("User has no blogs!");
   }
 
-	@Override
-	public MObject run(String operation, String contentType, MObject content,
-			ServiceCredential credential) throws MashbotException 
+  protected void setup(ServiceCredential credential, String operation) 
+    throws IncompleteSecretInformationException, InvalidConfigFileException, 
+                  MissingAuthenticationException
   {
     /* Translate credentials into OAuth stuff */
     GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
@@ -116,7 +125,7 @@ public class BloggerPlugin extends Plugin
     oauthParameters.setScope(FEED_URI_BASE);
 
     /* Login to the service with the OAuth and assign the blog id */
-    BloggerService blogger = new BloggerService(applicationName);
+    blogger = new BloggerService(applicationName);
 
     try {
       blogger.setOAuthCredentials(oauthParameters, signer);
@@ -124,36 +133,28 @@ public class BloggerPlugin extends Plugin
     catch(OAuthException e)
     {
       log.error("OAuth problem with Blogger");
-			content.putField(MObject.Field.SUCCESS,
-          new ArrayList<String>(Arrays.asList(new String[] {"false"})), 
-            getServiceName());
-      return content;
+      throw new MissingAuthenticationException();
     }
 
     String blogId = getBlogId(blogger);
     feedUri = FEED_URI_BASE + "/" + blogId;
-
-    /* Determine the request type and sent to correct method */
-		if(contentType.equals("blog")){
-			if(operation.equals("push")){
-				content = pushBlog(content, blogger);
-			}
-			if(operation.equals("pull")){
-				content = pullBlog(content, blogger);
-			}
-			if(operation.equals("edit")){
-				content = editBlog(content, blogger);
-			}
-			if(operation.equals("delete")){
-				content = deleteBlog(content, blogger);
-			}
-		}
-		
-		return content; 
-	}
+  }
 	
-	private MObject pushBlog(MObject content, BloggerService blogger)
+	protected MObject push(String contentType, MObject content) 
+    throws MashbotException, IncompleteSecretInformationException, 
+      InvalidConfigFileException, InvalidFieldException, 
+      UndownloadableContentException, InvalidRequestException
   {
+    if(!contentType.equals("blog"))
+    {
+      log.error("Content type not equal blog");
+			content.putField(MObject.Field.SUCCESS,
+          new ArrayList<String>(Arrays.asList(new String[] {"false"})), 
+            getServiceName());
+
+      return content;
+    }
+
     log.warn(content.getField("BLOG.BODY"));
     log.warn(content.getField("BLOG.TITLE"));
     log.warn(content.getField("BLOG.TAGS"));
@@ -184,7 +185,11 @@ public class BloggerPlugin extends Plugin
 		return content;
 	}
 	
-	private MObject pullBlog(MObject content, BloggerService blogger){
+	protected MObject pull(String contentType, MObject content) 
+    throws MashbotException, IncompleteSecretInformationException, 
+      InvalidConfigFileException, InvalidFieldException, 
+      UndownloadableContentException, InvalidRequestException
+  {
     /*
 		try{
 			TumbleJ tumblr = new TumbleJ();
@@ -230,7 +235,11 @@ public class BloggerPlugin extends Plugin
 		return content;
 	}
 	
-	private MObject editBlog(MObject content, BloggerService blogger){
+	protected MObject edit(String contentType, MObject content) 
+    throws MashbotException, IncompleteSecretInformationException, 
+      InvalidConfigFileException, InvalidFieldException, 
+      UndownloadableContentException, InvalidRequestException
+  {
     /*
 		try {
 			TumbleJ tumblr = new TumbleJ();
@@ -252,7 +261,11 @@ public class BloggerPlugin extends Plugin
 		return content;
 	}
 
-	private MObject deleteBlog(MObject content, BloggerService blogger){
+	protected MObject delete(String contentType, MObject content) 
+    throws MashbotException, IncompleteSecretInformationException, 
+      InvalidConfigFileException, InvalidFieldException, 
+      UndownloadableContentException, InvalidRequestException
+  {
     /*
 		try {
 			TumbleJ tumblr = new TumbleJ();
