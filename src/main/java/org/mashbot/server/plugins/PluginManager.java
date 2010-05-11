@@ -40,6 +40,7 @@ public class PluginManager {
 			List<String> supported = new ArrayList<String>();
 			for(Plugin i : plugins.get(contentType).get(operation)){
 				supported.add(i.getServiceName());
+				log.warn(i.getServiceName());
 			}
 			return supported;
 		} else {

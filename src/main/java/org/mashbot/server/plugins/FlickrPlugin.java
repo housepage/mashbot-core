@@ -50,6 +50,7 @@ public class FlickrPlugin extends Plugin {
 	private static final int DEFAULTTRIES = 3;
 	Flickr flickr;
 	Uploader uploader;
+	Auth flickrAuth;
 	private static String serviceName = "flickr";
 	private static Log log = LogFactory.getLog(FlickrPlugin.class);
 	
@@ -100,7 +101,9 @@ public class FlickrPlugin extends Plugin {
 
 	protected MObject push(String contentType, MObject content) throws MashbotException, IncompleteSecretInformationException, InvalidConfigFileException, InvalidFieldException, UndownloadableContentException, InvalidRequestException {
 		Flickr flickr = getFlickr();
+		UploadMetaData metaData = new UploadMetaData();
 		String photo = content.getStringField(MObject.Field.URL);
+		log.warn("Photo:"+photo);
 		URL url;
 		try {
 			url = new URL(photo);
@@ -110,19 +113,24 @@ public class FlickrPlugin extends Plugin {
 		InputStream in;
 		try {
 			URLConnection connection = url.openConnection();
+			metaData.setContentType(connection.getContentType());
 			connection.setConnectTimeout(0);
 			connection.setReadTimeout(0);
 			in = connection.getInputStream();
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new UndownloadableContentException(); 
 		}
 		
-		UploadMetaData metaData = new UploadMetaData();
+		
 		
 		String title = content.getStringField(MObject.Field.TITLE);
 		metaData.setTitle(title);
 		
+		log.warn(content.containsField(MObject.Field.CAPTION));
+		log.warn(content.getFields());
 		if(content.containsField(MObject.Field.CAPTION)){
+			log.warn("HOLY FUCK THERE IS A CAPTION");
 			String caption = content.getStringField(MObject.Field.CAPTION);
 			metaData.setDescription(caption);
 		}
@@ -136,17 +144,22 @@ public class FlickrPlugin extends Plugin {
 			String caption = content.getStringField(MObject.Field.ALBUM);
 			metaData.setDescription(caption);
 		}
-		
+
+		RequestContext requestContext = RequestContext.getRequestContext();
+		requestContext.setAuth(this.flickrAuth);
+		log.warn("Description: "+metaData.getDescription());
+
 		try {
 			String id = this.uploader.upload(in, metaData);
-			RequestContext reqcon = RequestContext.getRequestContext();
-			Auth current = reqcon.getAuth();
 			content.putField(MObject.Field.ID, id, getServiceName());
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new MashbotException();
 		} catch (FlickrException e) {
+			e.printStackTrace();
 			throw new InvalidRequestException(e);
 		} catch (SAXException e) {
+			e.printStackTrace();
 			throw new InvalidFieldException(e.getMessage());
 		} finally {
 			content.putField(MObject.Field.ALBUM, "herro");
@@ -159,16 +172,16 @@ public class FlickrPlugin extends Plugin {
 			
 			Auth auth = new Auth();
 			
-			if(credential.method == "proprietary" && credential.secret.length() > 0){
+			if(credential.method.equals("proprietary") && credential.secret.length() > 0){
 				auth.setToken(credential.secret);
 				
-				if(operation == "push"){
+				if(operation.equals("push")){
 					auth.setPermission(Permission.WRITE);
-				} else if(operation == "pull") {
+				} else if(operation.equals("pull")) {
 					auth.setPermission(Permission.READ);
-				} else if(operation == "edit") {
+				} else if(operation.equals("edit")) {
 					auth.setPermission(Permission.WRITE);
-				} else if(operation == "delete") {
+				} else if(operation.equals("delete")) {
 					auth.setPermission(Permission.DELETE);
 				}
 				
@@ -176,8 +189,8 @@ public class FlickrPlugin extends Plugin {
 				auth.setPermission(Permission.NONE);
 			}
 			
+			this.flickrAuth = auth;
 			
-			RequestContext.getRequestContext().setAuth(auth);
 			this.uploader = this.flickr.getUploader();
 	}
 
@@ -199,7 +212,6 @@ public class FlickrPlugin extends Plugin {
 			if(properties.containsKey("apiKey") && properties.containsKey("secret")){
 				String apiKey = properties.getProperty("apiKey");
 				String secret = properties.getProperty("secret");
-			
 
 			Flickr flickr;
 			try {

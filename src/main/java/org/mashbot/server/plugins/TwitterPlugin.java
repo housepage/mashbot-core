@@ -24,7 +24,9 @@ import org.mashbot.server.types.MashbotQuery;
 import org.mashbot.server.types.ServiceCredential;
 
 import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.Status;
+import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -34,6 +36,7 @@ public class TwitterPlugin extends Plugin {
     private static final String serviceName = "twitter";
     private static final Map<String, List<String>> supported;
     private Twitter twitter;
+	private Log log = LogFactory.getLog(getClass());
     
     static {
         Map<String, List<String>> aSupported = new HashMap<String,List<String>>();
@@ -191,15 +194,32 @@ public class TwitterPlugin extends Plugin {
 			throws MashbotException, IncompleteSecretInformationException,
 			InvalidConfigFileException, InvalidFieldException,
 			UndownloadableContentException, InvalidRequestException {
+		
 		String latestStatus = content.getStringField(MObject.Field.STATUS);
-    	
+		log.warn("Ummmm:"+latestStatus);
+		
     	Status status;
 
 		try {
 			status = twitter.updateStatus(latestStatus);
 			content.putField(MObject.Field.SUCCESS,MObject.Field.FALSE.toString(), serviceName,status.getUser().getName(),status.getId());
 		} catch (TwitterException e) {
+			/*e.printStackTrace();
+			log.warn(e.getMessage());
+			log.warn(e.getStatusCode());
 			content.putField(MObject.Field.ID,MObject.Field.FALSE.toString());
+			Query search = new Query(latestStatus);
+			
+			try {
+				search.setQuery("from="+twitter.getScreenName());
+				QueryResult q = twitter.search(search);
+				for(Tweet i : q.getTweets()){
+					log.warn(i.getText());
+				}
+				
+			} catch (TwitterException e1) {
+				log.warn(e.getMessage());
+			}*/
 		}
 		
 		return content;

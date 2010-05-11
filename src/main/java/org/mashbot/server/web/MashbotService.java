@@ -63,6 +63,7 @@ public class MashbotService {
 	}
 	
 	public MObject makeRequest(Operation op, String contentType, MObject in, String token){
+		log.warn("HOLY FUCK THE MOBJECT:"+in.getFields());
 		Request request = new Request();
 		request.setContentType(contentType);
 		request.setOperation(op);
@@ -114,6 +115,7 @@ public class MashbotService {
 	@Produces({"application/json"})
 	public MObject pushRequest(@PathParam("contentType") String contentType, @QueryParam("token") String token, MObject incoming)
 	{
+		log.warn(incoming.getFields());
 		return makeRequest(Operation.PUSH,contentType,incoming,token);
 	}
 	

@@ -76,9 +76,14 @@
 						<entry key="delete"></entry> -->
 					</map>
 				</entry>
-				<entry key="blog">
+				<entry key="post">
 					<map key-type="java.lang.String" value-type="java.util.List">
-	
+						<entry key="push">
+							<list value-type="org.mashbot.server.Plugin">
+								<ref bean="tumblr" />
+								<ref bean="blogger" />
+							</list>
+						</entry>
 					</map>
 				</entry>
 				<entry key="photo">
@@ -102,6 +107,8 @@
 	<bean name="twitter"  class="org.mashbot.server.plugins.TwitterPlugin" scope="prototype" />
 	<bean name="flickr"  class="org.mashbot.server.plugins.FlickrPlugin" scope="prototype" />
 	<bean name="picasa"  class="org.mashbot.server.plugins.PicasaPlugin" scope="prototype" />
+	<bean name="tumblr"  class="org.mashbot.server.plugins.TumblrPlugin" scope="prototype" />
+	<bean name="blogger"  class="org.mashbot.server.plugins.BloggerPlugin" scope="prototype" />
 	
 	<!-- <bean name="twitter-factory" class="twitter4j.TwitterFactory">
 		<property name=""></property>
