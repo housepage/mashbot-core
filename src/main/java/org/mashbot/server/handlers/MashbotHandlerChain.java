@@ -20,6 +20,9 @@ public class MashbotHandlerChain implements HandlerChain {
 		}
 	}
 	
+	/**
+	 * Enacts the first handler of the handler chain
+	 */
 	public void enact(Request request, Response response,
 			RequestContext context) throws MashbotException {
 		first.enact(request, response, context);

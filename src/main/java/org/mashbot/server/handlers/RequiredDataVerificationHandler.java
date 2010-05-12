@@ -10,6 +10,14 @@ import org.mashbot.server.types.Request;
 import org.mashbot.server.types.RequestContext;
 import org.mashbot.server.types.Response;
 
+/**
+ * 
+ * @author andrew
+ * 
+ * This handler verifies that the required information is being sent to the plugins
+ *
+ */
+
 public class RequiredDataVerificationHandler extends ChainableHandler {
 
 	@Override

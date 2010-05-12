@@ -14,6 +14,14 @@ import org.mashbot.server.types.RequestContext;
 import org.mashbot.server.types.Response;
 import org.mashbot.server.web.MashbotService.Operation;
 
+/**
+ * 
+ * @author andrew
+ * 
+ * This handler matches the plugins that are available with the action being performed and the content type
+ *
+ */
+
 public class PluginMatchingHandler extends ChainableHandler {
 	
 	protected Log log = LogFactory.getLog(getClass());
