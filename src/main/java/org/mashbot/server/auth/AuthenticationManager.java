@@ -118,16 +118,16 @@ public class AuthenticationManager {
 	public String getAuthenticationToken(String username, Map<String, List<ServiceCredential>> hashMap){
 		UUID id = UUID.randomUUID();
 		//UUID id = new UUID(1,1);
-		log.warn("Credentials:"+hashMap);
+		log.info("Received credentials:" + hashMap);
 		
 	    UserAuthenticationInformation userauth = new UserAuthenticationInformation(username,hashMap);
 	    try{
 	    	this.mapLock.lock();
-	    	log.warn("USER AUTH:"+userauth.getCredentials());
 			this.tokenCredentials.put(id, userauth);
 			
 			if(this.userToUUID.containsKey(username)){
 				this.userToUUID.get(username).add(id);
+				
 			} else {
 				List<UUID> ids = new ArrayList<UUID>();
 				ids.add(id);
@@ -138,6 +138,7 @@ public class AuthenticationManager {
 	    }
 	    
 	    System.out.println(this.tokenCredentials.get(id).getCredentials());
+	    log.info("Credentials in manager. Token returned: "+id.toString());
 		return id.toString();
 	}
 	

@@ -14,7 +14,7 @@
  */
 
 
-package sample.util;
+package org.mashbot.server.ext.google;
 
 import java.util.HashMap;
 import java.util.Iterator;
