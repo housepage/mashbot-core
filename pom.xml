@@ -86,6 +86,7 @@
 		  <version>1.5.8</version>
 		</dependency>
 		<!-- <dependency>
+
            <groupId>org.jboss.resteasy</groupId>
            <artifactId>resteasy-maven-import</artifactId>
            <version>1.1.GA</version>
@@ -263,6 +264,7 @@
           <groupId>org.twitter4j</groupId>
           <artifactId>twitter4j-core</artifactId>
           <version>2.1.2</version>
+
         </dependency>
         
         <dependency>
@@ -362,13 +364,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock-junit4</artifactId>
-			<version>2.5.1</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
     <!-- gdata stuff -->
     <dependency>
       <groupId>com.google.gdata</groupId>

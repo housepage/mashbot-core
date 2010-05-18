@@ -18,6 +18,13 @@ import org.mashbot.server.types.UserAuthenticationInformation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ * @author andrew
+ * This class matches the credentials we have with the plugins to which requests are being sent.
+ *
+ */
+
 public class AuthenticationMatchingHandler extends ChainableHandler {
 
 	Log log = LogFactory.getLog(getClass()); 

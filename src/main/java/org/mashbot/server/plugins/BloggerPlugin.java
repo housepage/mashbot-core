@@ -55,6 +55,12 @@ import org.w3c.dom.NodeList;
 
 import org.xml.sax.InputSource;
 
+/**
+ * 
+ * @author nick
+ *
+ * Allows mashbot-core to interact with Blogger
+ */
 public class BloggerPlugin extends Plugin
 {
   private static final String applicationName = "Mashbot-Mashbot-1.0";

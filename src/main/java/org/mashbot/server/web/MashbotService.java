@@ -63,7 +63,6 @@ public class MashbotService {
 	}
 	
 	public MObject makeRequest(Operation op, String contentType, MObject in, String token){
-		log.warn("HOLY FUCK THE MOBJECT:"+in.getFields());
 		Request request = new Request();
 		request.setContentType(contentType);
 		request.setOperation(op);
